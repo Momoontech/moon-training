@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestures Cheat Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#6C5CE7; --primary-dark:#5b4ed8; --accent:#FDA45B;
+    --ink:#1A1A2E; --muted:#5c5c70; --line:#E1E1EC; --bg:#F4F4F8; --card:#fff;
+    --green:#00B894;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e9e9f0;}
+  body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.34;display:flex;justify-content:center;padding:20px;}
+  .page{background:var(--card);width:8.5in;min-height:11in;padding:0.5in 0.55in;}
+
+  .head{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:3px solid var(--primary);padding-bottom:8px;margin-bottom:11px;}
+  .head .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--primary);font-weight:700;}
+  .head h1{font-size:22px;font-weight:800;margin-top:3px;letter-spacing:-.01em;}
+  .head .sub{font-size:11px;color:var(--muted);margin-top:2px;}
+  .head .badge{font-size:10px;font-weight:700;color:#fff;background:var(--primary);border-radius:999px;padding:5px 12px;white-space:nowrap;margin-top:4px;}
+
+  .grid{display:flex;flex-wrap:wrap;gap:10px;}
+  .card{width:calc(50% - 5px);border:1px solid var(--line);border-radius:11px;padding:10px 12px;}
+  .card .top{display:flex;align-items:center;gap:9px;margin-bottom:5px;}
+  .card .icon{flex:0 0 36px;height:36px;border-radius:9px;background:var(--bg);display:flex;align-items:center;justify-content:center;}
+  .card .icon svg{width:21px;height:21px;}
+  .card h3{font-size:13.5px;font-weight:800;line-height:1.1;}
+  .card .do{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--primary);margin-top:2px;}
+  .card ol{list-style:none;counter-reset:s;}
+  .card li{counter-increment:s;position:relative;padding-left:19px;font-size:10.3px;margin:3.5px 0;color:#2c2c40;line-height:1.26;}
+  .card li::before{content:counter(s);position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;background:var(--primary);color:#fff;font-size:8.5px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .card .why{font-size:9.4px;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1px dashed var(--line);}
+  .card .why b{color:var(--ink);}
+
+  .views{width:100%;background:linear-gradient(135deg,#2A2140,var(--primary));border-radius:11px;padding:10px 13px;color:#fff;}
+  .views .lead{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;font-weight:700;margin-bottom:7px;}
+  .vrow{display:flex;gap:9px;}
+  .v{flex:1;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:8px 10px;}
+  .v h4{font-size:12.5px;font-weight:800;}
+  .v p{font-size:9.5px;opacity:.92;margin-top:2px;line-height:1.28;}
+  .v .tag{display:inline-block;margin-top:5px;font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:var(--green);color:#08281f;border-radius:999px;padding:2px 7px;}
+
+  .foot{margin-top:11px;border-top:1px solid var(--line);padding-top:7px;font-size:9.5px;color:var(--muted);display:flex;justify-content:space-between;}
+
+  @page{size:letter;margin:0;}
+  @media print{
+    html,body{background:#fff;}
+    body{padding:0;}
+    .page{width:100%;min-height:100vh;padding:0.42in 0.5in;}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="head">
+      <div>
+        <div class="k">Sales Designer App · Cheat Sheet</div>
+        <h1>Gestures &amp; Hands-On Moves</h1>
+        <div class="sub">The taps and drags that make the app feel easy. Practice these first.</div>
+      </div>
+      <div class="badge">On the iPad</div>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="top">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="1.5" fill="none" stroke="#6C5CE7" stroke-width="2"/><circle cx="4" cy="4" r="3" fill="#FDA45B"/><path d="M4 4 L11 11" stroke="#6C5CE7" stroke-width="1.6" stroke-dasharray="2 2"/></svg></div>
+          <div><div class="do">Floor Plan</div><h3>Reshape a wall</h3></div>
+        </div>
+        <ol>
+          <li>Tap a <b>corner point</b> on the plan.</li>
+          <li>Hold, then <b>drag</b> it to the new spot.</li>
+          <li>Release. The wall follows the corner.</li>
+        </ol>
+        <div class="why"><b>Why:</b> matches the plan to the real room measurements.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 18 H20" stroke="#6C5CE7" stroke-width="2.4"/><path d="M12 18 V7" stroke="#FDA45B" stroke-width="2.4"/><path d="M9 10 L12 7 L15 10" fill="none" stroke="#FDA45B" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
+          <div><div class="do">Floor Plan</div><h3>Add a new wall</h3></div>
+        </div>
+        <ol>
+          <li>Hold and <b>drag on an existing wall</b>.</li>
+          <li>Pull the new wall out to length.</li>
+          <li><b>Release</b> to drop it in place.</li>
+        </ol>
+        <div class="why"><b>Why:</b> build L, U, and custom shapes from a simple wall.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5" fill="none" stroke="#6C5CE7" stroke-width="2"/><rect x="4" y="9" width="4" height="6" fill="#FDA45B"/></svg></div>
+          <div><div class="do">Floor Plan</div><h3>Drop an obstacle</h3></div>
+        </div>
+        <ol>
+          <li>Pick a door, window, or outlet.</li>
+          <li>Drag it toward a wall.</li>
+          <li>It <b>snaps to the wall</b> automatically.</li>
+        </ol>
+        <div class="why"><b>Why:</b> the design accounts for the real room, no floating obstacles.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1.5" fill="none" stroke="#6C5CE7" stroke-width="2"/><path d="M8 20 V11 H12 V20 M12 15 H16 V20" fill="none" stroke="#FDA45B" stroke-width="2" stroke-linejoin="round"/></svg></div>
+          <div><div class="do">Measure &amp; Design</div><h3>Plot the design</h3></div>
+        </div>
+        <ol>
+          <li>Start from the wall you picked.</li>
+          <li>Add sections from the <b>Catalog</b>.</li>
+          <li>Plot at <b>Systems</b> to open the Catalog.</li>
+        </ol>
+        <div class="why"><b>Why:</b> sections build onto the wall, not a blank page.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="9" r="4.5" fill="none" stroke="#6C5CE7" stroke-width="2"/><path d="M6 20 c0-4 12-4 12 0" fill="none" stroke="#FDA45B" stroke-width="2"/></svg></div>
+          <div><div class="do">Present</div><h3>Customize &amp; Accessorize</h3></div>
+        </div>
+        <ol>
+          <li><b>Customize</b> changes finishes and colors.</li>
+          <li><b>Accessorize</b> adds the extras and add-ons.</li>
+          <li>Review it live before pricing.</li>
+        </ol>
+        <div class="why"><b>Why:</b> this is where the closet becomes the client's.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="#6C5CE7" stroke-width="2"/><path d="M8 9 H16 M8 13 H16 M8 17 H13" stroke="#FDA45B" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="do">Estimate</div><h3>Price it live</h3></div>
+        </div>
+        <ol>
+          <li>Toggle an item off and the <b>total updates instantly</b>.</li>
+          <li>Show price, savings, and payment.</li>
+          <li>Generate the quote and documents.</li>
+        </ol>
+        <div class="why"><b>Why:</b> the client sees the impact of each choice in real time.</div>
+      </div>
+
+      <div class="views">
+        <div class="lead">Switching views · you can edit in all three</div>
+        <div class="vrow">
+          <div class="v"><h4>Top</h4><p>Look down on the floor plan. Reshape walls and place obstacles.</p><span class="tag">Editable</span></div>
+          <div class="v"><h4>Front</h4><p>Face the wall. Plot and adjust sections at eye level.</p><span class="tag">Editable</span></div>
+          <div class="v"><h4>3D</h4><p>Walk the finished closet with the client. Still fully editable.</p><span class="tag">Editable</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <span>Sales Designer App Training · First 5 Designers</span>
+      <span>Practice quiz: quizzes-pied-two.vercel.app</span>
+    </div>
+  </div>
+</body>
+</html>
