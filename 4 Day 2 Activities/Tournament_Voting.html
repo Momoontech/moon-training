@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream Closet Tournament - Voting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#6C5CE7; --primary-dark:#5b4ed8; --accent:#FDA45B;
+    --ink:#1A1A2E; --muted:#6b6b80; --line:#E6E6EE; --bg:#F4F4F8; --card:#fff; --green:#00B894;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 60px;}
+  .top{background:linear-gradient(135deg,#2A2140,var(--primary));color:#fff;padding:26px 28px;text-align:center;}
+  .top .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;}
+  .top h1{font-size:26px;font-weight:800;margin-top:5px;}
+  .top p{font-size:13.5px;opacity:.9;margin-top:5px;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:22px;box-shadow:0 4px 16px rgba(42,33,64,.05);}
+  h2{font-size:19px;font-weight:800;margin-bottom:4px;}
+  .sub{font-size:13.5px;color:var(--muted);margin-bottom:16px;}
+  label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  input{font-family:inherit;font-size:15px;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;width:100%;margin-top:4px;}
+  input:focus{outline:none;border-color:var(--primary);}
+  .namerow{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+  .namerow input{margin-top:0;}
+  .del{border:none;background:var(--bg);color:var(--muted);border-radius:8px;width:38px;height:40px;font-size:18px;cursor:pointer;flex:0 0 auto;}
+  .btn{border:none;border-radius:999px;padding:12px 22px;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;background:var(--primary);color:#fff;}
+  .btn:hover{background:var(--primary-dark);}
+  .btn.gray{background:var(--bg);color:var(--ink);}
+  .btn.block{display:block;width:100%;margin-top:8px;}
+  .addbtn{border:1.5px dashed var(--line);background:none;color:var(--primary);border-radius:10px;padding:11px;width:100%;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;margin-bottom:16px;}
+
+  .catbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .catprog{font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;}
+  .barwrap{height:7px;background:var(--bg);border-radius:99px;overflow:hidden;margin:8px 0 18px;}
+  .barwrap i{display:block;height:100%;background:var(--primary);transition:width .3s;}
+  .cand{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:10px;}
+  .cand .nm{flex:1;font-size:15px;font-weight:700;}
+  .cand .count{font-size:22px;font-weight:800;color:var(--primary);min-width:36px;text-align:center;font-variant-numeric:tabular-nums;}
+  .vbtn{border:none;width:40px;height:40px;border-radius:10px;font-size:20px;font-weight:800;cursor:pointer;flex:0 0 auto;}
+  .vplus{background:var(--primary);color:#fff;} .vminus{background:var(--bg);color:var(--muted);}
+  .nav{display:flex;justify-content:space-between;margin-top:16px;}
+
+  .champ{background:linear-gradient(135deg,var(--primary),#9a8cf0);text-align:center;border-radius:16px;padding:26px;color:#fff;margin-bottom:16px;}
+  .champ .crown{font-size:40px;}
+  .champ .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin-top:4px;}
+  .champ .who{font-size:30px;font-weight:800;margin-top:4px;}
+  .champ .meta{font-size:13px;opacity:.9;margin-top:6px;}
+  .catres{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);}
+  .catres:last-child{border-bottom:none;}
+  .catres .c{font-size:13px;color:var(--muted);}
+  .catres .w{font-size:15px;font-weight:800;}
+  .catres .w .tag{font-size:11px;color:var(--accent);font-weight:800;margin-left:6px;}
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <div class="k">Day 3</div>
+    <h1>🏆 Dream Closet Tournament</h1>
+    <p>Pitches done? Time to vote.</p>
+  </div>
+
+  <div class="wrap">
+
+    <div id="setup" class="box">
+      <h2>Who's competing?</h2>
+      <div class="sub">Add each designer. You can rename or remove as needed.</div>
+      <div id="names"></div>
+      <button class="addbtn" id="addName">+ Add designer</button>
+      <button class="btn block" id="startVote">Start voting</button>
+    </div>
+
+    <div id="vote" class="box" hidden>
+      <div class="catbar">
+        <span class="catprog" id="catProg">Category 1 of 4</span>
+        <button class="btn gray" style="padding:6px 14px;font-size:12px" id="restart1">Restart</button>
+      </div>
+      <h2 id="catName">Best overall</h2>
+      <div class="sub">Ask for a show of hands, tap the count for each designer.</div>
+      <div class="barwrap"><i id="catFill"></i></div>
+      <div id="cands"></div>
+      <div class="nav">
+        <button class="btn gray" id="backCat">← Back</button>
+        <button class="btn" id="nextCat">Next category →</button>
+      </div>
+    </div>
+
+    <div id="results" class="box" hidden>
+      <div id="champ"></div>
+      <h2 style="margin-top:6px">Category winners</h2>
+      <div id="catWinners" style="margin-top:8px"></div>
+      <button class="btn block gray" id="voteAgain" style="margin-top:18px">Vote again</button>
+    </div>
+
+  </div>
+
+<script>
+(function(){
+  var categories = ["Best overall","Most creative","Most over the top","Cleanest build"];
+  var names = ["Designer 1","Designer 2","Designer 3","Designer 4","Designer 5"];
+  var votes = {}; // votes[cat][name] = count
+  var ci = 0;
+
+  var setup=document.getElementById('setup'), vote=document.getElementById('vote'), results=document.getElementById('results');
+  var namesWrap=document.getElementById('names');
+
+  function renderNames(){
+    namesWrap.innerHTML = names.map(function(n,i){
+      return '<div class="namerow"><input value="'+esc(n)+'" data-i="'+i+'" /><button class="del" data-i="'+i+'">×</button></div>';
+    }).join('');
+    [].slice.call(namesWrap.querySelectorAll('input')).forEach(function(inp){
+      inp.addEventListener('input',function(){names[+inp.dataset.i]=inp.value;});
+    });
+    [].slice.call(namesWrap.querySelectorAll('.del')).forEach(function(b){
+      b.addEventListener('click',function(){ if(names.length>2){names.splice(+b.dataset.i,1);renderNames();} });
+    });
+  }
+  document.getElementById('addName').addEventListener('click',function(){names.push("Designer "+(names.length+1));renderNames();});
+
+  document.getElementById('startVote').addEventListener('click',function(){
+    names = names.map(function(n){return n.trim()||"Designer";});
+    votes = {};
+    categories.forEach(function(c){votes[c]={}; names.forEach(function(n){votes[c][n]=0;});});
+    ci=0; setup.hidden=true; vote.hidden=false; renderCat();
+  });
+
+  function renderCat(){
+    var cat=categories[ci];
+    document.getElementById('catProg').textContent='Category '+(ci+1)+' of '+categories.length;
+    document.getElementById('catName').textContent=cat;
+    document.getElementById('catFill').style.width=((ci)/categories.length*100)+'%';
+    document.getElementById('cands').innerHTML = names.map(function(n){
+      return '<div class="cand"><span class="nm">'+esc(n)+'</span>'+
+        '<button class="vbtn vminus" data-n="'+esc(n)+'">−</button>'+
+        '<span class="count" id="cnt-'+cssid(n)+'">'+votes[cat][n]+'</span>'+
+        '<button class="vbtn vplus" data-n="'+esc(n)+'">+</button></div>';
+    }).join('');
+    [].slice.call(document.querySelectorAll('.vplus')).forEach(function(b){b.addEventListener('click',function(){bump(cat,b.dataset.n,1);});});
+    [].slice.call(document.querySelectorAll('.vminus')).forEach(function(b){b.addEventListener('click',function(){bump(cat,b.dataset.n,-1);});});
+    document.getElementById('backCat').disabled = (ci===0);
+    document.getElementById('nextCat').textContent = (ci===categories.length-1)?'See winners 🏆':'Next category →';
+  }
+  function bump(cat,n,d){ votes[cat][n]=Math.max(0,votes[cat][n]+d); document.getElementById('cnt-'+cssid(n)).textContent=votes[cat][n]; }
+
+  document.getElementById('nextCat').addEventListener('click',function(){
+    if(ci<categories.length-1){ci++;renderCat();} else {showResults();}
+  });
+  document.getElementById('backCat').addEventListener('click',function(){ if(ci>0){ci--;renderCat();} });
+  document.getElementById('restart1').addEventListener('click',reset);
+  document.getElementById('voteAgain').addEventListener('click',reset);
+  function reset(){ results.hidden=true; vote.hidden=true; setup.hidden=false; }
+
+  function winnerOf(cat){
+    var best=-1, who=[];
+    names.forEach(function(n){ var v=votes[cat][n]; if(v>best){best=v;who=[n];} else if(v===best){who.push(n);} });
+    return {who:who, votes:best};
+  }
+  function showResults(){
+    vote.hidden=true; results.hidden=false;
+    var wins={}; names.forEach(function(n){wins[n]=0;});
+    var total={}; names.forEach(function(n){total[n]=0;});
+    var rows='';
+    categories.forEach(function(cat){
+      var w=winnerOf(cat);
+      names.forEach(function(n){total[n]+=votes[cat][n];});
+      var label = w.votes===0 ? 'No votes' : w.who.join(' & ');
+      if(w.votes>0){ w.who.forEach(function(n){wins[n]++;}); }
+      rows += '<div class="catres"><span class="c">'+cat+'</span><span class="w">'+esc(label)+'<span class="tag">'+(w.votes>0?w.votes+' votes':'')+'</span></span></div>';
+    });
+    document.getElementById('catWinners').innerHTML=rows;
+    // overall champion: most category wins, tiebreak total votes
+    var champ=null, bestWins=-1, bestTotal=-1;
+    names.forEach(function(n){
+      if(wins[n]>bestWins || (wins[n]===bestWins && total[n]>bestTotal)){ champ=n; bestWins=wins[n]; bestTotal=total[n]; }
+    });
+    var anyVotes = names.some(function(n){return total[n]>0;});
+    document.getElementById('champ').innerHTML = anyVotes
+      ? '<div class="champ"><div class="crown">👑</div><div class="lab">Champion</div><div class="who">'+esc(champ)+'</div><div class="meta">'+bestWins+' category win'+(bestWins===1?'':'s')+' · '+bestTotal+' total votes</div></div>'
+      : '<div class="champ"><div class="crown">🗳️</div><div class="lab">No votes yet</div><div class="who">Go back and tally</div></div>';
+  }
+
+  function esc(s){return (s+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function cssid(s){return (s+'').replace(/[^a-zA-Z0-9]/g,'_');}
+
+  renderNames();
+})();
+</script>
+</body>
+</html>
