@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Designer App Training - Quizzes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#6C5CE7; --primary-dark:#5b4ed8; --accent:#FDA45B;
+    --ink:#1A1A2E; --muted:#6b6b80; --line:#E6E6EE; --bg:#F4F4F8; --card:#fff;
+    --green:#00B894;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 60px;}
+  .top{background:linear-gradient(135deg,#2A2140,var(--primary));color:#fff;padding:34px 28px;text-align:center;}
+  .top .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;}
+  .top h1{font-size:27px;font-weight:800;margin-top:6px;}
+  .top p{font-size:14px;opacity:.9;margin-top:6px;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px;}
+  .menu{display:grid;gap:14px;margin-top:24px;}
+  .qcard{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;transition:.15s;box-shadow:0 4px 16px rgba(42,33,64,.05);}
+  .qcard:hover{border-color:var(--primary);transform:translateY(-2px);}
+  .qcard .tagline{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);}
+  .qcard h2{font-size:19px;font-weight:800;margin-top:6px;}
+  .qcard p{font-size:13.5px;color:var(--muted);margin-top:6px;}
+  .qcard .go{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:#fff;background:var(--primary);border-radius:999px;padding:8px 18px;}
+  .note{font-size:12px;color:var(--muted);text-align:center;margin-top:18px;}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="k">Sales Designer App Training</div>
+    <h1>🧠 App Navigation Quizzes</h1>
+    <p>Three short quizzes to check what you learned in training.</p>
+  </div>
+  <div class="wrap">
+    <div class="menu">
+      <a class="qcard" href="Quiz_1_Setup_and_Measure.html">
+        <div class="tagline">Day 1 · end of day</div>
+        <h2>Quiz 1: Set up and Measure</h2>
+        <p>Configure a room and measure it. 10 questions.</p>
+        <span class="go">Start quiz 1 →</span>
+      </a>
+      <a class="qcard" href="Quiz_2_Design_and_Present.html">
+        <div class="tagline">Day 2 · recap</div>
+        <h2>Quiz 2: Design and Present</h2>
+        <p>Build the design, price it, generate documents. 10 questions.</p>
+        <span class="go">Start quiz 2 →</span>
+      </a>
+      <a class="qcard" href="Quiz_3_Final.html">
+        <div class="tagline">Final</div>
+        <h2>Final Quiz: the whole flow</h2>
+        <p>Plan to Handoff, the full appointment. 20 questions.</p>
+        <span class="go">Start final quiz →</span>
+      </a>
+      <div class="note">Prototype. Sample questions to confirm against the final app.</div>
+    </div>
+  </div>
+</body>
+</html>
