@@ -26,7 +26,10 @@ based) needs no server of its own; the API functions just verify the token.
 3. **Vercel** - add as Environment Variables on the existing `moon-training`
    project (Settings -> Environment Variables), never committed to the repo:
    `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `ADMIN_EMAILS` (comma-separated, e.g. `mo@moon.tech`).
+   `ADMIN_EMAILS` (comma-separated, e.g. `mo@moon.tech`),
+   `ALLOWED_EMAILS` (comma-separated pilot cohort emails - anyone not on this
+   list, and not in `ADMIN_EMAILS`, gets a clear "invite-only" message
+   instead of an account. Admins are always implicitly allowed.).
 
 ## Admin panel (pilot testing only)
 
