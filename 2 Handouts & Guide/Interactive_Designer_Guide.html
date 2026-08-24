@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sales Designer App · Step-by-Step Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#7239EA; --primary-dark:#5f2fc9; --accent:#FDA45B;
+    --ink:#1A1A2E; --muted:#5c5c70; --line:#E1E1EC; --bg:#F4F4F8; --card:#fff;
+    --green:#00B894;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  /* SHELL: sidebar + main */
+  .shell{display:flex;align-items:stretch;min-height:100vh;}
+  .side{flex:0 0 258px;background:var(--card);border-right:1px solid var(--line);padding:16px 12px;position:sticky;top:0;height:100vh;overflow-y:auto;transition:flex-basis .2s;}
+  .side.collapsed{flex:0 0 70px;}
+  .sidehead{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:0 4px;}
+  .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7239EA,#9b6bf5);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .brandtext{min-width:0;}
+  .bname{font-size:13.5px;font-weight:800;line-height:1.1;color:var(--ink);white-space:nowrap;}
+  .bsub{font-size:11px;color:var(--muted);white-space:nowrap;}
+  .collapsebtn{margin-left:auto;width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:15px;line-height:1;}
+  .collapsebtn:hover{border-color:var(--primary);color:var(--primary);}
+  .stepnav{display:flex;flex-direction:column;gap:2px;}
+  .srow{display:flex;align-items:center;gap:12px;padding:8px;border-radius:10px;cursor:pointer;background:none;border:none;font-family:inherit;text-align:left;width:100%;}
+  .srow:hover .slabel{color:var(--primary);}
+  .srow.sub{padding-left:24px;}
+  .snum{width:28px;height:28px;border-radius:8px;background:var(--card);border:1.5px solid var(--line);color:var(--muted);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .srow.sub .snum{width:24px;height:24px;font-size:11px;}
+  .srow.done .snum{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .srow.cur .snum{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 0 0 3px rgba(114,57,234,.2);}
+  .slabel{font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .srow.group .slabel{font-weight:700;}
+  .srow.up .slabel{color:var(--muted);}
+  .srow.cur .slabel{color:var(--primary);font-weight:700;}
+  .side.collapsed .brandtext,.side.collapsed .slabel,.side.collapsed .logo{display:none;}
+  .side.collapsed .sidehead{justify-content:center;margin-bottom:12px;}
+  .side.collapsed .collapsebtn{margin-left:0;}
+  .side.collapsed .srow{justify-content:center;padding:8px 0;}
+  .side.collapsed .srow.sub{padding-left:0;}
+
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .topline{display:flex;justify-content:flex-end;padding:13px 26px;border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:20;}
+  .navright{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;}
+  #stepbody.fadeanim{animation:fadeUp .28s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* CONTENT */
+  .content{max-width:820px;width:100%;margin:0 auto;padding:28px 30px 40px;}
+  .ptitle{font-size:24px;font-weight:800;letter-spacing:-.02em;}
+  .ppurpose{font-size:14.5px;color:var(--muted);margin-top:7px;}
+
+  .block{margin-top:24px;}
+  .block > h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .block > h4::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--primary);}
+
+  .reqs{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .reqs li{font-size:14px;padding-left:26px;position:relative;line-height:1.4;}
+  .reqs li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800;}
+
+  /* COLLAPSIBLE SECTIONS */
+  .fold{margin-top:20px;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;}
+  .fold summary{list-style:none;cursor:pointer;padding:13px 16px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--ink);display:flex;align-items:center;justify-content:space-between;}
+  .fold summary::-webkit-details-marker{display:none;}
+  .fold[open] summary{border-bottom:1px solid var(--line);}
+  .fold .chev{color:var(--muted);transition:.2s;font-size:13px;}
+  .fold[open] .chev{transform:rotate(180deg);}
+  .fold .says{padding:14px 16px;}
+  .fold .quizrow{padding:14px 16px;}
+
+  .gcards{display:flex;flex-wrap:wrap;gap:14px;}
+  .gcard{position:relative;flex:1;min-width:230px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 4px 14px rgba(42,33,64,.05);cursor:pointer;transition:.14s;}
+  .gcard:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 10px 24px rgba(42,33,64,.10);}
+  .gcard::after{content:"Tap for step-by-step ›";display:block;margin-top:9px;font-size:11px;font-weight:700;color:var(--primary);}
+  .gcard .stage{background:var(--bg);border-radius:12px;overflow:hidden;}
+  .gcard svg{display:block;width:100%;height:auto;}
+  .gcard h3{font-size:14.5px;font-weight:800;margin-top:11px;}
+  .gcard p{font-size:12.5px;color:var(--muted);margin-top:4px;}
+
+  .says{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .says li{font-size:13.5px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:8px;padding:9px 13px;color:#2c2c40;font-style:italic;}
+
+  /* SANDBOX */
+  .sandbox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 20px rgba(42,33,64,.06);}
+  .sbtop{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:12px;}
+  .sbtn{font-family:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 15px;cursor:pointer;transition:.12s;}
+  .sbtn:hover{border-color:var(--primary);}
+  .sbtn.on{background:var(--primary);border-color:var(--primary);color:#fff;}
+  .sbtn.ghost{margin-left:auto;color:var(--muted);}
+  .sbwrap{position:relative;background:var(--bg);border-radius:14px;overflow:hidden;touch-action:none;}
+  #sbsvg{display:block;width:100%;height:auto;touch-action:none;}
+  .sbhint{display:flex;flex-wrap:wrap;gap:16px;margin-top:11px;}
+  .sbhint span{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px;}
+  .sw{width:13px;height:13px;border-radius:50%;flex:0 0 auto;}
+  .toast{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:12.5px;font-weight:700;padding:7px 16px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none;}
+  .toast.show{opacity:1;}
+
+  .navbtns{display:flex;align-items:center;justify-content:space-between;margin-top:28px;gap:12px;border-top:1px solid var(--line);padding-top:18px;}
+  .navbtns .helper{font-size:12.5px;color:var(--muted);text-align:center;flex:1;}
+  .nbtn{font-family:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 24px;cursor:pointer;transition:.14s;flex:0 0 auto;}
+  .nbtn:hover{border-color:var(--primary);}
+  .nbtn.primary{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 6px 16px rgba(114,57,234,.28);}
+  .nbtn.primary:hover{background:var(--primary-dark);border-color:var(--primary-dark);}
+  .nbtn:disabled{opacity:.35;cursor:default;box-shadow:none;}
+
+  .quizrow{display:flex;flex-wrap:wrap;gap:12px;}
+  .qlink{flex:1;min-width:190px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:.15s;}
+  .qlink:hover{border-color:var(--primary);transform:translateY(-2px);}
+  .qlink .t{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);}
+  .qlink h3{font-size:14px;font-weight:800;margin-top:3px;}
+
+  @media(max-width:820px){
+    .shell{flex-direction:column;}
+    .side{position:static;height:auto;flex:none;width:100%;border-right:none;border-bottom:1px solid var(--line);}
+    .stepnav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px;}
+    .srow{flex:0 0 auto;min-height:0;}
+    .srow:not(:last-child)::after{display:none;}
+    .sgrp{display:none;}
+    .content{padding:22px 20px 40px;}
+  }
+  @media(max-width:600px){
+    .gcard{min-width:100%;}
+    .qlink{min-width:100%;}
+  }
+
+  /* STEP-BY-STEP MODAL */
+  .modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:none;align-items:center;justify-content:center;z-index:70;padding:20px;}
+  .modal.open{display:flex;}
+  .modalcard{background:#fff;border-radius:18px;max-width:520px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.3);animation:fadeUp .22s ease;}
+  .modalhead{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:1;}
+  .modalhead .mt{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--primary);}
+  .modalhead h3{font-size:18px;font-weight:800;margin-top:2px;}
+  .modalhead .mx{background:none;border:none;font-size:24px;line-height:1;cursor:pointer;color:var(--muted);align-self:flex-start;}
+  .frames{padding:16px 18px;display:flex;flex-direction:column;gap:14px;}
+  .framerow{display:flex;gap:14px;align-items:center;}
+  .frameimg{flex:0 0 136px;background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;}
+  .frameimg svg{display:block;width:100%;height:auto;}
+  .fnum{position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .frametext .ft{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+  .frametext p{font-size:14px;color:#2c2c40;margin-top:3px;line-height:1.4;font-weight:600;}
+  .modalnote{padding:0 18px 18px;font-size:11.5px;color:var(--muted);line-height:1.45;}
+
+  /* CHAT ASSISTANT */
+  .chatfab{position:fixed;right:20px;bottom:20px;width:60px;height:60px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(114,57,234,.4);font-size:26px;display:flex;align-items:center;justify-content:center;z-index:60;transition:.15s;}
+  .chatfab:hover{transform:scale(1.06);}
+  .chatwin{position:fixed;right:20px;bottom:90px;width:370px;max-width:calc(100vw - 32px);height:540px;max-height:calc(100vh - 120px);background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 50px rgba(42,33,64,.28);display:none;flex-direction:column;overflow:hidden;z-index:60;}
+  .chatwin.open{display:flex;}
+  .chathead{background:var(--primary);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:11px;flex:0 0 auto;}
+  .chathead .av{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .chathead h3{font-size:15px;font-weight:800;line-height:1.1;}
+  .chathead p{font-size:11px;opacity:.85;}
+  .chathead .x{margin-left:auto;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;opacity:.85;line-height:1;}
+  .chatbody{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg);}
+  .msg{max-width:86%;font-size:13.5px;line-height:1.45;padding:10px 13px;border-radius:14px;}
+  .msg.bot{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start;}
+  .msg.me{background:var(--primary);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+  .msg b{font-weight:800;}
+  .msg ol{margin:6px 0 2px 18px;} .msg li{margin:3px 0;}
+  .msg .goto{margin-top:9px;font-family:inherit;font-size:12px;font-weight:700;color:var(--primary);background:#efedfb;border:1px solid #d9d4f7;border-radius:999px;padding:6px 13px;cursor:pointer;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 10px;background:var(--bg);flex:0 0 auto;}
+  .chip2{font-size:12px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;color:var(--ink);font-family:inherit;}
+  .chip2:hover{border-color:var(--primary);}
+  .chatinput{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--card);flex:0 0 auto;}
+  .chatinput input{flex:1;font-family:inherit;font-size:13.5px;border:1.5px solid var(--line);border-radius:999px;padding:10px 14px;outline:none;}
+  .chatinput input:focus{border-color:var(--primary);}
+  .chatinput button{background:var(--primary);border:none;color:#fff;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:15px;flex:0 0 auto;}
+</style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side" id="side">
+      <div class="sidehead">
+        <div class="logo"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" stroke="#fff" stroke-width="1.8"/><path d="M10 2v16M2 10h16" stroke="#fff" stroke-width="1.4"/></svg></div>
+        <div class="brandtext"><div class="bname">Sales Designer App</div><div class="bsub">Step-by-step guide</div></div>
+        <button class="collapsebtn" id="collapsebtn" aria-label="Collapse sidebar" title="Collapse">«</button>
+      </div>
+      <nav class="stepnav" id="stepnav"></nav>
+    </aside>
+    <div class="main">
+      <div class="topline"><div class="navright">Training · First 5 Designers</div></div>
+      <div class="content">
+        <div id="stepbody">
+          <div class="ptitle" id="ptitle"></div>
+          <div class="ppurpose" id="ppurpose"></div>
+
+      <div class="block">
+        <h4>What you do here</h4>
+        <ul class="reqs" id="reqs"></ul>
+      </div>
+
+      <div class="block">
+        <h4>The moves</h4>
+        <div class="gcards" id="gestures"></div>
+      </div>
+
+      <div class="block" id="sandboxBlock" style="display:none;">
+        <h4>Practice floor plan</h4>
+        <div class="sandbox">
+          <div class="sbtop">
+            <button class="sbtn on" data-shape="rect">Square / Rectangle</button>
+            <button class="sbtn" data-shape="reach">Reach In</button>
+            <button class="sbtn" data-shape="l">L-Shape</button>
+            <button class="sbtn ghost" id="reset">Reset</button>
+          </div>
+          <div class="sbwrap">
+            <svg id="sbsvg" viewBox="0 0 400 300"></svg>
+            <div class="toast" id="toast">Snapped to wall</div>
+          </div>
+          <div class="sbhint">
+            <span><span class="sw" style="background:#7239EA"></span>Corner: drag to reshape the wall</span>
+            <span><span class="sw" style="background:#FDA45B"></span>Door: drag to a wall to snap it</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbtns">
+        <button class="nbtn" id="prev">← Back</button>
+        <div class="helper" id="stephelper"></div>
+        <button class="nbtn primary" id="next">Continue →</button>
+      </div>
+
+      <details class="fold quizfold">
+        <summary>Check yourself with a quiz <span class="chev">▾</span></summary>
+        <div class="quizrow">
+          <a class="qlink" href="https://quizzes-pied-two.vercel.app/Quiz_1_Setup_and_Measure.html" target="_blank" rel="noopener"><div class="t">Set up &amp; Measure</div><h3>Quiz 1</h3></a>
+          <a class="qlink" href="https://quizzes-pied-two.vercel.app/Quiz_2_Design_and_Present.html" target="_blank" rel="noopener"><div class="t">Design &amp; Present</div><h3>Quiz 2</h3></a>
+          <a class="qlink" href="https://quizzes-pied-two.vercel.app/Quiz_3_Final.html" target="_blank" rel="noopener"><div class="t">Whole flow</div><h3>Final</h3></a>
+        </div>
+      </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal" id="modal">
+  <div class="modalcard">
+    <div class="modalhead">
+      <div><div class="mt">Step by step</div><h3 id="modaltitle"></h3></div>
+      <button class="mx" id="modalx" aria-label="Close">×</button>
+    </div>
+    <div class="frames" id="frames"></div>
+    <div class="modalnote">These are placeholder frames. They will be replaced with real screenshots pulled from the in-app demo GIF, so designers can follow the fast-paced GIF one step at a time.</div>
+  </div>
+</div>
+
+<button class="chatfab" id="chatfab" aria-label="Ask a question">💬</button>
+<div class="chatwin" id="chatwin">
+  <div class="chathead">
+    <div class="av">💡</div>
+    <div><h3>Ask the guide</h3><p>How do I…? Ask away.</p></div>
+    <button class="x" id="chatx" aria-label="Close">×</button>
+  </div>
+  <div class="chatbody" id="chatbody"></div>
+  <div class="chips" id="chatchips"></div>
+  <div class="chatinput">
+    <input id="chatin" type="text" placeholder="Type your question…" autocomplete="off"/>
+    <button id="chatsend" aria-label="Send">➤</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- gesture card builders (return HTML strings with known ids) ---------- */
+  function gcard(vb,inner,title,desc){
+    return '<div class="gcard"><div class="stage"><svg viewBox="'+vb+'">'+inner+'</svg></div><h3>'+title+'</h3><p>'+desc+'</p></div>';
+  }
+  function seqRows(prefix,labels){
+    var s='';
+    labels.forEach(function(lab,i){
+      var y=26+i*36;
+      s+='<rect x="34" y="'+y+'" width="22" height="22" rx="5" fill="#fff" stroke="#c9c9db" stroke-width="2"/>'+
+         '<path id="'+prefix+i+'" d="M39 '+(y+11)+' l4 5 l9 -11" fill="none" stroke="#00B894" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>'+
+         '<text x="66" y="'+(y+16)+'" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2c2c40">'+lab+'</text>';
+    });
+    return s;
+  }
+
+  var DEMOS={
+    reshape: gcard('0 0 260 150',
+      '<rect id="g_room" x="40" y="35" width="160" height="80" fill="none" stroke="#7239EA" stroke-width="3"/>'+
+      '<circle id="g_finger" cx="200" cy="35" r="15" fill="#7239EA" opacity="0.18"/>'+
+      '<circle id="g_corner" cx="200" cy="35" r="8" fill="#7239EA"/>',
+      'Reshape a wall','Tap a corner, hold, and drag. The wall follows.'),
+    addwall: gcard('0 0 260 150',
+      '<line x1="40" y1="115" x2="220" y2="115" stroke="#7239EA" stroke-width="3"/>'+
+      '<line id="g_new" x1="130" y1="115" x2="130" y2="115" stroke="#FDA45B" stroke-width="4"/>'+
+      '<circle id="g_newf" cx="130" cy="115" r="14" fill="#FDA45B" opacity="0.2"/>',
+      'Pull out a new wall','Hold and drag on a wall, then release to drop it.'),
+    snap: gcard('0 0 260 150',
+      '<rect x="40" y="25" width="180" height="100" fill="none" stroke="#7239EA" stroke-width="3"/>'+
+      '<rect id="g_door" x="118" y="60" width="24" height="24" rx="3" fill="#FDA45B"/>'+
+      '<circle id="g_doorf" cx="130" cy="72" r="15" fill="#FDA45B" opacity="0.2"/>',
+      'Obstacles snap to walls','Drag a door near a wall and it snaps into place.'),
+    views: gcard('0 0 260 150',
+      '<rect x="55" y="40" width="150" height="72" rx="7" fill="rgba(114,57,234,0.08)" stroke="#7239EA" stroke-width="2.5"/>'+
+      '<text id="g_view" x="130" y="88" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="#7239EA">Top</text>',
+      'Switch views','Top, Front, and 3D. All three are editable.'),
+    shape: gcard('0 0 260 150',
+      '<polygon id="g_shape" points="50,40 210,40 210,110 50,110" fill="rgba(114,57,234,0.08)" stroke="#7239EA" stroke-width="3" stroke-linejoin="round"/>'+
+      '<circle id="g_shapef" cx="130" cy="75" r="16" fill="#7239EA" opacity="0.16"/>',
+      'Pick the room shape','The plan starts from the shape you choose.'),
+    swatch: (function(){
+      var dots='';
+      var cols=['#7239EA','#FDA45B','#00B894'];
+      cols.forEach(function(c,i){ dots+='<circle cx="185" cy="'+(48+i*30)+'" r="11" fill="'+c+'"/>'; });
+      return gcard('0 0 260 150',
+        '<rect id="g_swatch" x="45" y="35" width="100" height="80" rx="8" fill="#7239EA"/>'+dots+
+        '<circle id="g_swf" cx="185" cy="48" r="17" fill="#1A1A2E" opacity="0.14"/>',
+        'Customize finishes','Change colors and finishes with a tap.');
+    })(),
+    addon: gcard('0 0 260 150',
+      '<line x1="40" y1="105" x2="220" y2="105" stroke="#7239EA" stroke-width="3"/>'+
+      '<line x1="40" y1="70" x2="220" y2="70" stroke="#c9c9db" stroke-width="2"/>'+
+      '<g id="g_addon"><rect x="-15" y="-24" width="30" height="24" rx="4" fill="#FDA45B"/><rect x="-9" y="-30" width="18" height="8" rx="3" fill="none" stroke="#FDA45B" stroke-width="3"/></g>',
+      'Accessorize','Add valet rods, hampers, and add-ons.'),
+    job: gcard('0 0 260 150', seqRows('g_job',['Tear out','Disposal','Haul away']),
+      'Finishing touches','Set the job details for this room.'),
+    price: gcard('0 0 260 150',
+      '<text x="34" y="42" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2c2c40">Closet system</text>'+
+      '<text x="226" y="42" text-anchor="end" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2c2c40">$3,200</text>'+
+      '<text x="34" y="74" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2c2c40">Soft-close</text>'+
+      '<text x="226" y="74" text-anchor="end" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2c2c40">$180</text>'+
+      '<line id="g_strike" x1="34" y1="69" x2="226" y2="69" stroke="#E0553D" stroke-width="2.5" opacity="0"/>'+
+      '<rect id="g_track" x="34" y="92" width="46" height="22" rx="11" fill="#c9c9db"/>'+
+      '<circle id="g_knob" cx="45" cy="103" r="9" fill="#fff"/>'+
+      '<text x="34" y="138" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#1A1A2E">Total</text>'+
+      '<text id="g_pfull" x="226" y="138" text-anchor="end" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#7239EA">$3,380</text>'+
+      '<text id="g_pcut" x="226" y="138" text-anchor="end" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#7239EA" opacity="0">$3,200</text>',
+      'Price it live','Toggle an item and the total updates instantly.'),
+    sign: gcard('0 0 260 150',
+      '<rect x="55" y="24" width="150" height="102" rx="7" fill="#fff" stroke="#c9c9db" stroke-width="2"/>'+
+      '<line x1="70" y1="46" x2="190" y2="46" stroke="#e3e3ee" stroke-width="4"/>'+
+      '<line x1="70" y1="60" x2="190" y2="60" stroke="#e3e3ee" stroke-width="4"/>'+
+      '<line x1="70" y1="74" x2="150" y2="74" stroke="#e3e3ee" stroke-width="4"/>'+
+      '<line x1="70" y1="104" x2="190" y2="104" stroke="#c9c9db" stroke-width="1.5"/>'+
+      '<path id="g_pen" d="M74 102 q9 -16 18 0 t18 -1 t16 1 t18 -2" fill="none" stroke="#7239EA" stroke-width="3.2" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>',
+      'Save or sign','Generate documents, then close it out.'),
+    plan: gcard('0 0 260 150', seqRows('g_plan',['Client info','The room','What they want']),
+      'Capture the details','Log who they are and what they need.'),
+    agenda: gcard('0 0 260 150', seqRows('g_ag',['Measure the room','Design the closet','Price and review']),
+      'Set the plan','Line up how the appointment will run.')
+  };
+
+  /* ---------- steps ---------- */
+  var STEPS=[
+    {key:'plan',group:'1',badge:'1',name:'Plan',tag:'Client & needs',
+      purpose:'Capture who the client is and what they want before anything gets built.',
+      reqs:['Enter the client and their space','Note what is not working today','Capture what they want','Set the goal for the visit'],
+      demos:['plan'],
+      say:['What is not working about your closet today?','Walk me through how you use this space.']},
+    {key:'agenda',group:'2',badge:'2',name:'Agenda',tag:'Set the plan',
+      purpose:'Set expectations for how the appointment will run so the client knows what to expect.',
+      reqs:['Confirm the plan for today','Set the pace with the client','Preview the 3D payoff'],
+      demos:['agenda'],
+      say:['Here is how today will go.','By the end you will see your closet in 3D.']},
+    {key:'roomshape',group:'3',badge:'A',name:'Room Shape',tag:'Configure',
+      purpose:'Pick the shape that matches the real room. Everything else builds on it.',
+      reqs:['Choose Reach In, Square/Rectangle, L-Shape, U-Shape, or Custom','Pick the closest shape first','Changing the shape later restarts the room'],
+      demos:['shape'],
+      say:['Which of these looks like your space?','We will fine tune the exact walls next.']},
+    {key:'measure',group:'3',badge:'B',name:'Measure & Design',tag:'Configure',
+      purpose:'Map the exact room on the Floor Plan, then design the closet onto the walls.',
+      reqs:['Plot and measure the walls on the Floor Plan','Drag a corner to reshape a wall','Drop obstacles, they snap to the walls','Switch Top, Front, and 3D anytime'],
+      demos:['reshape','addwall','snap','views'], sandbox:true,
+      say:['Let us match your real measurements.','Watch it come together in 3D.']},
+    {key:'present',group:'3',badge:'C',name:'Present',tag:'Configure',
+      purpose:'Make it the client’s closet. Change finishes, add accessories, review it live.',
+      reqs:['Customize finishes and colors','Accessorize with add-ons','Review the design in 3D with the client'],
+      demos:['swatch','addon','views'],
+      say:['Let us pick your finish.','Want to add a valet rod or a hamper?']},
+    {key:'finishing',group:'3',badge:'D',name:'Finishing Touches',tag:'Configure',
+      purpose:'Handle the job details for this room before you price it.',
+      reqs:['Set tear out and disposal','Confirm haul away and prep','Remember these are per room'],
+      demos:['job'],
+      say:['We will clear out the old closet for you.','This covers everything for this room.']},
+    {key:'estimate',group:'4',badge:'4',name:'Estimate',tag:'Price it',
+      purpose:'Show the full price, the savings, and payment options.',
+      reqs:['Review the itemized total','Toggle items to see the price move live','Walk through payment options'],
+      demos:['price'],
+      say:['Here is everything, itemized.','Toggle this off and watch the price move.']},
+    {key:'handoff',group:'5',badge:'5',name:'Handoff',tag:'Close it',
+      purpose:'Wrap up the appointment. Generate documents, then save for later or sign.',
+      reqs:['Generate the quote and documents','Save for later, or sign today'],
+      demos:['sign'],
+      say:['Want to lock this in today?','I will send everything over now.']}
+  ];
+  var order=STEPS.map(function(s){return s.key;});
+  var cur=0;
+
+  /* ---------- build sidebar (Configure holds A-D substeps) ---------- */
+  var stepNav=document.getElementById('stepnav'), rowByIdx={}, groupRow=null;
+  function mkrow(cls,badge,name,onclick){
+    var b=document.createElement('button'); b.className='srow'+(cls?' '+cls:''); b.type='button';
+    b.innerHTML='<span class="snum">'+badge+'</span><span class="slabel">'+name+'</span>';
+    b.addEventListener('click',onclick); stepNav.appendChild(b); return b;
+  }
+  rowByIdx[0]=mkrow('',STEPS[0].badge,STEPS[0].name,function(){show(0);});
+  rowByIdx[1]=mkrow('',STEPS[1].badge,STEPS[1].name,function(){show(1);});
+  groupRow=mkrow('group','3','Configure',function(){show(2);});
+  rowByIdx[2]=mkrow('sub',STEPS[2].badge,STEPS[2].name,function(){show(2);});
+  rowByIdx[3]=mkrow('sub',STEPS[3].badge,STEPS[3].name,function(){show(3);});
+  rowByIdx[4]=mkrow('sub',STEPS[4].badge,STEPS[4].name,function(){show(4);});
+  rowByIdx[5]=mkrow('sub',STEPS[5].badge,STEPS[5].name,function(){show(5);});
+  rowByIdx[6]=mkrow('',STEPS[6].badge,STEPS[6].name,function(){show(6);});
+  rowByIdx[7]=mkrow('',STEPS[7].badge,STEPS[7].name,function(){show(7);});
+
+  var side=document.getElementById('side'), collapseBtn=document.getElementById('collapsebtn');
+  collapseBtn.addEventListener('click',function(){ var c=side.classList.toggle('collapsed'); collapseBtn.textContent=c?'»':'«'; collapseBtn.title=c?'Expand':'Collapse'; });
+
+  /* ---------- render a step ---------- */
+  var elTitle=document.getElementById('ptitle'), elPurpose=document.getElementById('ppurpose');
+  var elReqs=document.getElementById('reqs'), elGest=document.getElementById('gestures');
+  var sandboxBlock=document.getElementById('sandboxBlock');
+  var prevBtn=document.getElementById('prev'), nextBtn=document.getElementById('next'), stepHelper=document.getElementById('stephelper');
+  var stepBody=document.getElementById('stepbody');
+  function setState(el,st){ if(!el) return; el.classList.remove('done','cur','up'); el.classList.add(st); }
+
+  function show(i){
+    cur=i; var s=STEPS[i];
+    for(var k=0;k<STEPS.length;k++){ setState(rowByIdx[k], k<i?'done':(k===i?'cur':'up')); }
+    setState(groupRow, i>5?'done':(i>=2&&i<=5?'cur':'up'));
+    stepBody.classList.remove('fadeanim'); void stepBody.offsetWidth; stepBody.classList.add('fadeanim');
+    elTitle.textContent=s.name;
+    elPurpose.textContent=s.purpose;
+    elReqs.innerHTML=s.reqs.map(function(r){return '<li>'+r+'</li>';}).join('');
+    elGest.innerHTML=s.demos.map(function(d){return DEMOS[d].replace('<div class="gcard">','<div class="gcard" data-demo="'+d+'">');}).join('');
+    sandboxBlock.style.display=s.sandbox?'block':'none';
+    prevBtn.disabled=(i===0);
+    var last=(i===STEPS.length-1);
+    nextBtn.textContent=last?'Start over ↺':'Continue →';
+    stepHelper.textContent=last?'That is the full appointment, Plan to Handoff.':'Next: '+STEPS[i+1].name;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  prevBtn.addEventListener('click',function(){ if(cur>0) show(cur-1); });
+  nextBtn.addEventListener('click',function(){ show((cur+1)%STEPS.length); });
+
+  /* ---------- step-by-step modal (tap a graphic) ---------- */
+  var MTITLE={reshape:'Reshape a wall',addwall:'Add a new wall',snap:'Snap an obstacle',views:'Switch views',shape:'Pick the room shape',swatch:'Customize finishes',addon:'Accessorize',job:'Finishing touches',price:'Price it live',sign:'Save or sign',plan:'Capture the details',agenda:'Set the plan'};
+  var MCAPS={
+    reshape:['Tap a corner point of the wall','Hold and drag it to the new spot','Release - the wall follows the corner'],
+    addwall:['Press and hold on an existing wall','Drag inward to pull out a new wall','Release to drop the new wall'],
+    snap:['Pick a door, window, or outlet','Drag it toward a wall','It snaps onto the wall automatically'],
+    views:['Top - look straight down on the plan','Front - work at eye level on a wall','3D - see the whole room in perspective'],
+    shape:['See the shape options','Pick the closest to the real room','Fine-tune the exact walls next'],
+    swatch:['Open a section’s finishes','Tap a color or finish','The design updates live'],
+    addon:['Open Accessorize','Pick an add-on, like a valet rod','It drops into the design'],
+    job:['Set tear out','Set disposal','Confirm haul away'],
+    price:['See the itemized total','Toggle an item off','The total updates instantly'],
+    sign:['Generate the documents','Hand the client the iPad','Save for later, or sign today'],
+    plan:['Enter the client and space','Note what is not working','Capture what they want'],
+    agenda:['Show the plan for today','Set the pace with the client','Preview the 3D payoff']
+  };
+  var FR={
+    reshape:[
+      '<rect x="20" y="18" width="92" height="56" fill="none" stroke="#7239EA" stroke-width="2.5"/><circle cx="112" cy="18" r="11" fill="none" stroke="#7239EA" stroke-width="2" opacity=".5"/><circle cx="112" cy="18" r="5" fill="#7239EA"/>',
+      '<rect x="20" y="18" width="92" height="56" fill="none" stroke="#d9d4f7" stroke-width="2"/><path d="M112 18 L122 33" stroke="#7239EA" stroke-width="2" stroke-dasharray="3 3"/><circle cx="122" cy="33" r="12" fill="#7239EA" opacity=".16"/><circle cx="122" cy="33" r="5" fill="#7239EA"/>',
+      '<polygon points="20,18 122,31 112,74 20,74" fill="rgba(114,57,234,.06)" stroke="#7239EA" stroke-width="2.5" stroke-linejoin="round"/><circle cx="122" cy="31" r="5" fill="#7239EA"/>'
+    ],
+    addwall:[
+      '<line x1="20" y1="70" x2="112" y2="70" stroke="#7239EA" stroke-width="3"/><circle cx="66" cy="70" r="11" fill="#FDA45B" opacity=".22"/><circle cx="66" cy="70" r="4" fill="#FDA45B"/>',
+      '<line x1="20" y1="70" x2="112" y2="70" stroke="#7239EA" stroke-width="3"/><line x1="66" y1="70" x2="66" y2="42" stroke="#FDA45B" stroke-width="3.5"/><circle cx="66" cy="42" r="10" fill="#FDA45B" opacity=".2"/>',
+      '<line x1="20" y1="70" x2="112" y2="70" stroke="#7239EA" stroke-width="3"/><line x1="66" y1="70" x2="66" y2="26" stroke="#7239EA" stroke-width="3.5"/><circle cx="66" cy="26" r="4" fill="#7239EA"/>'
+    ],
+    snap:[
+      '<rect x="18" y="16" width="96" height="64" fill="none" stroke="#7239EA" stroke-width="2.5"/><rect x="56" y="40" width="20" height="20" rx="3" fill="#FDA45B"/>',
+      '<rect x="18" y="16" width="96" height="64" fill="none" stroke="#7239EA" stroke-width="2.5"/><rect x="36" y="40" width="20" height="20" rx="3" fill="#FDA45B"/><path d="M58 50 H42" stroke="#FDA45B" stroke-width="2" stroke-dasharray="3 3"/>',
+      '<rect x="18" y="16" width="96" height="64" fill="none" stroke="#7239EA" stroke-width="2.5"/><rect x="8" y="40" width="20" height="20" rx="3" fill="#FDA45B"/><circle cx="18" cy="50" r="15" fill="#7239EA" opacity=".12"/>'
+    ],
+    views:[
+      '<rect x="26" y="18" width="80" height="56" rx="4" fill="none" stroke="#7239EA" stroke-width="2.5"/><text x="66" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="800" fill="#7239EA">Top</text>',
+      '<rect x="26" y="18" width="80" height="56" rx="4" fill="none" stroke="#7239EA" stroke-width="2.5"/><text x="66" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#7239EA">Front</text>',
+      '<rect x="26" y="18" width="80" height="56" rx="4" fill="none" stroke="#7239EA" stroke-width="2.5"/><text x="66" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="17" font-weight="800" fill="#7239EA">3D</text>'
+    ],
+    shape:[
+      '<rect x="14" y="36" width="26" height="22" fill="none" stroke="#7239EA" stroke-width="2"/><path d="M54 36 h20 v9 h8 v13 h-28 z" fill="none" stroke="#7239EA" stroke-width="2" stroke-linejoin="round"/><path d="M96 36 v22 h22 v-22 h-6 v13 h-10 v-13 z" fill="none" stroke="#7239EA" stroke-width="2" stroke-linejoin="round"/>',
+      '<rect x="42" y="30" width="48" height="36" rx="4" fill="rgba(114,57,234,.08)" stroke="#7239EA" stroke-width="2.5"/>',
+      '<rect x="34" y="28" width="64" height="42" fill="none" stroke="#7239EA" stroke-width="2.5"/><text x="66" y="22" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#8a8aa0">96"</text>'
+    ]
+  };
+  var ICON={
+    swatch:'<rect x="40" y="32" width="24" height="24" rx="3" fill="#7239EA"/><rect x="70" y="32" width="24" height="24" rx="3" fill="#FDA45B"/><rect x="55" y="52" width="24" height="24" rx="3" fill="#00B894"/>',
+    addon:'<line x1="28" y1="42" x2="104" y2="42" stroke="#7239EA" stroke-width="2.5"/><rect x="55" y="46" width="22" height="18" rx="3" fill="#FDA45B"/><path d="M66 46 v-9" stroke="#FDA45B" stroke-width="3"/>',
+    job:'<rect x="38" y="30" width="15" height="15" rx="3" fill="none" stroke="#7239EA" stroke-width="2"/><path d="M41 37 l3 3 l6 -7" stroke="#00B894" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="60" y1="38" x2="96" y2="38" stroke="#c9c9db" stroke-width="3"/><rect x="38" y="52" width="15" height="15" rx="3" fill="none" stroke="#7239EA" stroke-width="2"/><line x1="60" y1="60" x2="96" y2="60" stroke="#c9c9db" stroke-width="3"/>',
+    price:'<text x="66" y="60" text-anchor="middle" font-family="Inter,sans-serif" font-size="34" font-weight="800" fill="#7239EA">$</text>',
+    sign:'<line x1="30" y1="72" x2="102" y2="72" stroke="#c9c9db" stroke-width="2"/><path d="M36 66 q10 -18 20 0 t20 -2 t18 2" fill="none" stroke="#7239EA" stroke-width="3" stroke-linecap="round"/>',
+    plan:'<circle cx="66" cy="38" r="11" fill="none" stroke="#7239EA" stroke-width="2.5"/><path d="M48 66 q18 -17 36 0" fill="none" stroke="#7239EA" stroke-width="2.5"/>',
+    agenda:'<line x1="42" y1="34" x2="90" y2="34" stroke="#7239EA" stroke-width="3"/><line x1="42" y1="48" x2="90" y2="48" stroke="#c9c9db" stroke-width="3"/><line x1="42" y1="62" x2="74" y2="62" stroke="#c9c9db" stroke-width="3"/>'
+  };
+  var modal=document.getElementById('modal'), modalTitle=document.getElementById('modaltitle'), framesEl=document.getElementById('frames'), modalX=document.getElementById('modalx');
+  function openModal(key){
+    var caps=MCAPS[key]||['Step one','Step two','Step three'];
+    modalTitle.textContent=MTITLE[key]||'Step by step';
+    framesEl.innerHTML=caps.map(function(c,i){
+      var svg=(FR[key]&&FR[key][i])?FR[key][i]:(ICON[key]||'');
+      return '<div class="framerow"><div class="frameimg"><span class="fnum">'+(i+1)+'</span><svg viewBox="0 0 132 96">'+svg+'</svg></div>'+
+             '<div class="frametext"><div class="ft">Step '+(i+1)+'</div><p>'+c+'</p></div></div>';
+    }).join('');
+    modal.classList.add('open');
+  }
+  function closeModal(){ modal.classList.remove('open'); }
+  elGest.addEventListener('click',function(e){ var card=e.target.closest('.gcard'); if(card&&card.dataset.demo) openModal(card.dataset.demo); });
+  modalX.addEventListener('click',closeModal);
+  modal.addEventListener('click',function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
+
+  /* ---------- animation loop (guarded, only touches present ids) ---------- */
+  function byId(id){ return document.getElementById(id); }
+  function ease(t){ return 0.5-0.5*Math.cos(t*Math.PI*2); }
+  function seq(prefix,count,now){
+    if(!byId(prefix+'0')) return;
+    var step=Math.floor(now/650)%(count+2);
+    for(var i=0;i<count;i++){ var e=byId(prefix+i); if(e) e.setAttribute('opacity', i<step?'1':'0'); }
+  }
+  var SHAPES_D=['50,40 210,40 210,110 50,110','50,40 140,40 140,72 210,72 210,110 50,110','50,40 50,110 210,110 210,40 176,40 176,86 84,86 84,40'];
+  var SW=['#7239EA','#FDA45B','#00B894'];
+  function loop(now){
+    var e;
+    if(e=byId('g_corner')){ var cx=200+ease((now%3000)/3000)*30; e.setAttribute('cx',cx); var f=byId('g_finger'); if(f)f.setAttribute('cx',cx); var r=byId('g_room'); if(r)r.setAttribute('width',cx-40); }
+    if(e=byId('g_new')){ var len=6+ease((now%2600)/2600)*72; var ty=115-len; e.setAttribute('y2',ty); var f=byId('g_newf'); if(f)f.setAttribute('cy',ty); }
+    if(e=byId('g_door')){ var p=(now%3200)/3200, dx=(p<0.7)?118-(p/0.7)*72:40; e.setAttribute('x',dx); var f=byId('g_doorf'); if(f)f.setAttribute('cx',dx+12); }
+    if(e=byId('g_view')){ e.textContent=['Top','Front','3D'][Math.floor(now/1100)%3]; }
+    if(e=byId('g_shape')){ e.setAttribute('points', SHAPES_D[Math.floor(now/1300)%3]); }
+    if(e=byId('g_swatch')){ var idx=Math.floor(now/950)%3; e.setAttribute('fill',SW[idx]); var f=byId('g_swf'); if(f)f.setAttribute('cy',48+idx*30); }
+    if(e=byId('g_addon')){ var s=ease((now%2200)/2200); e.setAttribute('transform','translate(130,105) scale('+(0.2+s*0.9)+')'); e.setAttribute('opacity', (0.3+s*0.7).toFixed(2)); }
+    if(byId('g_knob')){ var on=((now%2600)/2600)<0.5;
+      byId('g_knob').setAttribute('cx', on?69:45);
+      byId('g_track').setAttribute('fill', on?'#00B894':'#c9c9db');
+      byId('g_strike').setAttribute('opacity', on?'0':'1');
+      byId('g_pfull').setAttribute('opacity', on?'1':'0');
+      byId('g_pcut').setAttribute('opacity', on?'0':'1');
+    }
+    if(e=byId('g_pen')){ var t=(now%3200)/3200, draw=Math.max(0,Math.min(1,t/0.55)); e.setAttribute('stroke-dashoffset', (100*(1-draw)).toFixed(1)); }
+    seq('g_plan',3,now); seq('g_ag',3,now); seq('g_job',3,now);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  /* ---------- SANDBOX ---------- */
+  var svg=document.getElementById('sbsvg'), SVGNS='http://www.w3.org/2000/svg';
+  var toast=document.getElementById('toast'), toastT=null;
+  var shapes={ rect:[[80,70],[320,70],[320,230],[80,230]], reach:[[50,120],[350,120],[350,185],[50,185]], l:[[80,60],[230,60],[230,150],[320,150],[320,240],[80,240]] };
+  var pts=[], door={x:190,y:150,w:26,h:26}, doorEl, doorFinger, drag=null;
+
+  function loadShape(key){ pts=shapes[key].map(function(p){return [p[0],p[1]];}); door={x:190,y:150,w:26,h:26}; render(); }
+  function pointStr(){ return pts.map(function(p){return p[0]+','+p[1];}).join(' '); }
+  function render(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    var poly=document.createElementNS(SVGNS,'polygon');
+    poly.setAttribute('points',pointStr());
+    poly.setAttribute('fill','rgba(114,57,234,0.06)'); poly.setAttribute('stroke','#7239EA');
+    poly.setAttribute('stroke-width','3'); poly.setAttribute('stroke-linejoin','round');
+    svg.appendChild(poly);
+    for(var i=0;i<pts.length;i++){
+      var a=pts[i], b=pts[(i+1)%pts.length];
+      var tx=document.createElementNS(SVGNS,'text');
+      tx.setAttribute('x',(a[0]+b[0])/2); tx.setAttribute('y',(a[1]+b[1])/2-4);
+      tx.setAttribute('text-anchor','middle'); tx.setAttribute('font-size','11'); tx.setAttribute('font-weight','700');
+      tx.setAttribute('fill','#8a8aa0'); tx.setAttribute('font-family','Inter, sans-serif');
+      tx.textContent=Math.round(Math.hypot(b[0]-a[0],b[1]-a[1]))+'"';
+      svg.appendChild(tx);
+    }
+    doorFinger=document.createElementNS(SVGNS,'circle');
+    doorFinger.setAttribute('r','20'); doorFinger.setAttribute('fill','#FDA45B'); doorFinger.setAttribute('opacity','0.16');
+    svg.appendChild(doorFinger);
+    doorEl=document.createElementNS(SVGNS,'rect');
+    doorEl.setAttribute('width',door.w); doorEl.setAttribute('height',door.h); doorEl.setAttribute('rx','4');
+    doorEl.setAttribute('fill','#FDA45B'); doorEl.style.cursor='grab'; doorEl.dataset.role='door';
+    svg.appendChild(doorEl);
+    positionDoor();
+    pts.forEach(function(p,i){
+      var c=document.createElementNS(SVGNS,'circle');
+      c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); c.setAttribute('r','9');
+      c.setAttribute('fill','#7239EA'); c.setAttribute('stroke','#fff'); c.setAttribute('stroke-width','2.5');
+      c.style.cursor='grab'; c.dataset.role='corner'; c.dataset.i=i;
+      svg.appendChild(c);
+    });
+  }
+  function positionDoor(){ doorEl.setAttribute('x',door.x-door.w/2); doorEl.setAttribute('y',door.y-door.h/2); doorFinger.setAttribute('cx',door.x); doorFinger.setAttribute('cy',door.y); }
+  function toSvg(evt){ var pt=svg.createSVGPoint(); var src=evt.touches?evt.touches[0]:evt; pt.x=src.clientX; pt.y=src.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); }
+  function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+  function start(evt){ var role=evt.target.dataset&&evt.target.dataset.role; if(!role) return; evt.preventDefault(); drag=(role==='corner')?{type:'corner',i:+evt.target.dataset.i}:{type:'door'}; }
+  function move(evt){ if(!drag) return; evt.preventDefault(); var p=toSvg(evt), x=clamp(p.x,8,392), y=clamp(p.y,8,292);
+    if(drag.type==='corner'){ pts[drag.i]=[x,y]; render(); } else { door.x=x; door.y=y; positionDoor(); } }
+  function end(){ if(drag&&drag.type==='door') snapDoor(); drag=null; }
+  function snapDoor(){ var best=null; for(var i=0;i<pts.length;i++){ var pr=proj(door.x,door.y,pts[i],pts[(i+1)%pts.length]); if(!best||pr.dist<best.dist) best=pr; } if(best){ door.x=best.x; door.y=best.y; positionDoor(); toast.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){toast.classList.remove('show');},1100); } }
+  function proj(px,py,a,b){ var vx=b[0]-a[0], vy=b[1]-a[1], len2=vx*vx+vy*vy||1, t=clamp(((px-a[0])*vx+(py-a[1])*vy)/len2,0,1), x=a[0]+t*vx, y=a[1]+t*vy; return {x:x,y:y,dist:Math.hypot(px-x,py-y)}; }
+  svg.addEventListener('mousedown',start); svg.addEventListener('touchstart',start,{passive:false});
+  window.addEventListener('mousemove',move); window.addEventListener('touchmove',move,{passive:false});
+  window.addEventListener('mouseup',end); window.addEventListener('touchend',end);
+  document.querySelector('.sbtop').addEventListener('click',function(e){ var btn=e.target.closest('.sbtn'); if(!btn) return;
+    if(btn.id==='reset'){ var on=document.querySelector('.sbtop .sbtn.on'); loadShape(on?on.dataset.shape:'rect'); return; }
+    if(!btn.dataset.shape) return;
+    document.querySelectorAll('.sbtop .sbtn').forEach(function(b){ if(b.dataset.shape) b.classList.remove('on'); });
+    btn.classList.add('on'); loadShape(btn.dataset.shape);
+  });
+  loadShape('rect');
+
+  /* ---------- CHAT ASSISTANT ---------- */
+  var KB=[
+    {k:['reshape','resize','move the wall','move a wall','change the wall','adjust','drag the wall','wall shape','shape the wall','wall'],step:'measure',
+      a:'To reshape a wall:<ol><li>Go to <b>Measure &amp; Design</b> and open the Floor Plan.</li><li>Tap a <b>corner point</b>.</li><li>Hold and <b>drag</b> it, then release.</li></ol>The wall follows the corner. Try it in the practice floor plan.'},
+    {k:['add a wall','new wall','another wall','extra wall','add wall','more walls'],step:'measure',
+      a:'To add a new wall:<ol><li>Hold and <b>drag on an existing wall</b>.</li><li>Pull the new wall out to length.</li><li><b>Release</b> to drop it.</li></ol>This is how you build L, U, and custom shapes.'},
+    {k:['obstacle','door','window','outlet','vent','snap','pillar','column'],step:'measure',
+      a:'To place a door, window, or outlet:<ol><li>Pick the obstacle.</li><li>Drag it toward a wall.</li><li>It <b>snaps to the wall</b> on its own.</li></ol>Drag the orange door in the sandbox to see it snap.'},
+    {k:['room shape','change shape','pick shape','choose shape','wrong shape','reach in','l-shape','u-shape','custom shape'],step:'roomshape',
+      a:'Pick the closest of <b>Reach In, Square/Rectangle, L-Shape, U-Shape, or Custom</b> at the start.<br>Heads up: changing the shape later <b>restarts the room</b>, so choose carefully up front.'},
+    {k:['3d','three d','top','front','view','views','edit in 3d','rotate','angle'],step:'measure',
+      a:'You can <b>edit in all three views</b>. Switch between <b>Top</b>, <b>Front</b>, and <b>3D</b> anytime. 3D is not view-only, you can keep designing in it.'},
+    {k:['catalog','section','systems','shelves','cabinet','hanging','add section','products'],step:'measure',
+      a:'Sections come from the <b>Catalog</b>. You must <b>plot at Systems first</b> to open the Catalog, then add sections onto the wall you picked.'},
+    {k:['measure','measurement','floor plan','plot','dimensions','size of the room'],step:'measure',
+      a:'To measure: open <b>Measure &amp; Design → Floor Plan</b>. Plot the walls and drag corners to match the real room. Wall lengths update as you go.'},
+    {k:['finish','finishes','color','colour','customize','customise','material','stain'],step:'present',
+      a:'Finishes and colors are in <b>Present → Customize</b>. Tap a finish to change it and the design updates live.'},
+    {k:['accessor','add-on','add on','valet','hamper','extras','basket','hooks'],step:'present',
+      a:'Add-ons live in <b>Present → Accessorize</b>: valet rods, hampers, and other extras. Add them, then review in 3D.'},
+    {k:['finishing touches','tear out','tearout','disposal','haul','demo','removal','job details'],step:'finishing',
+      a:'<b>Finishing Touches</b> covers the job details for the room: <b>tear out, disposal, and haul away</b>. These are set per room.'},
+    {k:['price','pricing','cost','total','estimate','discount','saving','payment','quote amount','how much','finance'],step:'estimate',
+      a:'Pricing is on the <b>Estimate</b> step. You see the itemized total, savings, and payment. <b>Toggle an item off and the total updates instantly.</b>'},
+    {k:['handoff','hand off','sign','signature','document','contract','save for later','close','finish the appointment','generate'],step:'handoff',
+      a:'To finish: go to <b>Handoff</b>. Generate the quote and documents, then <b>save for later</b> or have the client <b>sign</b> today.'},
+    {k:['plan','client info','start the appointment','begin','first step','what do i do first','where do i start','client details'],step:'plan',
+      a:'Start at <b>Plan</b>: capture the client and what they want. Then Agenda, then Configure (Room Shape → Measure &amp; Design → Present → Finishing Touches), then Estimate, then Handoff.'},
+    {k:['agenda'],step:'agenda',
+      a:'<b>Agenda</b> is where you set the plan for the appointment and the pace with the client, right after Plan.'},
+    {k:['back','undo','mistake','go back','previous','revisit','redo'],step:null,
+      a:'<b>Back always works.</b> You can return to any earlier step without losing your place. Stepped somewhere by mistake? Go back and redo it.'},
+    {k:['continue','next','move forward','proceed','advance'],step:null,
+      a:'<b>Continue</b> completes the current step and unlocks the next. Use <b>Back</b> anytime to revisit a step.'},
+    {k:['two rooms','multiple rooms','another room','second room','more than one room','many rooms'],step:null,
+      a:'Multiple rooms are tracked <b>separately, per room</b>. Each room keeps its own progress and resumes right where you left off.'},
+    {k:['quiz','test','practice','quizzes','check myself'],step:null,
+      a:'There are three practice quizzes at the bottom of the guide, or open them at <b>quizzes-pied-two.vercel.app</b>. They shuffle every time.'},
+    {k:['hello','hi ','hey','help','what can you','who are you','how does this work'],step:null,
+      a:'Hi! Ask me how to do anything in the app, like <i>“how do I reshape a wall?”</i> or <i>“how do I price it?”</i> and I will walk you through it. Tap a suggestion below to start.'}
+  ];
+  var FALLBACK='I am not sure about that one yet. Try asking about a step, like reshaping a wall, adding an obstacle, editing in 3D, pricing, or handoff. Or tap a suggestion below.';
+  var CHIPS=['How do I reshape a wall?','How do I add an obstacle?','Can I edit in 3D?','How do I price it?','What do I do first?'];
+
+  var fab=document.getElementById('chatfab'), win=document.getElementById('chatwin'), xbtn=document.getElementById('chatx');
+  var body=document.getElementById('chatbody'), input=document.getElementById('chatin'), sendBtn=document.getElementById('chatsend'), chipWrap=document.getElementById('chatchips');
+  var greeted=false;
+
+  function scrollDown(){ body.scrollTop=body.scrollHeight; }
+  function meSay(t){ var m=document.createElement('div'); m.className='msg me'; m.textContent=t; body.appendChild(m); scrollDown(); }
+  function botSay(html,stepKey){
+    var m=document.createElement('div'); m.className='msg bot'; m.innerHTML=html;
+    if(stepKey){ var idx=order.indexOf(stepKey);
+      if(idx>=0){ var b=document.createElement('button'); b.className='goto'; b.textContent='Show me on '+STEPS[idx].name;
+        b.addEventListener('click',function(){ show(idx); if(window.innerWidth<760) toggle(false); }); m.appendChild(b); } }
+    body.appendChild(m); scrollDown();
+  }
+  function match(text){
+    var q=' '+text.toLowerCase()+' ', best=null, bestScore=0;
+    KB.forEach(function(item){
+      var score=0; item.k.forEach(function(kw){ if(q.indexOf(kw)>=0) score+=kw.length>4?2:1; });
+      if(score>bestScore){ bestScore=score; best=item; }
+    });
+    return bestScore>0?best:null;
+  }
+  function respond(text){
+    text=text.trim(); if(!text) return;
+    meSay(text); input.value='';
+    var r=match(text);
+    setTimeout(function(){ if(r) botSay(r.a,r.step); else botSay(FALLBACK,null); },220);
+  }
+  CHIPS.forEach(function(c){ var b=document.createElement('button'); b.className='chip2'; b.textContent=c; b.addEventListener('click',function(){ respond(c); }); chipWrap.appendChild(b); });
+
+  function toggle(openIt){
+    var willOpen = (typeof openIt==='boolean')?openIt:!win.classList.contains('open');
+    win.classList.toggle('open',willOpen);
+    fab.textContent=willOpen?'×':'💬';
+    if(willOpen && !greeted){ greeted=true; botSay(KB[KB.length-1].a,null); input.focus(); }
+  }
+  fab.addEventListener('click',function(){ toggle(); });
+  xbtn.addEventListener('click',function(){ toggle(false); });
+  sendBtn.addEventListener('click',function(){ respond(input.value); });
+  input.addEventListener('keydown',function(e){ if(e.key==='Enter'){ respond(input.value); } });
+
+  show(0);
+})();
+</script>
+</body>
+</html>

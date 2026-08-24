@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Cards and Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#6C5CE7; --primary-dark:#5b4ed8; --accent:#FDA45B;
+    --ink:#1A1A2E; --muted:#6b6b80; --line:#E6E6EE; --bg:#F4F4F8; --card:#fff; --green:#00B894;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 60px;}
+  .top{background:linear-gradient(135deg,#2A2140,var(--primary));color:#fff;padding:26px 28px;text-align:center;}
+  .top .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;}
+  .top h1{font-size:25px;font-weight:800;margin-top:5px;}
+  .top p{font-size:13.5px;opacity:.9;margin-top:5px;}
+  .wrap{max-width:660px;margin:0 auto;padding:0 20px;}
+
+  .tests{display:flex;gap:8px;margin-top:20px;}
+  .testbtn{flex:1;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px;font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s;}
+  .testbtn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .testbtn small{display:block;font-size:11px;font-weight:600;opacity:.75;margin-top:2px;}
+
+  .menu{display:grid;gap:12px;margin-top:14px;}
+  .pick{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;cursor:pointer;transition:.15s;box-shadow:0 4px 16px rgba(42,33,64,.05);}
+  .pick:hover{border-color:var(--primary);transform:translateY(-2px);}
+  .pick .tagline{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--primary);}
+  .pick h2{font-size:18px;font-weight:800;margin-top:4px;}
+  .pick p{font-size:13px;color:var(--muted);margin-top:4px;}
+  .note{font-size:12px;color:var(--muted);text-align:center;margin-top:14px;}
+
+  .cardbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:22px;box-shadow:0 4px 16px rgba(42,33,64,.05);}
+  .backlink{background:none;border:none;color:var(--primary);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;padding:0;margin-bottom:14px;}
+  .client{font-size:22px;font-weight:800;}
+  .badge{display:inline-block;font-size:11px;font-weight:800;color:var(--primary);background:#efe9fd;border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle;}
+  .room{font-size:14px;color:var(--muted);margin-top:2px;margin-bottom:16px;}
+
+  .brief{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+  .briefcol{background:var(--bg);border-radius:12px;padding:13px 14px;}
+  .briefcol h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+  .briefcol.obst h3{color:var(--accent);} .briefcol.need h3{color:var(--primary);}
+  .briefcol ul{list-style:none;} .briefcol li{font-size:12.8px;color:var(--ink);padding:3px 0 3px 12px;position:relative;}
+  .briefcol li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.5;}
+
+  .barwrap{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;margin:6px 0 16px;}
+  .barwrap i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--green));transition:width .3s;}
+  .grp{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 0 6px;}
+
+  .citem{display:flex;align-items:center;gap:11px;font-size:14px;padding:10px 0;border-bottom:1px dashed var(--line);}
+  .citem:last-child{border-bottom:none;}
+  .cbox{width:22px;height:22px;border:2px solid #c2cfdd;border-radius:6px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:.15s;}
+  .citem.active{cursor:pointer;}
+  .citem.active .cbox{border-color:var(--primary);box-shadow:0 0 0 4px rgba(108,92,231,.12);}
+  .citem.active .lbl{font-weight:700;}
+  .citem.done{cursor:pointer;}
+  .citem.done .cbox{background:var(--green);border-color:var(--green);}
+  .citem.done .lbl{color:var(--muted);text-decoration:line-through;}
+  .citem.locked{opacity:.4;}
+  .citem.locked .cbox{border-style:dashed;}
+  .lbl .w{font-size:10px;font-weight:800;color:var(--green);background:#e6f8f2;border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:middle;}
+  .hintline{font-size:11px;color:var(--muted);margin-top:4px;}
+
+  .lockbanner{background:#fff7e6;border:1px dashed var(--accent);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:#8a6a12;font-weight:600;margin-top:10px;}
+  .done-msg{font-size:14px;color:var(--green);font-weight:700;margin-top:16px;opacity:0;transition:.3s;} .done-msg.show{opacity:1;}
+  @media(max-width:560px){.brief{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <div class="k">Day 2 · Execute</div>
+    <h1>🗂️ Client Cards</h1>
+    <p>Pick a client. Build their closet in order. Wants unlock after the needs.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="tests" id="tests">
+      <button class="testbtn active" data-type="reachin">Test 1: Reach-in<small>5 clients</small></button>
+      <button class="testbtn" data-type="walkin">Test 2: Walk-in<small>5 clients</small></button>
+    </div>
+    <div id="menu" class="menu"></div>
+    <div id="cardview" class="cardbox" hidden></div>
+  </div>
+
+<script>
+(function(){
+  var cards = [
+    // ---- Reach-in (Test 1) ----
+    {id:"r1", type:"reachin", client:"Zendaya", room:"Bedroom reach-in",
+      obstacles:["Bi-fold door across the front","Outlet on the right wall"],
+      needs:["Double hang","Shelving"], wants:["Shelf up top","Valet rod"]},
+    {id:"r2", type:"reachin", client:"LeBron James", room:"Hallway reach-in",
+      obstacles:["Sliding door across the front"],
+      needs:["Long hang","Drawers"], wants:["Shoe shelf","Basket"]},
+    {id:"r3", type:"reachin", client:"Taylor Swift", room:"Guest room reach-in",
+      obstacles:["Door on the left wall, 8 in from the corner","Outlet on the back wall"],
+      needs:["Long hang","Shelving"], wants:["Drawer stack","Jewelry drawer"]},
+    {id:"r4", type:"reachin", client:"Keanu Reeves", room:"Kids room reach-in",
+      obstacles:["Bi-fold door across the front","Light switch on the left wall"],
+      needs:["Double hang","Shelving"], wants:["Extra shelf","Hooks"]},
+    {id:"r5", type:"reachin", client:"Serena Williams", room:"Entry reach-in",
+      obstacles:["Hinged door on the front","Floor vent on the right side"],
+      needs:["Long hang","Drawers"], wants:["Top shelf","Shoe shelf"]},
+    // ---- Walk-in (Test 2) ----
+    {id:"w1", type:"walkin", client:"Beyoncé", room:"Primary bedroom walk-in",
+      obstacles:["Door on the right wall, 12 in from the corner","Window on the back wall, centered"],
+      needs:["Long hang","Double hang","Shelving"], wants:["Jewelry drawer","Shoe shelf","Extra shelf"]},
+    {id:"w2", type:"walkin", client:"Tom Hanks", room:"Primary suite walk-in",
+      obstacles:["Door on the left wall","Window on the right wall","Outlet on the back wall"],
+      needs:["Double hang","Shelving","Drawers"], wants:["Island","Valet rod","Hamper"]},
+    {id:"w3", type:"walkin", client:"Lionel Messi", room:"Converted bedroom walk-in",
+      obstacles:["Two windows on the back wall","Door on the left wall, 10 in from the corner"],
+      needs:["Long hang","Double hang","Drawers"], wants:["Shoe wall","Belt rack","Extra shelf"]},
+    {id:"w4", type:"walkin", client:"Rihanna", room:"Primary walk-in",
+      obstacles:["Angled wall on the right","Door on the front left","Outlet on the back wall"],
+      needs:["Long hang","Shelving","Drawers"], wants:["Jewelry drawer","Mirror","Shoe shelf"]},
+    {id:"w5", type:"walkin", client:"Denzel Washington", room:"Large primary walk-in",
+      obstacles:["Door on the front","Window on the left wall","Ceiling vent"],
+      needs:["Long hang","Double hang","Shelving","Drawers"], wants:["Island","Shoe shelf","Hamper","Valet rod"]}
+  ];
+
+  var tests=document.getElementById('tests'), menu=document.getElementById('menu'), view=document.getElementById('cardview');
+  var curType="reachin";
+
+  [].slice.call(tests.querySelectorAll('.testbtn')).forEach(function(b){
+    b.addEventListener('click',function(){
+      curType=b.dataset.type;
+      [].slice.call(tests.querySelectorAll('.testbtn')).forEach(function(x){x.classList.toggle('active',x===b);});
+      view.hidden=true; renderMenu();
+    });
+  });
+
+  function renderMenu(){
+    var list=cards.filter(function(c){return c.type===curType;});
+    menu.hidden=false;
+    menu.innerHTML=list.map(function(c){
+      return '<div class="pick" data-id="'+c.id+'"><div class="tagline">Client card</div><h2>'+esc(c.client)+'</h2>'+
+        '<p>'+esc(c.room)+' · '+c.needs.length+' products, '+c.wants.length+' wants</p></div>';
+    }).join('')+'<div class="note">Specifics like measurements and section names are examples. Confirm against the final app.</div>';
+    [].slice.call(menu.querySelectorAll('.pick')).forEach(function(p){p.addEventListener('click',function(){openCard(p.dataset.id);});});
+  }
+
+  function buildSteps(c){
+    var steps=[];
+    steps.push({label:"Pick the room shape", phase:"next"});
+    steps.push({label:"Set the wall measurements", phase:"next"});
+    c.obstacles.forEach(function(o){ steps.push({label:"Add obstacle: "+o, phase:"next"}); });
+    c.needs.forEach(function(s){ steps.push({label:"Plot the product: "+s, phase:"next"}); });
+    steps.push({label:"Generate and review the design", phase:"next"});
+    c.wants.forEach(function(w){ steps.push({label:"Add: "+w, phase:"want", want:true}); });
+    steps.push({label:"Price it", phase:"present"});
+    steps.push({label:"Hand off: documents and sign", phase:"present"});
+    return steps;
+  }
+
+  var openId=null, done=0;
+  function openCard(id){
+    openId=id; done=0; menu.hidden=true; view.hidden=false; drawCard();
+  }
+  function drawCard(){
+    var c=cards.filter(function(x){return x.id===openId;})[0];
+    var steps=buildSteps(c);
+    var needsCount=steps.filter(function(s){return s.phase==='next';}).length;
+    var total=steps.length;
+    var needsDone = done>=needsCount;
+
+    var html='<button class="backlink" id="back">← All clients</button>'+
+      '<div class="client">'+esc(c.client)+'<span class="badge">'+(c.type==='reachin'?'Reach-in':'Walk-in')+'</span></div>'+
+      '<div class="room">'+esc(c.room)+'</div>'+
+      '<div class="briefcol obst" style="margin-bottom:16px"><h3>The room</h3><ul>'+c.obstacles.map(li).join('')+'</ul></div>'+
+      '<div class="barwrap"><i style="width:'+(done/total*100)+'%"></i></div>';
+
+    // Next Steps group
+    html+='<div class="grp">Next Steps</div>';
+    steps.forEach(function(s,i){ if(s.phase==='next') html+=itemHTML(s,i); });
+
+    if(!needsDone){
+      html+='<div class="lockbanner">🔒 Finish the Next Steps to unlock the wants</div>';
+    } else {
+      html+='<div class="grp">Wants</div>';
+      steps.forEach(function(s,i){ if(s.phase==='want') html+=itemHTML(s,i); });
+      html+='<div class="grp">Handoff</div>';
+      steps.forEach(function(s,i){ if(s.phase==='present') html+=itemHTML(s,i); });
+    }
+
+    html+='<div class="done-msg'+(done===total?' show':'')+'">🎉 Done. '+esc(c.client)+"'s closet is built, priced, and ready.</div>";
+    view.innerHTML=html;
+
+    document.getElementById('back').addEventListener('click',function(){view.hidden=true;menu.hidden=false;});
+    [].slice.call(view.querySelectorAll('.citem')).forEach(function(el){
+      el.addEventListener('click',function(){
+        var i=+el.dataset.i;
+        if(i===done){ done++; drawCard(); }          // complete the current step
+        else if(i===done-1){ done--; drawCard(); }    // undo the last step
+      });
+    });
+
+    function itemHTML(s,i){
+      var state = i<done?'done':(i===done?'active':'locked');
+      return '<div class="citem '+state+'" data-i="'+i+'"><span class="cbox">'+(i<done?'✓':'')+'</span>'+
+        '<span class="lbl">'+esc(s.label)+(s.want?'<span class="w">want</span>':'')+'</span></div>';
+    }
+  }
+
+  function li(x){return '<li>'+esc(x)+'</li>';}
+  function esc(s){return (s+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  renderMenu();
+})();
+</script>
+</body>
+</html>

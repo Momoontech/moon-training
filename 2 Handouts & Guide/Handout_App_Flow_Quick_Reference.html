@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Flow Quick Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#6C5CE7; --primary-dark:#5b4ed8; --accent:#FDA45B;
+    --ink:#1A1A2E; --muted:#5c5c70; --line:#E1E1EC; --bg:#F4F4F8; --card:#fff;
+    --green:#00B894;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#e9e9f0;}
+  body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.34;display:flex;justify-content:center;padding:20px;}
+  .page{background:var(--card);width:8.5in;min-height:11in;padding:0.5in 0.55in;}
+
+  .head{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:3px solid var(--primary);padding-bottom:10px;margin-bottom:14px;}
+  .head .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--primary);font-weight:700;}
+  .head h1{font-size:23px;font-weight:800;margin-top:3px;letter-spacing:-.01em;}
+  .head .sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+  .head .badge{font-size:10px;font-weight:700;color:#fff;background:var(--primary);border-radius:999px;padding:5px 12px;white-space:nowrap;margin-top:4px;}
+
+  .railtitle{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin:2px 0 8px;}
+
+  .flow{display:flex;align-items:stretch;gap:6px;margin-bottom:6px;}
+  .step{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 8px;position:relative;}
+  .step .n{font-size:9px;font-weight:800;color:var(--primary);letter-spacing:.06em;}
+  .step h3{font-size:13px;font-weight:800;margin-top:1px;}
+  .step p{font-size:9.7px;color:var(--muted);margin-top:3px;line-height:1.28;}
+  .arrow{align-self:center;color:var(--primary);font-weight:800;font-size:15px;flex:0 0 auto;}
+
+  .configband{background:linear-gradient(135deg,#2A2140,var(--primary));border-radius:12px;padding:12px 14px;margin:10px 0 4px;color:#fff;}
+  .configband .lead{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;font-weight:700;}
+  .configband h2{font-size:15px;font-weight:800;margin-top:2px;margin-bottom:9px;}
+  .subgrid{display:flex;gap:8px;}
+  .sub{flex:1;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:8px 9px;}
+  .sub .n{font-size:9px;font-weight:800;color:var(--accent);}
+  .sub h4{font-size:12px;font-weight:800;margin-top:1px;}
+  .sub p{font-size:9.4px;opacity:.9;margin-top:3px;line-height:1.28;}
+
+  .cols{display:flex;gap:14px;margin-top:16px;align-items:flex-start;}
+  .box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .box.left{flex:1.15;}
+  .box.right{flex:1;}
+  .box h2{font-size:13px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+  .box h2 .dot{width:9px;height:9px;border-radius:3px;background:var(--primary);}
+
+  .shape{display:flex;gap:9px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);}
+  .shape:last-child{border-bottom:none;}
+  .shape .ic{flex:0 0 26px;height:22px;display:flex;align-items:center;justify-content:center;}
+  .shape .tx b{font-size:11.5px;}
+  .shape .tx span{display:block;font-size:10px;color:var(--muted);line-height:1.25;}
+
+  .tip{display:flex;gap:8px;padding:5px 0;font-size:11px;}
+  .tip .b{flex:0 0 auto;color:var(--green);font-weight:800;}
+  .tip b{color:var(--ink);}
+  .foot{margin-top:16px;border-top:1px solid var(--line);padding-top:8px;font-size:9.5px;color:var(--muted);display:flex;justify-content:space-between;}
+
+  @page{size:letter;margin:0;}
+  @media print{
+    html,body{background:#fff;}
+    body{padding:0;}
+    .page{width:100%;min-height:100vh;padding:0.42in 0.5in;}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="head">
+      <div>
+        <div class="k">Sales Designer App · Quick Reference</div>
+        <h1>The Appointment, Start to Finish</h1>
+        <div class="sub">Keep this next to you. Every appointment runs the same path, one step at a time.</div>
+      </div>
+      <div class="badge">Plan → Handoff</div>
+    </div>
+
+    <div class="railtitle">The full path</div>
+    <div class="flow">
+      <div class="step"><div class="n">01</div><h3>Plan</h3><p>Capture the client and what they need.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">02</div><h3>Agenda</h3><p>Set the plan for the appointment.</p></div>
+      <div class="arrow">›</div>
+      <div class="step" style="border-color:var(--primary);background:#efedfb;"><div class="n">03</div><h3>Configure</h3><p>Build the room and the design. See below.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">04</div><h3>Estimate</h3><p>Full price, savings, and payment.</p></div>
+      <div class="arrow">›</div>
+      <div class="step"><div class="n">05</div><h3>Handoff</h3><p>Documents, then save or sign.</p></div>
+    </div>
+
+    <div class="configband">
+      <div class="lead">Step 03 · Inside Configure</div>
+      <h2>Room Shape → Measure &amp; Design → Present → Finishing Touches</h2>
+      <div class="subgrid">
+        <div class="sub"><div class="n">A</div><h4>Room Shape</h4><p>Pick the shape first. Everything builds on it.</p></div>
+        <div class="sub"><div class="n">B</div><h4>Measure &amp; Design</h4><p>Floor Plan, then plot sections from the Catalog.</p></div>
+        <div class="sub"><div class="n">C</div><h4>Present</h4><p>Customize finishes, Accessorize add-ons.</p></div>
+        <div class="sub"><div class="n">D</div><h4>Finishing Touches</h4><p>Job details: tear out, disposal, per room.</p></div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="box left">
+        <h2><span class="dot"></span>Pick the right room shape</h2>
+        <div class="shape">
+          <div class="ic"><svg width="26" height="22" viewBox="0 0 26 22"><rect x="3" y="6" width="20" height="4" rx="1" fill="#6C5CE7"/></svg></div>
+          <div class="tx"><b>Reach In</b><span>Shallow closet, one open wall.</span></div>
+        </div>
+        <div class="shape">
+          <div class="ic"><svg width="26" height="22" viewBox="0 0 26 22"><rect x="4" y="4" width="18" height="14" rx="1.5" fill="none" stroke="#6C5CE7" stroke-width="2.4"/></svg></div>
+          <div class="tx"><b>Square / Rectangle</b><span>Standard four-wall room.</span></div>
+        </div>
+        <div class="shape">
+          <div class="ic"><svg width="26" height="22" viewBox="0 0 26 22"><path d="M4 4 H14 V11 H22 V18 H4 Z" fill="none" stroke="#6C5CE7" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
+          <div class="tx"><b>L-Shape</b><span>One corner returns. Two runs of wall.</span></div>
+        </div>
+        <div class="shape">
+          <div class="ic"><svg width="26" height="22" viewBox="0 0 26 22"><path d="M4 4 V18 H22 V4 H17 V12 H9 V4 Z" fill="none" stroke="#6C5CE7" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
+          <div class="tx"><b>U-Shape</b><span>Walls on three sides. Walk-in.</span></div>
+        </div>
+        <div class="shape">
+          <div class="ic"><svg width="26" height="22" viewBox="0 0 26 22"><path d="M4 6 L12 3 L22 8 L20 18 L6 17 Z" fill="none" stroke="#FDA45B" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
+          <div class="tx"><b>Custom</b><span>Anything else. Shape it to fit the room.</span></div>
+        </div>
+      </div>
+
+      <div class="box right">
+        <h2><span class="dot" style="background:var(--green);"></span>Things to remember</h2>
+        <div class="tip"><span class="b">✓</span><span><b>Continue</b> completes the current step and unlocks the next.</span></div>
+        <div class="tip"><span class="b">✓</span><span><b>Back</b> always works. You can revisit any step.</span></div>
+        <div class="tip"><span class="b">✓</span><span>Changing the room shape <b>restarts the room</b>, so choose the closest shape up front.</span></div>
+        <div class="tip"><span class="b">✓</span><span>You must <b>plot at Systems</b> before the Catalog opens.</span></div>
+        <div class="tip"><span class="b">✓</span><span>Every room keeps its <b>own progress</b> and resumes where you left off.</span></div>
+        <div class="tip"><span class="b">✓</span><span>A home with two rooms is tracked <b>separately, per room</b>.</span></div>
+        <div class="tip"><span class="b">✓</span><span>We <b>Design</b> the closet in the app. We do not "draw" it.</span></div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>Sales Designer App Training · First 5 Designers</span>
+      <span>Quizzes: quizzes-pied-two.vercel.app</span>
+    </div>
+  </div>
+</body>
+</html>

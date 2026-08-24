@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Daily Challenge - Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#7239EA; --primary-deep:#3E2472; --primary-soft:#F1ECFD;
+    --ink:#211C33; --muted:#6B6B7E; --line:#EAEAF1; --bg:#EDECF2; --card:#fff;
+    --wall:#6E6E7A; --grid:#ECECF4; --green:#12B886; --red:#E0553D; --gold:#FCE96A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 46px;touch-action:manipulation;}
+  .brand{background:linear-gradient(135deg,#2A2140,var(--primary));color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .brand .l{display:flex;align-items:center;gap:11px;}
+  .brand .badge{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:17px;}
+  .brand h1{font-size:16px;font-weight:800;}
+  .brand .sub{font-size:11px;opacity:.85;}
+  .brand .r{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;}
+  .brand .streak{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 12px;}
+  .brand .tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:4px 11px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+
+  .wrap{max-width:940px;margin:16px auto 0;padding:0 16px;}
+
+  .taskbar{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:12px;box-shadow:0 6px 16px rgba(33,28,51,.06);flex-wrap:wrap;}
+  .taskbar .tnum{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;}
+  .lvlpill{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:5px 11px;white-space:nowrap;}
+  .lvlpill.easy{background:#e3f8f1;color:#0b6b52;} .lvlpill.med{background:#fdf0dd;color:#9a5b06;} .lvlpill.hard{background:#fbe4e0;color:#8f2a17;}
+  .taskbar .tp{flex:1;min-width:200px;font-size:13.5px;font-weight:600;color:var(--ink);}
+  .taskbar .hintlink{color:var(--primary);font-weight:700;text-decoration:underline;cursor:pointer;white-space:nowrap;}
+
+  /* ===== app frame ===== */
+  .app{background:var(--card);border:1px solid #dcdce6;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(33,28,51,.14);}
+  .osbar{height:10px;background:#8b8b97;}
+  .apptop{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;}
+  .pillcard{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;box-shadow:0 3px 9px rgba(33,28,51,.07);}
+  .pillcard .ic{width:24px;height:24px;border-radius:50%;background:conic-gradient(from 210deg,#211C33 0 50%,#c9c9d6 50% 100%);flex:0 0 auto;}
+  .pillcard .t{font-size:12.5px;font-weight:800;line-height:1.1;}
+  .pillcard .s{font-size:10px;color:var(--muted);}
+  .pillcard .chev{color:var(--muted);font-size:11px;margin-left:2px;}
+  .hl{background:var(--gold);border-radius:3px;padding:0 3px;font-weight:700;color:#5a4b00;}
+  .expand{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#8a8a99;font-size:13px;}
+
+  .appbody{position:relative;width:100%;aspect-ratio:1.52/1;background:
+      linear-gradient(var(--grid) 1px,transparent 1px) 0 0/100% 5%,
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/5% 100%,
+      #FCFCFE;overflow:hidden;}
+  .room{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+
+  .rail{position:absolute;left:14px;top:50%;transform:translateY(-50%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 8px;display:flex;flex-direction:column;align-items:center;gap:9px;box-shadow:0 4px 12px rgba(33,28,51,.07);z-index:6;}
+  .rail .cap{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;text-align:center;line-height:1.15;}
+  .rail .bar{width:30px;height:3px;border-radius:3px;background:var(--line);overflow:hidden;}
+  .rail .bar i{display:block;height:100%;width:34%;background:var(--primary);}
+  .rdot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.6px solid var(--line);background:#fff;position:relative;color:#9a9aae;font-size:12px;cursor:pointer;}
+  .rdot .num{position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:50%;background:#fff;border:1.4px solid var(--line);font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#8a8a99;}
+  .rdot.done{border-color:var(--green);color:var(--green);} .rdot.done .num{border-color:var(--green);color:var(--green);}
+  .rdot.active{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);} .rdot.active .num{border-color:var(--primary);color:var(--primary);}
+
+  .toggle{position:absolute;left:44%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 7px;box-shadow:0 5px 14px rgba(33,28,51,.1);z-index:6;}
+  .toggle .seg b{font-size:12px;font-weight:700;color:var(--muted);padding:6px 13px;border-radius:999px;cursor:pointer;}
+  .toggle .seg b.on{background:#f1f1f6;color:var(--ink);font-weight:800;}
+  .toggle .sep{width:1px;height:20px;background:var(--line);margin:0 3px;}
+  .toggle .tool{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#f3f3f8;color:#8b8b9c;font-size:13px;cursor:pointer;}
+  .toggle .tool.on{background:var(--primary);color:#fff;}
+
+  .appbottom{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#fff;}
+  .backpill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--muted);flex:0 0 auto;cursor:pointer;}
+  .helper{flex:1;text-align:center;font-size:12.5px;color:#57576a;}
+  .fwd{flex:0 0 auto;border:none;border-radius:999px;padding:11px 20px;font-family:inherit;font-size:12.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#5a34b0,var(--primary-deep));cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 6px 14px rgba(62,36,114,.3);}
+
+  /* right panels */
+  .panel{position:absolute;top:16px;right:16px;width:38%;max-width:330px;background:#fff;border:1px solid #ececf2;border-radius:16px;box-shadow:0 10px 30px rgba(33,28,51,.14);z-index:5;display:flex;flex-direction:column;overflow:hidden;}
+  .panel.obst{bottom:16px;}
+  .ph{display:flex;align-items:center;justify-content:space-between;padding:13px 15px 8px;}
+  .ph .pt{font-size:14.5px;font-weight:800;}
+  .ph .lm{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+  .searchrow{margin:2px 13px 10px;display:flex;align-items:center;gap:8px;border:1.4px solid var(--line);border-radius:11px;padding:9px 11px;}
+  .searchrow.foc{border-color:var(--primary);}
+  .searchrow .mg{color:#a0a0b0;font-size:13px;}
+  .chip{display:inline-flex;align-items:center;gap:5px;background:var(--primary-soft);color:var(--primary);border-radius:7px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .chip .x{font-size:11px;}
+  .searchrow input{border:none;outline:none;font-family:inherit;font-size:12.5px;flex:1;background:transparent;min-width:40px;}
+  .tabs{display:flex;gap:7px;padding:0 13px 10px;flex-wrap:wrap;}
+  .tab{font-size:12px;font-weight:700;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;cursor:pointer;color:#5c5c70;}
+  .tab.on{background:#211C33;color:#fff;border-color:#211C33;}
+  .cards{flex:1;overflow-y:auto;padding:2px 13px 14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .pcard{border:1px solid #ececf2;border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;background:#fff;transition:.12s;}
+  .pcard:hover{border-color:#c9bef2;}
+  .pcard svg{width:52px;height:64px;}
+  .pcard .cl{font-size:11.5px;font-weight:700;text-align:center;color:var(--ink);line-height:1.25;}
+  .pcard.good{border-color:var(--primary);background:#f7f4ff;}
+  .pcard .added{font-size:10px;font-weight:800;color:var(--primary);}
+
+  /* draggable door asset */
+  .dtoken{position:absolute;transform:translate(-50%,-50%);z-index:14;background:#fff;border:1.8px solid var(--primary);border-radius:13px;padding:8px 10px 6px;box-shadow:0 12px 26px rgba(114,57,234,.32);cursor:grab;touch-action:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:94px;}
+  .dtoken.drag{cursor:grabbing;box-shadow:0 18px 34px rgba(114,57,234,.42);}
+  .dtoken svg{width:68px;height:50px;}
+  .dtoken .dl{font-size:9.5px;font-weight:800;color:var(--primary);letter-spacing:.02em;}
+  .draghint{position:absolute;transform:translate(-50%,-50%);z-index:13;font-size:10.5px;font-weight:700;color:var(--primary);background:#fff;border:1px solid #ddd0fb;border-radius:999px;padding:4px 11px;pointer-events:none;box-shadow:0 4px 10px rgba(114,57,234,.16);}
+  .wallglow{position:absolute;transform:translate(-50%,-50%);z-index:7;border-radius:9px;background:rgba(114,57,234,.16);border:1.8px dashed var(--primary);pointer-events:none;}
+  .placed{position:absolute;transform:translate(-50%,-50%);z-index:9;background:#fff;border:2px solid var(--primary);border-radius:10px;padding:5px 7px 3px;box-shadow:0 8px 18px rgba(114,57,234,.36);}
+  .placed.v{transform:translate(-50%,-50%) rotate(90deg);}
+  .placed svg{width:60px;height:44px;display:block;}
+
+  /* section (2-step design puzzle) */
+  .dropzone{position:absolute;transform:translate(-50%,-50%);border:2px dashed #c7bdee;border-radius:14px;background:rgba(114,57,234,.05);display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:700;color:#a99ee0;z-index:5;padding:6px;}
+  .dropzone.hot{border-color:var(--primary);background:rgba(114,57,234,.13);color:var(--primary);}
+  .section2{position:absolute;transform:translate(-50%,-50%);width:118px;height:196px;background:#fff;border:2.5px solid #b9b2dd;border-radius:6px;display:flex;flex-direction:column;z-index:6;box-shadow:0 10px 22px rgba(33,28,51,.14);}
+  .section2 .bay{flex:1;border-bottom:1.5px solid #e6e3f2;position:relative;}
+  .section2 .bay:last-child{border-bottom:none;}
+  .section2 .bay.empty{background:repeating-linear-gradient(45deg,#faf9ff,#faf9ff 6px,#f3f0fc 6px,#f3f0fc 12px);}
+  .section2 .bay.empty.arm{background:rgba(114,57,234,.14);}
+  .section2 .rod{position:absolute;left:16px;right:16px;top:12px;height:2.6px;background:var(--primary);border-radius:2px;}
+  .section2 .hg{position:absolute;top:12px;width:2px;height:9px;background:#b9a7ef;}
+  .section2 .drawer{position:absolute;left:13px;right:13px;top:12px;bottom:12px;border:1.6px solid #ddd6f4;border-radius:3px;background:#f4f2fb;}
+  .section2 .drawer::before{content:"";position:absolute;left:12px;right:12px;top:50%;height:1.4px;background:#ddd6f4;}
+  .section2 .shelf{position:absolute;left:9px;right:9px;height:3px;background:#b79cf0;border-radius:2px;box-shadow:0 0 0 2px rgba(114,57,234,.12);}
+  .section2 .elbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#b0a6d8;text-transform:uppercase;letter-spacing:.03em;}
+  .acctoken{position:absolute;transform:translate(-50%,-50%);z-index:14;background:#fff;border:1.8px solid var(--primary);border-radius:12px;padding:7px 10px 5px;box-shadow:0 12px 26px rgba(114,57,234,.32);cursor:grab;touch-action:none;display:flex;flex-direction:column;align-items:center;gap:3px;width:82px;}
+  .acctoken.drag{cursor:grabbing;}
+  .acctoken svg{width:56px;height:34px;}
+  .acctoken .dl{font-size:9.5px;font-weight:800;color:var(--primary);}
+
+  .settings{padding:13px 15px 16px;overflow-y:auto;}
+  .field{margin-bottom:11px;}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+  .select{position:relative;border:1.4px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#57576a;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:#fff;}
+  .select.open{border-color:var(--primary);}
+  .select .cv{font-weight:600;}
+  .menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e6e6ee;border-radius:10px;box-shadow:0 10px 24px rgba(33,28,51,.16);z-index:9;overflow:hidden;}
+  .menu button{display:block;width:100%;text-align:left;border:none;background:#fff;padding:9px 12px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;border-bottom:1px solid #f4f4f8;}
+  .menu button:last-child{border-bottom:none;}
+  .menu button:hover{background:#f5f3fe;}
+
+  .toast{position:absolute;bottom:64px;left:44%;transform:translateX(-50%);background:#211C33;color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:10px;z-index:20;opacity:0;transition:opacity .15s;pointer-events:none;text-align:center;max-width:70%;}
+  .toast.show{opacity:.97;}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+  .shake{animation:shake .34s;}
+  .badflash{box-shadow:0 0 0 2px var(--red) !important;border-color:var(--red) !important;}
+
+  /* feedback */
+  .coach{max-width:940px;margin:12px auto 0;padding:0 16px;}
+  .fcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 6px 18px rgba(33,28,51,.06);}
+  .react{font-size:15.5px;font-weight:800;color:var(--green);}
+  .exp{background:var(--primary-soft);border-left:4px solid var(--primary);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;color:#3f3a63;}
+  .tries{font-size:11.5px;color:var(--muted);margin-top:8px;}
+  .fb{margin-top:13px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .fb span{font-size:12.5px;color:var(--muted);font-weight:700;}
+  .fbtn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-size:15px;cursor:pointer;}
+  .fbtn:hover{border-color:var(--primary);} .fbtn.picked{border-color:var(--primary);background:var(--primary-soft);}
+  .fbmsg{font-size:12.5px;color:var(--green);font-weight:700;}
+  .btn{border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;background:var(--primary);color:#fff;box-shadow:0 6px 14px rgba(114,57,234,.26);margin-top:13px;}
+  .btn:hover{background:var(--primary-deep);}
+
+  .note{max-width:940px;margin:16px auto 0;padding:0 16px;}
+  .note .n{background:#fff;border:1px dashed var(--line);border-radius:14px;padding:15px 18px;font-size:12.5px;color:var(--muted);line-height:1.55;}
+  .note b{color:var(--ink);}
+</style>
+</head>
+<body>
+  <div class="brand">
+    <div class="l"><div class="badge">🧩</div><div><h1>Daily Challenge</h1><div class="sub">One hands-on task a day, inside the real designer screens.</div></div></div>
+    <div class="r"><span class="tag">Concept preview</span><span class="streak" id="streak">🔥 0</span></div>
+  </div>
+
+  <div class="wrap">
+    <div class="taskbar">
+      <span class="tnum" id="tnum">Task 1 of 2</span>
+      <span class="lvlpill" id="lvl">Easy</span>
+      <span class="tp" id="tp"></span>
+      <span class="hintlink" id="hintlink">Hint</span>
+    </div>
+    <div class="hintbox" id="hintbox" style="display:none;"></div>
+    <div class="app" id="app"></div>
+  </div>
+
+  <div class="coach" id="coach"></div>
+
+<script>
+(function(){
+  "use strict";
+  var app=document.getElementById('app'), coach=document.getElementById('coach');
+  var tnum=document.getElementById('tnum'), lvlEl=document.getElementById('lvl'), tp=document.getElementById('tp');
+  var streakEl=document.getElementById('streak'), hintLink=document.getElementById('hintlink'), hintBox=document.getElementById('hintbox');
+  var i=0, streak=0, solved=false, misses=0, toastT=null;
+
+  function elc(html){var t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstChild;}
+  function toast(msg){var body=app.querySelector('.appbody');var t=body.querySelector('.toast');if(!t){t=elc('<div class="toast"></div>');body.appendChild(t);}t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},1700);}
+  function wrong(elm,msg){ if(solved)return; misses++; elm.classList.remove('shake');void elm.offsetWidth; elm.classList.add('shake','badflash'); setTimeout(function(){elm.classList.remove('badflash');},450); toast(msg||'Not quite - try again.'); }
+
+  // shared chrome
+  function railHTML(active){
+    var icons=['🎙️','✎','◫','▦','❑'];
+    var d='';
+    for(var s=0;s<5;s++){ var cls=s<active?'rdot done':(s===active?'rdot active':'rdot'); d+='<div class="'+cls+'" data-step="'+s+'">'+icons[s]+'<span class="num">'+(s+1)+'</span></div>'; }
+    return '<div class="rail"><div class="cap">Room<br>Progress</div><div class="bar"><i></i></div>'+d+'</div>';
+  }
+  function toggleHTML(mode,view){
+    view=view||'Top';
+    function b(n){return '<b class="'+(n===view?'on':'')+'" data-v="'+n+'">'+n+'</b>';}
+    var second = mode==='obstacles' ? '<div class="tool" data-t="add" style="background:#7239EA;color:#fff;">＋</div>' : '<div class="tool" data-t="ruler">📏</div>';
+    var panel = mode==='measure' ? '<div class="tool on" data-t="panel">▤</div>' : '<div class="tool" data-t="panel">▤</div>';
+    return '<div class="toggle"><div class="seg">'+b('Top')+b('Front')+b('3D')+'</div>'+
+      '<div class="sep"></div><div class="tool on" data-t="pencil">✎</div>'+second+
+      '<div class="tool" data-t="undo">↶</div><div class="tool" data-t="redo">↷</div>'+panel+'</div>';
+  }
+  function roomSVG(hatch,reachIn){
+    var fill = hatch ? 'url(#hpat)' : 'rgba(140,140,156,.06)';
+    var RI = '<g>'+
+      '<text x="445" y="500" text-anchor="middle" font-size="13" font-weight="800" fill="#7239EA" font-family="Inter">Reach-in closet</text>'+
+      '<rect x="335" y="508" width="220" height="48" rx="4" fill="#f4f2fb" stroke="#7239EA" stroke-width="2.4"/>'+
+      '<line x1="350" y1="520" x2="540" y2="520" stroke="#7239EA" stroke-width="2.4" stroke-linecap="round"/>'+
+      '<path d="M365 520 v8 M388 520 v8 M411 520 v8 M434 520 v8 M457 520 v8 M480 520 v8 M503 520 v8 M526 520 v8" stroke="#b9a7ef" stroke-width="1.6"/>'+
+      '<rect x="350" y="537" width="86" height="15" rx="2" fill="#efeafe" stroke="#d9d2f4" stroke-width="1.3"/>'+
+      '<rect x="454" y="537" width="86" height="15" rx="2" fill="#efeafe" stroke="#d9d2f4" stroke-width="1.3"/>'+
+      '</g>';
+    var gl='#a7a7b6'; // guide line color
+    function pill(cx,cy,n,txt){ return '<g><rect x="'+(cx-31)+'" y="'+(cy-12)+'" width="62" height="24" rx="12" fill="#7239EA"/>'+
+      '<circle cx="'+(cx-18)+'" cy="'+cy+'" r="8" fill="#fff"/><text x="'+(cx-18)+'" y="'+(cy+3.3)+'" text-anchor="middle" font-size="9.5" font-weight="800" fill="#7239EA" font-family="Inter">'+n+'</text>'+
+      '<text x="'+(cx+7)+'" y="'+(cy+3.6)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff" font-family="Inter">'+txt+'</text></g>'; }
+    function h(x,y){ return '<rect x="'+(x-6)+'" y="'+(y-6)+'" width="12" height="12" rx="2.5" fill="#fff" stroke="#8a8a99" stroke-width="2.5"/>'; }
+    function dimH(x1,x2,y,wy,n,txt){ // horizontal dim line at y, wall at wy
+      return '<g stroke="'+gl+'" stroke-width="1.4">'+
+        '<line x1="'+x1+'" y1="'+wy+'" x2="'+x1+'" y2="'+y+'" stroke-dasharray="3 3"/>'+
+        '<line x1="'+x2+'" y1="'+wy+'" x2="'+x2+'" y2="'+y+'" stroke-dasharray="3 3"/>'+
+        '<line x1="'+x1+'" y1="'+y+'" x2="'+x2+'" y2="'+y+'" stroke-dasharray="5 4"/></g>'+
+        '<polygon points="'+x1+','+y+' '+(x1+9)+','+(y-4.5)+' '+(x1+9)+','+(y+4.5)+'" fill="'+gl+'"/>'+
+        '<polygon points="'+x2+','+y+' '+(x2-9)+','+(y-4.5)+' '+(x2-9)+','+(y+4.5)+'" fill="'+gl+'"/>'+
+        pill((x1+x2)/2,y,n,txt); }
+    function dimV(y1,y2,x,wx,n,txt){ // vertical dim line at x, wall at wx
+      return '<g stroke="'+gl+'" stroke-width="1.4">'+
+        '<line x1="'+wx+'" y1="'+y1+'" x2="'+x+'" y2="'+y1+'" stroke-dasharray="3 3"/>'+
+        '<line x1="'+wx+'" y1="'+y2+'" x2="'+x+'" y2="'+y2+'" stroke-dasharray="3 3"/>'+
+        '<line x1="'+x+'" y1="'+y1+'" x2="'+x+'" y2="'+y2+'" stroke-dasharray="5 4"/></g>'+
+        '<polygon points="'+x+','+y1+' '+(x-4.5)+','+(y1+9)+' '+(x+4.5)+','+(y1+9)+'" fill="'+gl+'"/>'+
+        '<polygon points="'+x+','+y2+' '+(x-4.5)+','+(y2-9)+' '+(x+4.5)+','+(y2-9)+'" fill="'+gl+'"/>'+
+        pill(x,(y1+y2)/2,n,txt); }
+    return '<svg class="room" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet">'+
+      '<defs><pattern id="hpat" width="12" height="12" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#efeafe"/><line x1="0" y1="0" x2="0" y2="12" stroke="#c9bef2" stroke-width="3.5"/></pattern></defs>'+
+      '<path d="M520 150 H760 V560 H300 V380 H520 Z" fill="'+fill+'" stroke="#6E6E7A" stroke-width="10" stroke-linejoin="round"/>'+
+      (reachIn?RI:'')+
+      dimH(520,760,116,150,'1','48.5"')+
+      dimV(150,380,486,520,'2','48.5"')+
+      dimH(300,520,352,380,'3','48.5"')+
+      dimV(380,560,266,300,'4','48.5"')+
+      dimH(300,760,594,560,'5','96.5"')+
+      h(520,150)+h(760,150)+h(760,560)+h(300,560)+h(300,380)+h(520,380)+
+      '</svg>';
+  }
+  function topbar(step){
+    return '<div class="apptop">'+
+      '<div class="pillcard"><div class="ic"></div><div><div class="t">{Room Name}</div><div class="s">Primary Room · <span class="hl">'+step+'</span></div></div><div class="chev">▾</div></div>'+
+      '<div class="expand">⤢</div>'+
+      '<div class="pillcard"><div><div class="t">{Client Name}</div><div class="s">Now Active</div></div></div>'+
+    '</div>';
+  }
+  function bottombar(back,helper,fwd){
+    return '<div class="appbottom"><div class="backpill" data-x="back">← '+back+'</div><div class="helper">'+helper+'</div><button class="fwd" data-x="fwd">'+fwd+' →</button></div>';
+  }
+  function wireChrome(body){
+    [].slice.call(body.querySelectorAll('.rdot,.toggle .seg b,.toggle .tool,.expand')).forEach(function(elm){
+      elm.addEventListener('click',function(){ wrong(elm,'That control isn’t part of this task - try again.'); });
+    });
+  }
+  function wireNav(root,backMsg,fwdMsg){
+    var b=root.querySelector('[data-x="back"]'), f=root.querySelector('[data-x="fwd"]');
+    if(b)b.addEventListener('click',function(){wrong(b,backMsg);});
+    if(f)f.addEventListener('click',function(){wrong(f,fwdMsg);});
+  }
+
+  // ---------- tasks ----------
+  var P=[
+    { screen:"measure", lvl:"easy", lvlName:"Easy", step:"Measurements",
+      prompt:"The client wants crown molding. Find Molding in Room Settings and pick the right one.",
+      hint:"Everything about the room's finishes and trim is set in the right-hand panel. Read the options and match the one the client asked for.",
+      exp:"Room Settings is where flooring, molding, baseboard and ceiling get set. Molding controls the trim - choosing Crown here carries it into the quote and the 3D view." },
+    { screen:"obstacles", lvl:"med", lvlName:"Medium", step:"Obstacles",
+      prompt:"This reach-in closet has no way in. Add a door and place it in front of the closet.",
+      hint:"On the Doors tab, pick any door, then drag it onto the wall in front of the reach-in closet.",
+      exp:"Every closet system needs a way in. Placing a door in front of the reach-in gives the client access; without it the system is sealed off. Any door type works here, though sliding and bi-fold are common for shallow reach-ins." },
+    { screen:"section", lvl:"hard", lvlName:"Hard", step:"Design",
+      prompt:"Build out the closet. Drag a section into the room, then add a shelf to its empty bay.",
+      hint:"First drop a section onto the floor. Once it lands, drag a shelf from Accessories into the empty bay.",
+      exp:"A closet is built section by section, then filled with shelves, rods and drawers. Drop the unit first, then accessorize the empty bays. Match the accessory to what the client asked for, a shelf here, not a rod or drawer." }
+  ];
+
+  function setTask(c){
+    tnum.textContent='Task '+(i+1)+' of '+P.length;
+    lvlEl.className='lvlpill '+c.lvl; lvlEl.textContent=c.lvlName;
+    streakEl.textContent='🔥 '+streak;
+    tp.textContent=c.prompt;
+    hintBox.style.display='none'; hintBox.className='hintbox';
+    hintBox.innerHTML='<div style="background:#fff8ee;border:1px solid #f4e4c6;border-radius:12px;padding:11px 14px;font-size:13px;color:#7a5a1e;margin-bottom:12px;">'+c.hint+'</div>';
+    coach.innerHTML='';
+  }
+  hintLink.addEventListener('click',function(){ hintBox.style.display = hintBox.style.display==='none'?'block':'none'; });
+
+  function win(c){
+    if(solved)return; solved=true; streak++;
+    streakEl.textContent='🔥 '+streak;
+    coach.innerHTML='<div class="fcard"><div class="react">✅ Nailed it.</div>'+
+      '<div class="exp">'+c.exp+'</div>'+
+      (misses>0?'<div class="tries">Took '+(misses+1)+' taps - that’s the point, the misses show us where to add practice.</div>':'<div class="tries">First try. 🔥</div>')+
+      '<div class="fb"><span>Was this helpful?</span><button class="fbtn" data-v="up">👍</button><button class="fbtn" data-v="down">👎</button><span class="fbmsg" id="fbmsg"></span></div>'+
+      '<button class="btn" id="next">'+(i===P.length-1?'Finish':'Next task')+' →</button></div>';
+    [].slice.call(coach.querySelectorAll('.fbtn')).forEach(function(fb){fb.addEventListener('click',function(){
+      coach.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('picked');});fb.classList.add('picked');
+      document.getElementById('fbmsg').textContent=fb.dataset.v==='up'?'Thanks!':'Noted - we’ll sharpen this one.';});});
+    document.getElementById('next').addEventListener('click',function(){i++;render();});
+    if(coach.scrollIntoView)try{coach.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(_){}
+  }
+
+  // ===== MEASURE screen =====
+  function buildMeasure(c){
+    var SET=[
+      ['Flooring','No',['No','Carpet','Hardwood','Tile']],
+      ['Molding','No',['No','Crown','Cove','Simple']],
+      ['Deco Molding','No',['No','Yes']],
+      ['Baseboard','No',['No','3 in','5 in']],
+      ['Ceiling Type','Select ceiling type',['Flat','Tray','Vaulted']]
+    ];
+    var fields=SET.map(function(s,idx){
+      return '<div class="field"><label>'+s[0]+'</label><div class="select" data-f="'+idx+'"><span class="cv">'+s[1]+'</span><span>▾</span></div></div>';
+    }).join('');
+    app.innerHTML='<div class="osbar"></div>'+topbar(c.step)+
+      '<div class="appbody">'+roomSVG(true)+railHTML(1)+toggleHTML('measure')+
+        '<div class="panel"><div class="ph"><div class="pt">Room Settings</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
+      '</div>'+
+      bottombar('Room Shape','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles.','Obstacles');
+    var body=app.querySelector('.appbody'); wireChrome(body);
+    wireNav(app,'Finish the settings task first - then you’d head back.','Set the molding first - then Continue would move you on.');
+    var openMenu=null;
+    [].slice.call(app.querySelectorAll('.select')).forEach(function(sel){
+      sel.addEventListener('click',function(e){
+        if(solved)return; e.stopPropagation();
+        if(openMenu){openMenu.remove();openMenu=null;app.querySelectorAll('.select').forEach(function(x){x.classList.remove('open');});}
+        var idx=+sel.dataset.f, opts=SET[idx][2];
+        sel.classList.add('open');
+        var menu=elc('<div class="menu">'+opts.map(function(o){return '<button data-o="'+o+'">'+o+'</button>';}).join('')+'</div>');
+        sel.appendChild(menu); openMenu=menu;
+        [].slice.call(menu.querySelectorAll('button')).forEach(function(b){
+          b.addEventListener('click',function(ev){
+            ev.stopPropagation();
+            var val=b.dataset.o;
+            if(SET[idx][0]==='Molding' && val!=='No'){ sel.querySelector('.cv').textContent=val; sel.querySelector('.cv').style.color='#211C33'; menu.remove();openMenu=null;sel.classList.remove('open'); win(c); }
+            else if(SET[idx][0]==='Molding' && val==='No'){ menu.remove();openMenu=null;sel.classList.remove('open'); wrong(sel,'That keeps molding off - pick a profile like Crown.'); }
+            else { menu.remove();openMenu=null;sel.classList.remove('open'); wrong(sel,'That’s the '+SET[idx][0]+' setting - the client asked about Molding.'); }
+          });
+        });
+      });
+    });
+  }
+
+  // ===== OBSTACLES screen =====
+  function slidingGlyph(){
+    return '<svg viewBox="0 0 84 62" preserveAspectRatio="xMidYMid meet">'+
+      '<line x1="8" y1="11" x2="76" y2="11" stroke="#7239EA" stroke-width="3" stroke-linecap="round"/>'+
+      '<rect x="13" y="15" width="32" height="36" rx="2.5" fill="#efeafe" stroke="#7239EA" stroke-width="2.4"/>'+
+      '<rect x="41" y="15" width="32" height="36" rx="2.5" fill="#ffffff" stroke="#7239EA" stroke-width="2.4"/>'+
+      '<line x1="38" y1="29" x2="38" y2="37" stroke="#7239EA" stroke-width="2.4" stroke-linecap="round"/>'+
+      '<line x1="66" y1="29" x2="66" y2="37" stroke="#7239EA" stroke-width="2.4" stroke-linecap="round"/>'+
+      '<path d="M30 59 h24 M48 55 l6 4 -6 4" fill="none" stroke="#9a9aae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+      '</svg>';
+  }
+  function iconDoor(kind){
+    if(kind==='double') return '<svg viewBox="0 0 70 90"><rect x="8" y="7" width="27" height="76" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><rect x="35" y="7" width="27" height="76" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><circle cx="31" cy="46" r="2" fill="#2b2b3a"/><circle cx="39" cy="46" r="2" fill="#2b2b3a"/></svg>';
+    if(kind==='sliding') return '<svg viewBox="0 0 70 90"><rect x="10" y="14" width="50" height="62" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="14" x2="35" y2="76" stroke="#2b2b3a" stroke-width="2"/><path d="M20 45 h14 M28 40 l6 5 -6 5" fill="none" stroke="#2b2b3a" stroke-width="2"/></svg>';
+    if(kind==='pocket') return '<svg viewBox="0 0 70 90"><rect x="12" y="14" width="46" height="62" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="14" x2="35" y2="76" stroke="#2b2b3a" stroke-width="2" stroke-dasharray="4 4"/></svg>';
+    return '<svg viewBox="0 0 70 90"><rect x="14" y="10" width="42" height="70" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="46" y1="10" x2="46" y2="80" stroke="#2b2b3a" stroke-width="2"/><circle cx="42" cy="46" r="2.2" fill="#2b2b3a"/></svg>';
+  }
+  // nice purple draggable / placed door assets (one per type)
+  function doorAsset(kind){
+    var P='#7239EA', L='#c2b8ef', F='#b7b7c6';
+    if(kind==='sliding') return slidingGlyph();
+    if(kind==='double') return '<svg viewBox="0 0 84 62" preserveAspectRatio="xMidYMid meet">'+
+      '<line x1="12" y1="52" x2="72" y2="52" stroke="'+F+'" stroke-width="3" stroke-linecap="round"/>'+
+      '<line x1="14" y1="52" x2="14" y2="14" stroke="'+P+'" stroke-width="3.2" stroke-linecap="round"/>'+
+      '<path d="M14 14 A38 38 0 0 1 42 52" fill="none" stroke="'+L+'" stroke-width="2" stroke-dasharray="4 4"/>'+
+      '<line x1="70" y1="52" x2="70" y2="14" stroke="'+P+'" stroke-width="3.2" stroke-linecap="round"/>'+
+      '<path d="M70 14 A38 38 0 0 0 42 52" fill="none" stroke="'+L+'" stroke-width="2" stroke-dasharray="4 4"/>'+
+      '<circle cx="14" cy="52" r="3.4" fill="'+P+'"/><circle cx="70" cy="52" r="3.4" fill="'+P+'"/></svg>';
+    if(kind==='pocket') return '<svg viewBox="0 0 84 62" preserveAspectRatio="xMidYMid meet">'+
+      '<line x1="10" y1="20" x2="74" y2="20" stroke="'+P+'" stroke-width="3" stroke-linecap="round"/>'+
+      '<rect x="12" y="24" width="26" height="30" rx="2" fill="none" stroke="'+L+'" stroke-width="2" stroke-dasharray="4 4"/>'+
+      '<rect x="40" y="24" width="30" height="30" rx="2" fill="#efeafe" stroke="'+P+'" stroke-width="2.4"/>'+
+      '<path d="M60 39 h-16 M50 35 l-6 4 6 4" fill="none" stroke="#9a9aae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    return '<svg viewBox="0 0 84 62" preserveAspectRatio="xMidYMid meet">'+
+      '<line x1="18" y1="54" x2="60" y2="54" stroke="'+F+'" stroke-width="3" stroke-linecap="round"/>'+
+      '<line x1="18" y1="54" x2="18" y2="12" stroke="'+P+'" stroke-width="3.4" stroke-linecap="round"/>'+
+      '<path d="M18 12 A42 42 0 0 1 60 54" fill="none" stroke="'+L+'" stroke-width="2.2" stroke-dasharray="4 4"/>'+
+      '<circle cx="18" cy="54" r="3.6" fill="'+P+'"/></svg>';
+  }
+  function iconWin(){ return '<svg viewBox="0 0 70 90"><rect x="10" y="18" width="50" height="54" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="18" x2="35" y2="72" stroke="#2b2b3a" stroke-width="2"/><line x1="10" y1="45" x2="60" y2="45" stroke="#2b2b3a" stroke-width="2"/></svg>'; }
+  function iconElec(){ return '<svg viewBox="0 0 70 90"><rect x="18" y="22" width="34" height="46" rx="5" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><circle cx="35" cy="38" r="2.4" fill="#2b2b3a"/><circle cx="35" cy="52" r="2.4" fill="#2b2b3a"/></svg>'; }
+
+  var OBST={
+    Doors:[['Double Door','double'],['Single Door','single'],['Sliding Door','sliding'],['Pocket Door','pocket']],
+    Windows:[['Standard','win'],['Bay Window','win'],['Casement','win'],['Picture','win']],
+    Electrical:[['Outlet','elec'],['Light Switch','elec'],['Panel','elec'],['Vent','elec']]
+  };
+
+  function buildObstacles(c){
+    app.innerHTML='<div class="osbar"></div>'+topbar(c.step)+
+      '<div class="appbody">'+roomSVG(false,true)+railHTML(1)+toggleHTML('obstacles')+
+        '<div class="panel obst">'+
+          '<div class="ph"><div class="pt">All Obstacles</div><div class="lm">Learn More ⓘ</div></div>'+
+          '<div class="searchrow" id="srow"><span class="mg">🔍</span><span class="chip" id="chip">Doors <span class="x">✕</span></span><input id="sin" placeholder="Search"></div>'+
+          '<div class="tabs" id="tabs"><button class="tab on" data-c="Doors">Doors</button><button class="tab" data-c="Windows">Windows</button><button class="tab" data-c="Electrical">Electrical</button><button class="tab" data-c="Filter">Filter</button></div>'+
+          '<div class="cards" id="cards"></div>'+
+        '</div>'+
+      '</div>'+
+      bottombar('Measure','Add all obstacles the client prefers to keep','Plot Products');
+    var body=app.querySelector('.appbody'); wireChrome(body);
+    wireNav(app,'Give the reach-in a door first, then you would head back to Measure.','Add a door in front of the reach-in first, then you can Plot Products.');
+    var cat='Doors', filter='', selKind=null, selName='';
+    var cards=document.getElementById('cards'), tabs=document.getElementById('tabs'), sin=document.getElementById('sin'), srow=document.getElementById('srow'), chip=document.getElementById('chip');
+
+    // drop slots (percent of appbody). Only the one in front of the reach-in closet is correct.
+    var slots=[{x:44,y:79,o:'h',ok:true},{x:30,y:73,o:'v'},{x:41,y:59,o:'h'},{x:52,y:42,o:'v'}];
+    var token=null, glow=null, hint=null;
+    function nearest(x,y){var b=-1,bd=1e9;slots.forEach(function(s,k){var d=Math.hypot(s.x-x,s.y-y);if(d<bd){bd=d;b=k;}});return bd<16?b:-1;}
+    function toPct(ev){var r=body.getBoundingClientRect();return {x:(ev.clientX-r.left)/r.width*100,y:(ev.clientY-r.top)/r.height*100};}
+    function clearGlow(){ if(glow){glow.remove();glow=null;} }
+    function spawnToken(){
+      if(token){token.remove();} if(hint){hint.remove();hint=null;}
+      token=elc('<div class="dtoken" style="left:26%;top:30%;">'+doorAsset(selKind)+'<div class="dl">'+selName+'</div></div>');
+      hint=elc('<div class="draghint" style="left:26%;top:18%;">Drag to the reach-in</div>');
+      body.appendChild(token); body.appendChild(hint);
+      token.addEventListener('pointerdown',function(e){
+        if(solved)return; e.preventDefault();
+        try{token.setPointerCapture(e.pointerId);}catch(_){}
+        token.classList.add('drag'); if(hint)hint.style.display='none';
+        function mv(ev){
+          var p=toPct(ev);
+          token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+          var n=nearest(p.x,p.y);
+          if(n>=0){ if(!glow){glow=elc('<div class="wallglow"></div>');body.appendChild(glow);}
+            glow.style.left=slots[n].x+'%'; glow.style.top=slots[n].y+'%';
+            glow.style.width=slots[n].o==='v'?'42px':'86px'; glow.style.height=slots[n].o==='v'?'86px':'42px'; }
+          else clearGlow();
+        }
+        function up(ev){
+          try{token.releasePointerCapture(e.pointerId);}catch(_){}
+          token.removeEventListener('pointermove',mv);token.removeEventListener('pointerup',up);token.removeEventListener('pointercancel',up);
+          token.classList.remove('drag');
+          var p=toPct(ev), n=nearest(p.x,p.y); clearGlow();
+          if(n<0){ token.style.left='26%';token.style.top='30%'; if(hint)hint.style.display=''; toast('Drop the door onto a wall.'); return; }
+          if(!slots[n].ok){ token.style.left='26%';token.style.top='30%'; if(hint)hint.style.display=''; wrong(token,'Put the door in front of the reach-in closet so the client can get in.'); return; }
+          token.remove(); token=null; if(hint){hint.remove();hint=null;}
+          var pl=elc('<div class="placed'+(slots[n].o==='v'?' v':'')+'" style="left:'+slots[n].x+'%;top:'+slots[n].y+'%;">'+doorAsset(selKind)+'</div>');
+          body.appendChild(pl);
+          win(c);
+        }
+        token.addEventListener('pointermove',mv);token.addEventListener('pointerup',up);token.addEventListener('pointercancel',up);
+      });
+    }
+
+    function renderCards(){
+      var list=(OBST[cat]||[]).filter(function(o){return o[0].toLowerCase().indexOf(filter.toLowerCase())>-1;});
+      if(!list.length){ cards.innerHTML='<div style="grid-column:1/3;text-align:center;color:#a0a0b0;font-size:12px;padding:20px 0;">No matches.</div>'; return; }
+      cards.innerHTML=list.map(function(o){
+        var ic = cat==='Windows'?iconWin():cat==='Electrical'?iconElec():iconDoor(o[1]);
+        return '<div class="pcard" data-name="'+o[0]+'" data-kind="'+(o[1]||'')+'">'+ic+'<div class="cl">'+o[0]+'</div></div>';
+      }).join('');
+      [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
+        card.addEventListener('click',function(){
+          if(solved)return;
+          if(cat!=='Doors'){ wrong(card,'A '+card.dataset.name.toLowerCase()+' will not open the closet - the reach-in needs a door.'); return; }
+          // pick / switch door type
+          cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');var cl=x.querySelector('.cl');if(cl&&cl.dataset.base)cl.textContent=cl.dataset.base;});
+          selKind=card.dataset.kind; selName=card.dataset.name;
+          card.classList.add('good');
+          var cl=card.querySelector('.cl'); cl.dataset.base=selName; cl.innerHTML=selName+'<div class="added">✓ Selected</div>';
+          spawnToken(); toast('Now drag the '+selName.toLowerCase()+' in front of the reach-in closet.');
+        });
+      });
+    }
+    [].slice.call(tabs.querySelectorAll('.tab')).forEach(function(t){
+      t.addEventListener('click',function(){
+        if(solved)return;
+        if(t.dataset.c==='Filter'){ toast('Filters would narrow the list - not needed here.'); return; }
+        tabs.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');}); t.classList.add('on');
+        cat=t.dataset.c; filter=''; sin.value=''; chip.firstChild.textContent=cat+' ';
+        renderCards();
+      });
+    });
+    sin.addEventListener('focus',function(){srow.classList.add('foc');});
+    sin.addEventListener('blur',function(){srow.classList.remove('foc');});
+    sin.addEventListener('input',function(){ filter=sin.value; renderCards(); });
+    chip.addEventListener('click',function(){ if(solved)return; toast('That clears the '+cat+' filter - leave it on to see the doors.'); });
+    renderCards();
+  }
+
+  // ===== DESIGN screen: 2-step section + shelf =====
+  function sectionGlyph(){
+    return '<svg viewBox="0 0 60 84" preserveAspectRatio="xMidYMid meet">'+
+      '<rect x="6" y="4" width="48" height="76" rx="3" fill="#fff" stroke="#8f86c9" stroke-width="2.4"/>'+
+      '<line x1="6" y1="30" x2="54" y2="30" stroke="#ded8f2" stroke-width="1.6"/><line x1="6" y1="56" x2="54" y2="56" stroke="#ded8f2" stroke-width="1.6"/>'+
+      '<line x1="14" y1="15" x2="46" y2="15" stroke="#7239EA" stroke-width="2"/>'+
+      '<path d="M20 15 v6 M30 15 v6 M40 15 v6" stroke="#b9a7ef" stroke-width="1.4"/>'+
+      '<rect x="14" y="63" width="32" height="12" rx="1.6" fill="#f4f2fb" stroke="#ded8f2" stroke-width="1.3"/></svg>';
+  }
+  function accGlyph(kind){
+    if(kind==='rod') return '<svg viewBox="0 0 70 40"><line x1="10" y1="14" x2="60" y2="14" stroke="#7239EA" stroke-width="3" stroke-linecap="round"/><path d="M20 14 v10 M30 14 v10 M40 14 v10 M50 14 v10" stroke="#b9a7ef" stroke-width="1.8"/></svg>';
+    if(kind==='drawer') return '<svg viewBox="0 0 70 40"><rect x="12" y="8" width="46" height="24" rx="3" fill="#f4f2fb" stroke="#7239EA" stroke-width="2.4"/><line x1="28" y1="20" x2="42" y2="20" stroke="#7239EA" stroke-width="2"/></svg>';
+    return '<svg viewBox="0 0 70 40"><rect x="10" y="17" width="50" height="7" rx="2.5" fill="#efeafe" stroke="#7239EA" stroke-width="2.4"/></svg>';
+  }
+  function buildSection(c){
+    app.innerHTML='<div class="osbar"></div>'+topbar(c.step)+
+      '<div class="appbody">'+
+        '<svg class="room" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet">'+
+          '<rect x="120" y="90" width="770" height="440" rx="6" fill="#fbfaff" stroke="#e0e0ea" stroke-width="3"/>'+
+          '<rect x="120" y="470" width="770" height="60" fill="#f2f0f7"/>'+
+          '<line x1="120" y1="470" x2="890" y2="470" stroke="#cfcfda" stroke-width="4"/>'+
+        '</svg>'+
+        railHTML(2)+toggleHTML('obstacles','Front')+
+        '<div class="panel"><div class="ph"><div class="pt" id="ptitle">Add Section</div><div class="lm">Learn More ⓘ</div></div>'+
+          '<div class="tabs" id="tabs"></div>'+
+          '<div class="cards" id="cards"></div>'+
+        '</div>'+
+      '</div>'+
+      bottombar('Obstacles','Drop a section onto the floor, then fill it with accessories','Customize');
+    var body=app.querySelector('.appbody'); wireChrome(body);
+    wireNav(app,'Finish building the section first, then you would head back.','Add the section and a shelf first, then continue.');
+    var cards=document.getElementById('cards'), tabs=document.getElementById('tabs'), ptitle=document.getElementById('ptitle');
+    var phase='section', token=null, hint=null, glow=null, sectionEl=null, emptyBay=null, selAcc=null;
+    var zone={x:44,y:52}; // floor drop target (percent)
+
+    function toPct(ev){var r=body.getBoundingClientRect();return {x:(ev.clientX-r.left)/r.width*100,y:(ev.clientY-r.top)/r.height*100};}
+    function makeDrag(elm,onMove,onUp){
+      elm.addEventListener('pointerdown',function(e){
+        if(solved)return; e.preventDefault();
+        try{elm.setPointerCapture(e.pointerId);}catch(_){}
+        elm.classList.add('drag');
+        function mv(ev){onMove(toPct(ev),ev);}
+        function up(ev){try{elm.releasePointerCapture(e.pointerId);}catch(_){}
+          elm.removeEventListener('pointermove',mv);elm.removeEventListener('pointerup',up);elm.removeEventListener('pointercancel',up);
+          elm.classList.remove('drag');onUp(toPct(ev),ev);}
+        elm.addEventListener('pointermove',mv);elm.addEventListener('pointerup',up);elm.addEventListener('pointercancel',up);
+      });
+    }
+
+    // ---- phase 1: section ----
+    function renderSectionCards(){
+      ptitle.textContent='Add Section';
+      tabs.innerHTML='<button class="tab on">Sections</button><button class="tab">Corner</button><button class="tab">Filler</button>';
+      var SEC=[['Tower','tower'],['Hanging','hang'],['Drawer Stack','draw']];
+      cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'">'+sectionGlyph()+'<div class="cl">'+s[0]+'</div></div>';}).join('');
+      [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
+        card.addEventListener('click',function(){
+          if(solved||phase!=='section')return;
+          cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
+          card.classList.add('good');
+          spawnSectionToken(card.dataset.name);
+          toast('Now drag the '+card.dataset.name.toLowerCase()+' section onto the floor.');
+        });
+      });
+      [].slice.call(tabs.querySelectorAll('.tab')).forEach(function(t){ if(!t.classList.contains('on')) t.addEventListener('click',function(){toast('These are here to browse - the Sections tab has what you need.');}); });
+    }
+    function spawnSectionToken(name){
+      if(token)token.remove(); if(hint){hint.remove();hint=null;}
+      token=elc('<div class="dtoken" style="left:24%;top:30%;">'+sectionGlyph()+'<div class="dl">'+name+'</div></div>');
+      hint=elc('<div class="draghint" style="left:24%;top:16%;">Drag onto the floor</div>');
+      body.appendChild(token); body.appendChild(hint);
+      makeDrag(token,function(p){
+        token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+        var near=Math.hypot(zone.x-p.x,zone.y-p.y)<18;
+        if(near){ if(!glow){glow=elc('<div class="dropzone" style="width:150px;height:210px;">Drop here</div>');glow.style.left=zone.x+'%';glow.style.top=zone.y+'%';body.appendChild(glow);} glow.classList.add('hot'); }
+        else if(glow){ glow.remove(); glow=null; }
+        if(hint)hint.style.display='none';
+      },function(p){
+        if(glow){glow.remove();glow=null;}
+        if(Math.hypot(zone.x-p.x,zone.y-p.y)>=18){ token.style.left='24%';token.style.top='30%'; if(hint)hint.style.display=''; toast('Drop the section onto the floor.'); return; }
+        token.remove(); token=null; if(hint){hint.remove();hint=null;}
+        placeSection();
+      });
+    }
+    function placeSection(){
+      sectionEl=elc('<div class="section2" style="left:'+zone.x+'%;top:'+zone.y+'%;">'+
+        '<div class="bay"><div class="rod"></div><div class="hg" style="left:32px;"></div><div class="hg" style="left:52px;"></div><div class="hg" style="left:72px;"></div></div>'+
+        '<div class="bay empty"><div class="elbl">empty</div></div>'+
+        '<div class="bay"><div class="drawer"></div></div>'+
+        '</div>');
+      body.appendChild(sectionEl);
+      emptyBay=sectionEl.querySelector('.bay.empty');
+      phase='shelf';
+      renderAccessoryCards();
+      toast('Section placed. Now add a shelf to the empty bay.');
+    }
+
+    // ---- phase 2: shelf ----
+    function renderAccessoryCards(){
+      ptitle.textContent='Accessories';
+      tabs.innerHTML='<button class="tab on">Accessories</button><button class="tab">Hardware</button>';
+      var ACC=[['Shelf','shelf'],['Rod','rod'],['Drawer','drawer']];
+      cards.innerHTML=ACC.map(function(a){return '<div class="pcard" data-kind="'+a[1]+'" data-name="'+a[0]+'">'+accGlyph(a[1])+'<div class="cl">'+a[0]+'</div></div>';}).join('');
+      [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
+        card.addEventListener('click',function(){
+          if(solved||phase!=='shelf')return;
+          cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
+          card.classList.add('good');
+          selAcc=card.dataset.kind;
+          spawnAccToken(card.dataset.name,card.dataset.kind);
+          toast('Drag the '+card.dataset.name.toLowerCase()+' into the empty bay.');
+        });
+      });
+    }
+    function overEmpty(ev){ if(!emptyBay)return false; var r=emptyBay.getBoundingClientRect(); return ev.clientX>=r.left-16&&ev.clientX<=r.right+16&&ev.clientY>=r.top-16&&ev.clientY<=r.bottom+16; }
+    function spawnAccToken(name,kind){
+      if(token)token.remove(); if(hint){hint.remove();hint=null;}
+      token=elc('<div class="acctoken" style="left:24%;top:26%;">'+accGlyph(kind)+'<div class="dl">'+name+'</div></div>');
+      hint=elc('<div class="draghint" style="left:24%;top:14%;">Drag into the empty bay</div>');
+      body.appendChild(token); body.appendChild(hint);
+      makeDrag(token,function(p,ev){
+        token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+        if(emptyBay)emptyBay.classList.toggle('arm',overEmpty(ev));
+        if(hint)hint.style.display='none';
+      },function(p,ev){
+        var on=overEmpty(ev); if(emptyBay)emptyBay.classList.remove('arm');
+        if(!on){ token.style.left='24%';token.style.top='26%'; if(hint)hint.style.display=''; toast('Drop it into the empty bay of the section.'); return; }
+        if(selAcc!=='shelf'){ token.style.left='24%';token.style.top='26%'; if(hint)hint.style.display=''; wrong(token,'The client asked for a shelf, not a '+selAcc+'. Try the shelf.'); return; }
+        token.remove(); token=null; if(hint){hint.remove();hint=null;}
+        emptyBay.classList.remove('empty'); emptyBay.innerHTML='<div class="shelf" style="top:50%;"></div>';
+        win(c);
+      });
+    }
+
+    renderSectionCards();
+  }
+
+  function render(){
+    solved=false; misses=0;
+    if(i>=P.length){done();return;}
+    var c=P[i]; setTask(c);
+    if(c.screen==='measure')buildMeasure(c); else if(c.screen==='section')buildSection(c); else buildObstacles(c);
+    // close menus on outside click
+    document.addEventListener('click',function once(){},{once:true});
+  }
+  function done(){
+    tnum.textContent='Done for today'; lvlEl.style.display='none';
+    tp.textContent='That’s today’s set - nice work.'; hintLink.style.display='none';
+    app.innerHTML='<div class="osbar"></div><div class="appbody" style="display:flex;align-items:center;justify-content:center;">'+
+      '<div style="text-align:center;padding:24px;"><div style="font-size:46px;">🎉</div>'+
+      '<div style="font-size:19px;font-weight:800;margin-top:8px;">Streak complete.</div>'+
+      '<p style="color:#6B6B7E;font-size:13px;margin-top:8px;max-width:380px;">In the real thing you’d get one task a day. This preview runs all three so you can feel the format.</p>'+
+      '<button class="btn" id="again">Run again ↺</button></div></div>';
+    coach.innerHTML='';
+    document.getElementById('again').addEventListener('click',function(){i=0;streak=0;streakEl.textContent='🔥 0';lvlEl.style.display='';hintLink.style.display='';render();});
+  }
+  render();
+})();
+</script>
+</body>
+</html>
