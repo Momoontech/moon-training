@@ -69,10 +69,22 @@ create view user_balances as
 -- Flat, pre-joined view for the leaderboard API - avoids relying on
 -- PostgREST's relationship embedding across a view (user_balances has no
 -- foreign-key metadata for it to detect), so the API can do one plain select.
-create view leaderboard as
+--
+-- lifetime_earned (sum of positive events only) backs the rocks-milestone
+-- badges - it's deliberately separate from `tokens` (current spendable
+-- balance), since spending in the shop would otherwise make an "earned 100
+-- rocks" badge disappear again.
+create or replace view leaderboard as
   select u.id as user_id, u.name, u.email,
          coalesce(b.tokens, 0) as tokens,
-         coalesce(c.streak, 0) as streak
+         coalesce(c.streak, 0) as streak,
+         coalesce(e.lifetime_earned, 0) as lifetime_earned
   from users u
   left join user_balances b on b.user_id = u.id
-  left join closet_state c on c.user_id = u.id;
+  left join closet_state c on c.user_id = u.id
+  left join (
+    select user_id, sum(amount) as lifetime_earned
+    from moon_rock_events
+    where amount > 0
+    group by user_id
+  ) e on e.user_id = u.id;

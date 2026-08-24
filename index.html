@@ -209,7 +209,8 @@
   .lbrow.top .rank{font-size:22px;}
   .lbrow .who .n{font-size:14px;font-weight:700;} .lbrow .who .p{font-size:11.5px;color:var(--muted);}
   .lbrow .rocks{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;}
-  .lbrow .strk{font-size:12px;font-weight:700;color:var(--muted);}
+  .lbrow .badges{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:220px;}
+  .badge{font-size:10px;font-weight:800;color:#8a6a15;background:linear-gradient(135deg,#fff7e6,#fdeecb);border:1px solid #f4e2b0;border-radius:999px;padding:4px 9px;white-space:nowrap;}
 
   /* ─── Shop ─── */
   .shopcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px;display:flex;flex-direction:column;gap:9px;box-shadow:0 2px 8px rgba(26,21,35,.05);}
@@ -251,13 +252,10 @@
   <div class="nav-logo"></div>
   <div class="nav-pill" id="tabs">
     <button class="nl on" data-sec="dashboard">Dashboard</button>
-    <button class="nl" data-sec="puzzles">Daily Puzzles</button>
     <button class="nl" data-sec="quizzes">Quizzes</button>
     <button class="nl" data-sec="trainings">Trainings</button>
     <button class="nl" data-sec="leaderboard">Leaderboard</button>
     <button class="nl" data-sec="shop">Shop</button>
-    <button class="nl" data-sec="videos">Videos</button>
-    <button class="nl" data-sec="guides">Guides</button>
   </div>
   <div class="nav-avatar">JD</div>
 </nav>
@@ -271,6 +269,11 @@
     <p class="lead">Every day you log in you earn a moon rock, and your dream closet gets a little nicer. Keep the streak going.</p>
 
     <div class="sechead"><h2>Upcoming Appointments</h2><span class="cnt">(3)</span></div>
+    <div class="grid" style="margin-bottom:16px;">
+      <div class="acard"><div class="ah"><h4>The Coopers</h4><span class="pill2 live">Today · 2:00 PM</span></div><p>Walk-in closet consult</p><p style="font-weight:700;color:#7239EA;">🔥 On a roll this month - go get it!</p></div>
+      <div class="acard"><div class="ah"><h4>Sam Cole</h4><span class="pill2 review">Tomorrow · 10:30 AM</span></div><p>Reach-in makeover</p><p style="font-weight:700;color:#7239EA;">💪 First one back from a slow week - you've got this!</p></div>
+      <div class="acard"><div class="ah"><h4>The Ortegas</h4><span class="pill2 concept">Fri · 1:00 PM</span></div><p>Pantry system</p><p style="font-weight:700;color:#7239EA;">🎉 One more and you hit your monthly goal!</p></div>
+    </div>
 
     <!-- Hero: 2-column white card, absolute buttons -->
     <div class="closet">
@@ -308,7 +311,7 @@
     <div class="drow2">
       <a class="ecard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank" data-eid="puzzle" data-earn="5">
         <div class="tag">Today · <span class="earn" data-eb="puzzle">+5 <img class="mr" src="moon-logo.png"></span></div>
-        <h3>Daily Puzzle</h3>
+        <h3>Daily Challenge</h3>
         <p>A quick hands-on task inside a mock of the designer.</p>
         <span class="go">Play now →</span>
       </a>
@@ -323,7 +326,7 @@
     <div class="sechead"><h2>Jump back in</h2><span class="cnt">(3)</span></div>
     <div class="grid">
       <a class="acard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank" data-eid="puzzle" data-earn="5">
-        <div class="ah"><h4>Daily Puzzle</h4><span class="earn" data-eb="puzzle">+5 <img class="mr" src="moon-logo.png"></span></div>
+        <div class="ah"><h4>Daily Challenge</h4><span class="earn" data-eb="puzzle">+5 <img class="mr" src="moon-logo.png"></span></div>
         <div class="arow"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg> Today's challenge</div>
         <div class="arow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> About 3 minutes</div>
         <span class="pbtn">Start puzzle →</span>
@@ -342,36 +345,6 @@
       </a>
     </div>
 
-    <div class="sechead"><h2>Everyone's work</h2>
-      <div class="srch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Search" id="ewSearch"></div>
-    </div>
-    <div class="table" id="ewTable">
-      <div class="thead"><div>Client</div><div class="th-addr">Project</div><div>Moon rocks</div><div class="th-streak">Streak</div><div>Status</div></div>
-      <div id="ewRows"></div>
-    </div>
-  </section>
-
-  <!-- ═══ DAILY PUZZLES ═══ -->
-  <section data-sec="puzzles">
-    <h1 class="title">Daily Puzzles</h1>
-    <p class="lead">One bite-size, hands-on task a day, played inside a working mock of the real designer screens.</p>
-    <div class="drow" style="margin-top:16px;">
-      <a class="ecard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank" data-eid="puzzle" data-earn="5">
-        <div class="tag">Today · <span class="earn" data-eb="puzzle">+5 <img class="mr" src="moon-logo.png"></span></div>
-        <h3>Open today's challenge</h3>
-        <p>Measure a wall, place an obstacle in front of a reach-in, and build a section.</p>
-        <span class="go">Play now →</span>
-      </a>
-      <div class="ecard" style="background:#f7f6fb;cursor:default;">
-        <div class="tag">Streak</div><h3 id="strkBig2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;"><path d="M12 2c1.2 3.2-2.6 4.6-2.6 8.4a2.6 2.6 0 0 0 5.2 0c0-1-.8-1.8-.8-2.8 1.8 1 3.2 3 3.2 5.6a5 5 0 0 1-10 0C7 8.6 10 6.4 12 2z"/></svg> 1 day</h3><p>Solve one a day to build your streak and level up your closet.</p>
-      </div>
-    </div>
-    <div class="sechead"><h2>What you'll practice</h2></div>
-    <div class="grid">
-      <div class="acard"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><path d="M3 7h18M7 3v18"/></svg></div><span class="pill2 ready">Measure</span></div><h4>Editing measurements</h4><p>Tap a wall's number and set the real dimension.</p></div>
-      <div class="acard"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16"/></svg></div><span class="pill2 live">Obstacles</span></div><h4>Placing obstacles</h4><p>Search a door and drag it in front of the reach-in closet.</p></div>
-      <div class="acard"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M6 9h12M6 15h12"/></svg></div><span class="pill2 concept">Design</span></div><h4>Building sections</h4><p>Drop a section, then drag a shelf into its empty bay.</p></div>
-    </div>
   </section>
 
   <!-- ═══ QUIZZES ═══ -->
@@ -379,10 +352,6 @@
     <h1 class="title">Quizzes</h1>
     <p class="lead">Short checks on what you learned, plus a fresh trivia set every week.</p>
     <div class="drow" style="margin-top:16px;">
-      <div class="ecard">
-        <div class="tag">Weekly · resets Monday</div><h3>This Week's Trivia</h3><p>5 quick app-knowledge questions. A new set drops each Monday.</p>
-        <button class="go" id="triviaOpen2">Play trivia →</button>
-      </div>
       <a class="ecard" href="./3%20Quizzes/index.html" target="_blank">
         <div class="tag">All quizzes</div><h3>Quiz landing page</h3><p>All three quizzes in one place, with QR codes on the decks.</p>
         <span class="go">Open →</span>
@@ -399,7 +368,7 @@
   <!-- ═══ TRAININGS ═══ -->
   <section data-sec="trainings">
     <h1 class="title">Trainings</h1>
-    <p class="lead">Review past training presentations and the live-session activities any time.</p>
+    <p class="lead">Review past training presentations, live-session activities, guides and videos any time.</p>
     <div class="sechead"><h2>Presentations</h2></div>
     <div class="grid">
       <a class="acard" href="./1%20Decks/Day1_Deck.html" target="_blank" data-eid="day1" data-earn="8"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><span class="pill2 ready">Day 1</span></div><h4>Day 1 Deck</h4><p>Full appointment flow, room shape to estimate.</p><span class="earn" data-eb="day1">Earn +8 <img class="mr" src="moon-logo.png"></span><span class="open">Review <span class="arw">→</span></span></a>
@@ -409,6 +378,17 @@
     <div class="grid">
       <a class="acard" href="./4%20Day%202%20Activities/Client_Cards_Checklist.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="10" rx="2"/><path d="M7 19h14V9"/></svg></div><span class="pill2 ready">Activity</span></div><h4>Celebrity Client Cards</h4><p>Roleplay profiles with a guided checklist.</p><span class="open">Open <span class="arw">→</span></span></a>
       <a class="acard" href="./4%20Day%202%20Activities/Tournament_Voting.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><path d="M6 4h12v3a6 6 0 0 1-12 0V4zM9 20h6M10 20v-3M14 20v-3"/></svg></div><span class="pill2 ready">Activity</span></div><h4>Dream Closet Tournament</h4><p>Live voting console for the Day 2 showdown.</p><span class="open">Open <span class="arw">→</span></span></a>
+    </div>
+    <div class="sechead"><h2>Guides &amp; handouts</h2></div>
+    <div class="grid">
+      <a class="acard" href="./2%20Handouts%20%26%20Guide/Interactive_Designer_Guide.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></div><span class="pill2 review">Ready</span></div><h4>Interactive Navigation Guide</h4><p>Step-by-step walkthrough with gestures and a built-in assistant.</p><span class="open">Open <span class="arw">→</span></span></a>
+    </div>
+    <div class="sechead"><h2>Videos</h2></div>
+    <div class="grid">
+      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Measuring a room</h4><p>Setting the room shape and editing wall measurements.</p></div>
+      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Placing obstacles</h4><p>Adding doors, windows and outlets from the panel.</p></div>
+      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Building sections</h4><p>Adding sections and accessorizing bays.</p></div>
+      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Presenting in 3D</h4><p>Switching views and walking the client through the design.</p></div>
     </div>
   </section>
 
@@ -424,27 +404,6 @@
     <h1 class="title">Shop</h1>
     <p class="lead">Spend your moon rocks on closet upgrades and perks. <b id="shopBal"></b></p>
     <div class="grid" id="shopGrid" style="margin-top:16px;"></div>
-  </section>
-
-  <!-- ═══ VIDEOS ═══ -->
-  <section data-sec="videos">
-    <h1 class="title">Videos</h1>
-    <p class="lead">Short how-to clips that walk a single task. Coming soon, they will drop in as they are recorded.</p>
-    <div class="grid" style="margin-top:16px;">
-      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Measuring a room</h4><p>Setting the room shape and editing wall measurements.</p></div>
-      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Placing obstacles</h4><p>Adding doors, windows and outlets from the panel.</p></div>
-      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Building sections</h4><p>Adding sections and accessorizing bays.</p></div>
-      <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Presenting in 3D</h4><p>Switching views and walking the client through the design.</p></div>
-    </div>
-  </section>
-
-  <!-- ═══ GUIDES ═══ -->
-  <section data-sec="guides">
-    <h1 class="title">Guides &amp; Handouts</h1>
-    <p class="lead">Self-serve reference for off-site, hands-on practice.</p>
-    <div class="grid" style="margin-top:16px;">
-      <a class="acard" href="./2%20Handouts%20%26%20Guide/Interactive_Designer_Guide.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></div><span class="pill2 review">Ready</span></div><h4>Interactive Navigation Guide</h4><p>Step-by-step walkthrough with gestures and a built-in assistant.</p><span class="open">Open <span class="arw">→</span></span></a>
-    </div>
   </section>
 
   <div class="foot"><span>Moon · Sales Designer App Training</span><span>PTP-247 · First 5 designers</span></div>
@@ -609,7 +568,6 @@
     document.getElementById('strkBig').textContent=st.streak;
     document.getElementById('stageBig').textContent=(s+1)+'/10';
     var s2=document.getElementById('strkBig2'); if(s2)s2.innerHTML=FLAME+' '+st.streak+' day'+(st.streak>1?'s':'');
-    renderEW();
   }
 
   document.getElementById('compareBtn').addEventListener('click',function(){ toast('Compare Collections — coming soon!'); });
@@ -644,24 +602,16 @@
   document.addEventListener('click',function(e){ var a=e.target.closest('[data-eid]'); if(a) earn(a.dataset.eid,+a.dataset.earn); });
 
   /* ── leaderboard ── */
-  // PEOPLE (mock project/client names) still backs "Everyone's work" below -
-  // there's no real project/appointment data source yet, only real
-  // rocks/streak. The Leaderboard tab below is the real one, from /api/leaderboard.
-  var PEOPLE=[
-    {n:'Alex R.',p:'Walk-in wardrobe',t:12,s:6,st:'rev'},
-    {n:'Dessy K.',p:'Reach-in makeover',t:9,s:4,st:'prog'},
-    {n:'Jordan M.',p:'Corner closet',t:7,s:3,st:'prog'},
-    {n:'Priya N.',p:'Pantry system',t:5,s:2,st:'prog'}
-  ];
   async function renderLeaderboard(){
     var rows;
     try{ rows=await apiFetch('/api/leaderboard'); }catch(e){ console.error(e); return; }
     var medals=['<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#f4d477;color:#7a5606;font-weight:800;font-size:11px;">1</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#dcdde3;color:#4a4a56;font-weight:800;font-size:11px;">2</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e3b088;color:#6b3d17;font-weight:800;font-size:11px;">3</span>'];
     document.getElementById('lbList').innerHTML=rows.map(function(r,i){
       var rank=i<3?medals[i]:(i+1), me=r.email===st.email;
+      var badges=(r.badges||[]).map(function(b){return '<span class="badge">'+b+'</span>';}).join('');
       return '<div class="lbrow'+(i<3?' top':'')+(me?' me':'')+'"><div class="rank">'+rank+'</div>'+
         '<div class="who"><div class="n">'+r.name+(me?' (you)':'')+'</div></div>'+
-        '<div class="rocks">'+MR+' '+r.tokens+'</div><div class="strk">'+FLAME+' '+(r.streak||0)+'</div></div>';
+        '<div class="rocks">'+MR+' '+r.tokens+'</div><div class="badges">'+badges+'</div></div>';
     }).join('');
   }
 
@@ -732,22 +682,6 @@
   function closeReward(){ rewardModal.classList.remove('open'); }
   rewardModal.addEventListener('click',function(e){if(e.target===rewardModal)closeReward();});
 
-  /* ── everyone's work ── */
-  function renderEW(){
-    var me={n:'You',p:'Master closet',t:st.tokens,s:st.streak,st:'prog',me:true};
-    var all=PEOPLE.concat([me]).sort(function(a,b){return b.t-a.t;});
-    var q=(document.getElementById('ewSearch').value||'').toLowerCase();
-    var rows=all.filter(function(r){return r.n.toLowerCase().indexOf(q)>-1||r.p.toLowerCase().indexOf(q)>-1;});
-    document.getElementById('ewRows').innerHTML=rows.map(function(r){
-      var pill=r.st==='rev'?'<span class="stpill st-rev">Reviewed</span>':'<span class="stpill st-prog">In progress</span>';
-      return '<div class="trow'+(r.me?' me':'')+'">'+
-        '<div class="nm">'+r.n+(r.me?' <span class="sub">(you)</span>':'')+'</div>'+
-        '<div class="td-addr sub" style="font-size:13px;color:var(--ink);font-weight:600;">'+r.p+'</div>'+
-        '<div><b>'+MR+' '+r.t+'</b></div>'+
-        '<div class="td-streak">'+FLAME+' '+r.s+'</div>'+pill+'</div>';
-    }).join('');
-  }
-  document.getElementById('ewSearch').addEventListener('input',renderEW);
 
   /* ── trivia ── */
   var POOL=[
