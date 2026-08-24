@@ -25,7 +25,19 @@ based) needs no server of its own; the API functions just verify the token.
      our `/api` functions).
 3. **Vercel** - add as Environment Variables on the existing `moon-training`
    project (Settings -> Environment Variables), never committed to the repo:
-   `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+   `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
+   `ADMIN_EMAILS` (comma-separated, e.g. `mo@moon.tech`).
+
+## Admin panel (pilot testing only)
+
+Any email listed in `ADMIN_EMAILS` sees a "Simulate next day / +10 rocks /
+-10 rocks / Reset" panel on their own dashboard, backed by `/api/admin/*` -
+lets you exercise the closet stages, streak, and rock balance without
+waiting on real calendar days. Enforced server-side (checks the email in the
+verified ID token), so it can't be triggered by anyone not on that list, and
+`reset`/`add-rocks`/`simulate-day` only ever act on the calling admin's own
+row - there's no way to target another user's data through these endpoints.
+Pull `ADMIN_EMAILS` before a wider rollout unless you want testers to have it.
 
 ## Open questions (from CLAUDE.md's Phase 2 roadmap)
 

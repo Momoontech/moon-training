@@ -1,4 +1,4 @@
-const { requireUser, AuthError } = require('./_lib/auth');
+const { requireUser, isAdminEmail, AuthError } = require('./_lib/auth');
 const { db, getOrCreateUser } = require('./_lib/db');
 
 // GET /api/state - replaces loadS(): returns this designer's current
@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
       visits: closet.visits,
       claimed: Object.fromEntries((achievements || []).map(a => [a.achievement_id, true])),
       owned: Object.fromEntries((purchases || []).map(p => [p.item_id, true])),
+      isAdmin: isAdminEmail(user.email),
     });
   } catch (e) {
     if (e instanceof AuthError) return res.status(401).json({ error: e.message });

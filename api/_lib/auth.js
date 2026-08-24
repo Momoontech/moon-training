@@ -27,4 +27,18 @@ async function requireUser(req) {
   return { sub: payload.sub, email: payload.email, name: payload.name || payload.email };
 }
 
-module.exports = { requireUser, AuthError };
+// ADMIN_EMAILS is a comma-separated allowlist (Vercel env var) - deliberately
+// not a DB column, since this is a temporary pilot-testing tool, not a real
+// role system.
+function isAdminEmail(email) {
+  const list = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
+  return list.includes((email || '').toLowerCase());
+}
+
+async function requireAdmin(req) {
+  const identity = await requireUser(req);
+  if (!isAdminEmail(identity.email)) throw new AuthError('Admin only');
+  return identity;
+}
+
+module.exports = { requireUser, requireAdmin, isAdminEmail, AuthError };
