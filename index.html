@@ -291,13 +291,13 @@
             <div><b id="strkBig">1</b><span>day streak</span></div>
             <div><b id="stageBig">1/10</b><span>closet level</span></div>
           </div>
-          <div class="actions" id="adminActions" style="display:none;">
-            <button class="cbtn solid" id="simBtn">Simulate next day</button>
-            <button class="cbtn" id="addRocks">+ 10 rocks</button>
-            <button class="cbtn" id="subRocks">- 10 rocks</button>
-            <button class="cbtn" id="resetBtn">Reset</button>
-          </div>
           <div class="actions">
+            <span id="adminActions" style="display:none;">
+              <button class="cbtn solid" id="simBtn">Simulate next day</button>
+              <button class="cbtn" id="addRocks">+ 10 rocks</button>
+              <button class="cbtn" id="subRocks">- 10 rocks</button>
+              <button class="cbtn" id="resetBtn">Reset</button>
+            </span>
             <button class="cbtn compare" id="compareBtn">Compare Collections</button>
           </div>
         </div>
@@ -813,7 +813,7 @@
     avatar.addEventListener('click',function(){ auth0Client.logout({logoutParams:{returnTo:window.location.origin}}); });
 
     if(st.isAdmin){
-      document.getElementById('adminActions').style.display='';
+      document.getElementById('adminActions').style.display='contents';
       document.getElementById('simBtn').addEventListener('click',async function(){
         try{ await apiFetch('/api/admin/simulate-day',{method:'POST',body:'{}'}); st=await apiFetch('/api/state'); refreshAll(); openReward(st.visits); }
         catch(e){ console.error(e); toast('Admin action failed - check your connection.'); }
