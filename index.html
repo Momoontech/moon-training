@@ -477,7 +477,11 @@
     var headers={'Authorization':'Bearer '+idToken};
     if(opts.body)headers['Content-Type']='application/json';
     var res=await fetch(path,Object.assign({},opts,{headers:headers}));
-    if(!res.ok)throw new Error('Request failed: '+path+' ('+res.status+')');
+    if(!res.ok){
+      var msg='Request failed: '+path+' ('+res.status+')';
+      try{ var body=await res.json(); if(body&&body.error)msg=body.error; }catch(e){}
+      throw new Error(msg);
+    }
     return res.status===204?null:res.json();
   }
 
@@ -858,17 +862,22 @@
       var claims=await auth0Client.getIdTokenClaims();
       idToken=claims.__raw;
 
+      // Fetch state BEFORE revealing the dashboard - if this account isn't on
+      // the allowlist, apiFetch throws here and we never show the app shell.
+      st=await apiFetch('/api/state');
+      st.claimed=st.claimed||{}; st.owned=st.owned||{};
+
       document.getElementById('loginScreen').style.display='none';
       document.querySelector('.navbar').style.display='';
       document.querySelector('.wrap').style.display='';
-
-      st=await apiFetch('/api/state');
-      st.claimed=st.claimed||{}; st.owned=st.owned||{};
       initApp();
     }catch(e){
       console.error(e);
+      document.getElementById('loginScreen').style.display='flex';
+      document.querySelector('.navbar').style.display='none';
+      document.querySelector('.wrap').style.display='none';
       var err=document.getElementById('loginError');
-      err.textContent='Something went wrong signing you in - please try again.';
+      err.textContent=e.message||'Something went wrong signing you in - please try again.';
       err.style.display='block';
     }
   }
