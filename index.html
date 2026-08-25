@@ -203,22 +203,23 @@
 
   /* ─── Leaderboard ─── */
   /* ─── Your Closet (3D) ─── */
-  .closet3d-wrap{position:relative;height:440px;border-radius:18px;overflow:hidden;background:#f7f6fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(26,21,35,.08);margin-top:14px;}
-  .closet3d-wrap canvas{display:block;width:100%;height:100%;}
-  .closet3d-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.45);color:#fff;font-size:11.5px;font-weight:600;padding:6px 14px;border-radius:999px;pointer-events:none;}
-  .closet3d-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;font-weight:600;}
+  /* Static "dollhouse" illustration - a 3-sided room drawn in SVG at a fixed
+     angle (not a real rotatable 3D space), replacing an earlier WebGL
+     attempt that was slow to iterate on and couldn't be previewed reliably. */
+  .closet-view-wrap{position:relative;border-radius:18px;overflow:hidden;background:#f7f6fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(26,21,35,.08);margin-top:14px;}
+  .closet-view-wrap svg.dollhouse{display:block;width:100%;height:auto;}
   .closet-viewing-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--purple-2);border:1px solid #ddd0fb;border-radius:12px;padding:10px 14px;margin-top:14px;font-size:13px;font-weight:700;color:var(--color-button-primary);}
   .browse-card{cursor:pointer;}
   .browse-card:hover{border-color:#c9c4db;box-shadow:0 4px 14px rgba(26,21,35,.1);}
   .browse-card .lvl{font-size:11px;font-weight:800;color:var(--primary);}
   .closet-stats-row{display:flex;gap:28px;margin-top:18px;flex-wrap:wrap;}
 
-  /* ─── Your Closet: main + side panel layout ─── */
-  /* Customize panel floats ON TOP of the 3D view itself (matches the real
-     app's in-viewport Options panel), not beside it as a separate section. */
-  .closet3d-customize-btn{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.94);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 2px 10px rgba(26,21,35,.14);}
-  .closet3d-customize{position:absolute;top:14px;right:14px;bottom:14px;width:260px;background:rgba(255,255,255,.97);border-radius:14px;padding:14px;overflow-y:auto;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;}
-  @media (max-width:640px){.closet3d-customize{left:14px;width:auto;}}
+  /* ─── Your Closet customize panel ─── */
+  /* Floats ON TOP of the illustration itself (matches the real app's
+     in-viewport Options panel), not beside it as a separate section. */
+  .closet-customize-btn{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.94);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 2px 10px rgba(26,21,35,.14);}
+  .closet-customize{position:absolute;top:14px;right:14px;bottom:14px;width:260px;background:rgba(255,255,255,.97);border-radius:14px;padding:14px;overflow-y:auto;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;}
+  @media (max-width:640px){.closet-customize{left:14px;width:auto;}}
   .side-bal{font-size:12px;color:var(--muted);margin-bottom:10px;}
   .side-bal b{color:var(--ink);font-weight:800;}
   .shop-group-head{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 6px;}
@@ -451,12 +452,11 @@
   <!-- ═══ YOUR CLOSET ═══ -->
   <section data-sec="closet">
     <h1 class="title">Your Closet</h1>
-    <p class="lead">Your closet in 3D - drag to look around. Tap Customize to change colors and textures.</p>
-    <div class="closet3d-wrap" id="closet3dWrap">
-      <div class="closet3d-loading" id="closet3dLoading">Loading 3D view…</div>
-      <div class="closet3d-hint">Drag to rotate</div>
-      <button class="closet3d-customize-btn" id="customizeBtn">Customize</button>
-      <div class="closet3d-customize" id="customizePanel" style="display:none;">
+    <p class="lead">Tap Customize to change colors and textures.</p>
+    <div class="closet-view-wrap" id="closetView">
+      <div id="closetIllustration"></div>
+      <button class="closet-customize-btn" id="customizeBtn">Customize</button>
+      <div class="closet-customize" id="customizePanel" style="display:none;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <b style="font-size:13px;">Customize</b>
           <button id="customizeClose" style="border:none;background:#f1f1f6;border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--muted);font-size:13px;">✕</button>
@@ -495,281 +495,6 @@
 <div class="modal" id="triviaModal"><div class="msheet" id="triviaSheet"></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@auth0/auth0-spa-js@2/dist/auth0-spa-js.production.js"></script>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-// Your Closet - 3D walk-in room. Stage 0-9 mirrors the same thresholds the
-// flat SVG version (closetSVG in the main script) uses, just built from
-// simple primitives instead of illustrated paths - this is a first pass,
-// not meant to be photorealistic furniture.
-(function(){
-  // Muted, believable clothing tones instead of saturated rainbow colors -
-  // reads as an actual wardrobe rather than an abstract art piece.
-  var GARMENT_COLORS=['#2c3e6b','#ece7dc','#c9a876','#3a3a3f','#6b2c3e','#5c6b47','#8fa8c2'];
-  var scene,camera,renderer,controls,furnitureGroup,container,ro,floorMat,wallMat;
-  var DEFAULT_WALL=0xfafafc,DEFAULT_FLOOR=0xd6b98c;
-
-  function build(){
-    scene=new THREE.Scene();
-    // Light, clean showroom look to match the real app's 3D view (white
-    // walls, pale wood floor, soft grid stage) rather than a game-y dark
-    // scene - this is meant to look like the actual product, not an arcade.
-    scene.background=new THREE.Color(0xf7f6fb);
-    scene.fog=new THREE.Fog(0xf7f6fb,9,22);
-
-    camera=new THREE.PerspectiveCamera(45,1,0.1,50);
-    camera.position.set(4.2,3.6,5.2);
-
-    renderer=new THREE.WebGLRenderer({antialias:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-    container.innerHTML='';
-    container.appendChild(renderer.domElement);
-
-    var hint=document.createElement('div');
-    hint.className='closet3d-hint';
-    hint.textContent='Drag to rotate';
-    container.appendChild(hint);
-
-    controls=new OrbitControls(camera,renderer.domElement);
-    controls.target.set(0,1.2,0);
-    controls.enableDamping=true;
-    controls.enablePan=false;
-    controls.minDistance=4;
-    controls.maxDistance=9;
-    controls.maxPolarAngle=Math.PI/2-0.03;
-
-    scene.add(new THREE.AmbientLight(0xffffff,1.3));
-    scene.add(new THREE.HemisphereLight(0xffffff,0xe4e0f0,0.6));
-    var sun=new THREE.DirectionalLight(0xffffff,1.0);
-    sun.position.set(5,8,4);
-    scene.add(sun);
-    var fill=new THREE.DirectionalLight(0xffffff,0.5);
-    fill.position.set(-4,5,6);
-    scene.add(fill);
-
-    // Pale grid extending beyond the room footprint, like the real app's
-    // "big empty stage" floor - sits just under the room's own floor plane
-    // so it only shows past the room's edges.
-    var grid=new THREE.GridHelper(24,24,0xdcd9e4,0xeceaf1);
-    grid.position.y=-0.005;
-    scene.add(grid);
-
-    floorMat=new THREE.MeshStandardMaterial({color:DEFAULT_FLOOR});
-    wallMat=new THREE.MeshStandardMaterial({color:DEFAULT_WALL});
-    var floor=new THREE.Mesh(new THREE.PlaneGeometry(6,5),floorMat);
-    floor.rotation.x=-Math.PI/2;
-    scene.add(floor);
-    var back=new THREE.Mesh(new THREE.PlaneGeometry(6,3),wallMat);
-    back.position.set(0,1.5,-2.5);
-    scene.add(back);
-    var left=new THREE.Mesh(new THREE.PlaneGeometry(5,3),wallMat);
-    left.rotation.y=Math.PI/2;
-    left.position.set(-3,1.5,0);
-    scene.add(left);
-    var right=new THREE.Mesh(new THREE.PlaneGeometry(5,3),wallMat);
-    right.rotation.y=-Math.PI/2;
-    right.position.set(3,1.5,0);
-    scene.add(right);
-
-    furnitureGroup=new THREE.Group();
-    scene.add(furnitureGroup);
-
-    resize();
-    renderer.setAnimationLoop(function(){ controls.update(); renderer.render(scene,camera); });
-
-    ro=new ResizeObserver(resize);
-    ro.observe(container);
-  }
-
-  function resize(){
-    if(!container||!renderer)return;
-    var w=container.clientWidth,h=container.clientHeight;
-    if(!w||!h)return;
-    renderer.setSize(w,h);
-    camera.aspect=w/h;
-    camera.updateProjectionMatrix();
-  }
-
-  function box(w,h,d,color,emissive){
-    var mat=emissive?new THREE.MeshStandardMaterial({color:color,emissive:color,emissiveIntensity:0.6,roughness:0.6})
-                    :new THREE.MeshStandardMaterial({color:color,roughness:0.85});
-    return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
-  }
-
-  // A hanging garment: rounded capsule body (reads as a shirt/dress
-  // silhouette, not a flat rectangle) plus a small metal hanger hook.
-  // `topY` is the rod height the hook sits just under.
-  function garment(x,topY,z,radius,length,colorHex){
-    var g=new THREE.Group();
-    var body=new THREE.Mesh(new THREE.CapsuleGeometry(radius,length,4,10),
-      new THREE.MeshStandardMaterial({color:colorHex,roughness:0.75}));
-    g.add(body);
-    var hook=new THREE.Mesh(new THREE.TorusGeometry(0.045,0.011,6,12,Math.PI*1.5),
-      new THREE.MeshStandardMaterial({color:0x8d8d95,metalness:0.7,roughness:0.35}));
-    hook.rotation.z=Math.PI/2.3;
-    hook.position.y=radius+length/2+0.02;
-    g.add(hook);
-    g.position.set(x,topY-radius-length/2-0.06,z);
-    return g;
-  }
-
-  // A simple rounded shoe silhouette (squashed capsule) instead of a plain box.
-  function shoeMesh(x,z,colorHex){
-    var m=new THREE.Mesh(new THREE.CapsuleGeometry(0.09,0.22,4,8),
-      new THREE.MeshStandardMaterial({color:colorHex,roughness:0.7}));
-    m.rotation.z=Math.PI/2;
-    m.scale.set(1,0.62,1);
-    m.position.set(x,0.09,z);
-    return m;
-  }
-
-  // Open shelving cubby: frame + internal shelf boards, instead of one
-  // floating plank - reads as actual built-in shelving.
-  function shelfUnit(x,y,z,w,h,d,levels){
-    var g=new THREE.Group();
-    var frameMat=new THREE.MeshStandardMaterial({color:0xf6f1e6,roughness:0.8});
-    var back=new THREE.Mesh(new THREE.BoxGeometry(w,h,0.03),frameMat); back.position.set(0,0,-d/2); g.add(back);
-    [-1,1].forEach(function(side){
-      var wall=new THREE.Mesh(new THREE.BoxGeometry(0.03,h,d),frameMat); wall.position.set(side*w/2,0,0); g.add(wall);
-    });
-    for(var i=0;i<=levels;i++){
-      var shelf=new THREE.Mesh(new THREE.BoxGeometry(w,0.03,d),frameMat);
-      shelf.position.set(0,-h/2+(h/levels)*i,0);
-      g.add(shelf);
-    }
-    g.position.set(x,y,z);
-    return g;
-  }
-
-  // Dresser with individually visible drawer fronts, instead of one tall
-  // box with floating handle bars.
-  function drawerUnit(x,y,z,w,d,count){
-    var g=new THREE.Group();
-    var caseMat=new THREE.MeshStandardMaterial({color:0xf7f3ec,roughness:0.8});
-    var carcass=new THREE.Mesh(new THREE.BoxGeometry(w,count*0.36,d),caseMat);
-    g.add(carcass);
-    var faceH=0.32;
-    for(var i=0;i<count;i++){
-      var face=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,faceH,0.02),
-        new THREE.MeshStandardMaterial({color:0xfbf8f2,roughness:0.7}));
-      face.position.set(0,(count*0.36)/2-0.18-i*0.36,d/2+0.011);
-      g.add(face);
-      var handle=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.32,6),
-        new THREE.MeshStandardMaterial({color:0x8d8d95,metalness:0.7,roughness:0.3}));
-      handle.rotation.z=Math.PI/2;
-      handle.position.set(0,(count*0.36)/2-0.18-i*0.36,d/2+0.03);
-      g.add(handle);
-    }
-    g.position.set(x,y,z);
-    return g;
-  }
-
-  function buildFurniture(s){
-    while(furnitureGroup.children.length){
-      var c=furnitureGroup.children.pop();
-      c.traverse(function(o){ if(o.geometry)o.geometry.dispose(); if(o.material)o.material.dispose(); });
-    }
-    if(s<1){
-      // stage 0: messy room - laundry pile + two "monsters"
-      var pile=box(1.4,0.35,1.1,0x8a7a58); pile.position.set(-1.2,0.17,-1.4);
-      furnitureGroup.add(pile);
-      [[0.9,0x7239EA],[1.9,0x12B886]].forEach(function(m){
-        var body=new THREE.Mesh(new THREE.ConeGeometry(0.4,0.9,8),new THREE.MeshStandardMaterial({color:m[1]}));
-        body.position.set(m[0],0.45,-1.6);
-        furnitureGroup.add(body);
-      });
-      return;
-    }
-    if(s>=2){
-      var shelves=shelfUnit(-1.9,1.9,-2.42,1.6,1.1,0.4,3);
-      furnitureGroup.add(shelves);
-      var storageBox=box(0.5,0.4,0.4,0xdccfa8); storageBox.position.set(1.9,0.2,-2.2);
-      furnitureGroup.add(storageBox);
-    }
-    if(s>=3){
-      furnitureGroup.add(drawerUnit(-1.9,0.72,-2.2,1.4,0.5,3));
-    }
-    if(s>=4){
-      var rodY=2.0;
-      var rod=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,2.0,10),
-        new THREE.MeshStandardMaterial({color:0xc9c9d1,metalness:0.75,roughness:0.3}));
-      rod.rotation.z=Math.PI/2; rod.position.set(0.55,rodY,-2.2);
-      furnitureGroup.add(rod);
-      var shirtCount=s>=6?6:4;
-      for(var k=0;k<shirtCount;k++){
-        furnitureGroup.add(garment(-0.35+k*0.32,rodY,-2.2,0.14,0.5,GARMENT_COLORS[k%GARMENT_COLORS.length]));
-      }
-    }
-    if(s>=5){
-      for(var st2=0;st2<3;st2++){
-        var stack=box(0.55,0.1,0.35,GARMENT_COLORS[(st2+2)%GARMENT_COLORS.length]);
-        stack.position.set(1.9,0.5+st2*0.12,-2.2);
-        furnitureGroup.add(stack);
-      }
-    }
-    if(s>=6){
-      // second, lower rod for longer items (dresses/pants)
-      var rod2Y=1.15;
-      var rod2=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,1.6,10),
-        new THREE.MeshStandardMaterial({color:0xc9c9d1,metalness:0.75,roughness:0.3}));
-      rod2.rotation.z=Math.PI/2; rod2.position.set(0.55,rod2Y,-2.2);
-      furnitureGroup.add(rod2);
-      for(var d2=0;d2<4;d2++){
-        furnitureGroup.add(garment(-0.2+d2*0.4,rod2Y,-2.2,0.13,0.85,GARMENT_COLORS[(d2+4)%GARMENT_COLORS.length]));
-      }
-    }
-    if(s>=7){
-      var led=box(2.4,0.06,0.06,0xffe6a8,true);
-      led.position.set(0.6,2.85,-2.4);
-      furnitureGroup.add(led);
-      var glow=new THREE.PointLight(0xffe6a8,0.6,4);
-      glow.position.set(0.6,2.7,-1.8);
-      furnitureGroup.add(glow);
-    }
-    if(s>=8){
-      var shoeColors=[0x2f2a28,0x5c4632,0x8d8d95,0x2c3e6b];
-      for(var sh2=0;sh2<4;sh2++){
-        furnitureGroup.add(shoeMesh(-2.3+sh2*0.45,1.6,shoeColors[sh2%shoeColors.length]));
-      }
-    }
-    if(s>=9){
-      for(var sp=0;sp<5;sp++){
-        var sparkle=new THREE.Mesh(new THREE.SphereGeometry(0.05,8,8),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:1}));
-        sparkle.position.set(-1.5+sp*0.8,2.2+Math.sin(sp)*0.3,-1.0);
-        furnitureGroup.add(sparkle);
-      }
-    }
-  }
-
-  window.MoonCloset3D={
-    init:function(el){
-      container=el;
-      if(!scene)build();
-    },
-    setStage:function(s){
-      if(!scene)return;
-      buildFurniture(Math.max(0,Math.min(9,s)));
-    },
-    // hexes are plain "rrggbb" strings (no leading #) as stored in the SHOP
-    // items/purchases - null/undefined falls back to the room's defaults.
-    setSkin:function(wallHex,floorHex){
-      if(!scene)return;
-      wallMat.color.set(wallHex?parseInt(wallHex,16):DEFAULT_WALL);
-      floorMat.color.set(floorHex?parseInt(floorHex,16):DEFAULT_FLOOR);
-    }
-  };
-})();
-</script>
 <script>
 (function(){
   "use strict";
@@ -781,7 +506,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     document.querySelectorAll('section[data-sec]').forEach(function(s){s.classList.toggle('show',s.dataset.sec===sec);});
     window.scrollTo({top:0,behavior:'smooth'});
     if(history.replaceState)history.replaceState(null,'','#'+sec);
-    if(sec==='closet')initCloset3DOnce();
   }
   tabs.addEventListener('click',function(e){var b=e.target.closest('.nl'); if(b)go(b.dataset.sec);});
 
@@ -851,7 +575,11 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     '<path d="M-11 6 l3.5 6 3.5 -6 3.5 6 3.5 -6 3.5 6 3.5 -6" fill="#fff"/>'+
     '</g>'; }
 
-  function closetSVG(s){
+  // Builds just the inner "back wall" scene markup (no outer <svg> wrapper),
+  // shared by the small Dashboard preview (closetSVG) and the bigger
+  // dollhouse room view (closetDollhouse) so the furniture drawing logic
+  // only lives in one place.
+  function closetScene(s){
     function shirt(cx,top,w,h,c){ var hw=w/2;
       return '<path d="M'+cx+' '+(top-1)+' L'+(cx-hw)+' '+(top+5)+' M'+cx+' '+(top-1)+' L'+(cx+hw)+' '+(top+5)+'" stroke="#8a7a58" stroke-width="1.2" fill="none"/>'+
         '<path d="M'+(cx-6)+' '+top+' Q'+cx+' '+(top+3.5)+' '+(cx+6)+' '+top+' L'+(cx+hw)+' '+(top+5)+' L'+(cx+hw+3)+' '+(top+11)+' L'+(cx+hw-2)+' '+(top+15)+' L'+(cx+hw-4)+' '+(top+h)+' L'+(cx-hw+4)+' '+(top+h)+' L'+(cx-hw+2)+' '+(top+15)+' L'+(cx-hw-3)+' '+(top+11)+' L'+(cx-hw)+' '+(top+5)+' Z" fill="'+c+'"/>'; }
@@ -911,7 +639,41 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
       p+='<g fill="#FDC63A"><path d="M405 96 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/></g>';
       p+='<g transform="translate(430,220)"><rect x="-10" y="14" width="20" height="16" rx="3" fill="#d8c19a" stroke="#c3a877" stroke-width="1.2"/><path d="M0 14 q-15 -20 -4 -34 q9 8 4 34 M0 14 q15 -18 4 -32 q-8 10 -4 32" fill="#3f9f66"/></g>';
     }
-    return '<svg class="cl" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">'+p+'</svg>';
+    return p;
+  }
+  function closetSVG(s){
+    return '<svg class="cl" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">'+closetScene(s)+'</svg>';
+  }
+
+  // Bigger "dollhouse" view: the same scene as the back wall of a static,
+  // fixed-angle 3-sided room (side walls + floor drawn as simple perspective
+  // polygons around it) - not a real rotatable 3D space, just styled to look
+  // like one, per Mo's call to drop the WebGL room in favor of something
+  // fully static that renders reliably everywhere.
+  function closetDollhouse(s,wallHex,floorHex){
+    var wall=wallHex?'#'+wallHex:'#fbfaf9';
+    var floor=floorHex?'#'+floorHex:'#d9bd8f';
+    var backX=170,backY=18,backW=360,backH=246; // where the 440x300 scene sits, scaled ~0.818
+    var scale=backW/440;
+    var out='';
+    // side walls, receding outward toward the viewer
+    out+='<polygon points="'+backX+','+backY+' 46,58 0,458 '+backX+','+(backY+backH)+'" fill="'+wall+'"/>';
+    out+='<polygon points="'+(backX+backW)+','+backY+' 654,58 700,458 '+(backX+backW)+','+(backY+backH)+'" fill="'+wall+'"/>';
+    out+='<polygon points="46,58 0,458 700,458 654,58" fill="'+wall+'" opacity=".55"/>'; // ceiling sliver softened into walls
+    // floor
+    out+='<polygon points="'+backX+','+(backY+backH)+' '+(backX+backW)+','+(backY+backH)+' 690,478 10,478" fill="'+floor+'"/>';
+    out+='<polygon points="'+backX+','+(backY+backH)+' '+(backX+backW)+','+(backY+backH)+' 690,478 10,478" fill="#000" opacity=".08"/>';
+    // subtle side-wall shading for depth
+    out+='<polygon points="'+backX+','+backY+' 46,58 0,458 '+backX+','+(backY+backH)+'" fill="#000" opacity=".05"/>';
+    out+='<g transform="translate('+backX+','+backY+') scale('+scale+')">'+closetScene(s)+'</g>';
+    out+='<rect x="'+backX+'" y="'+backY+'" width="'+backW+'" height="'+backH+'" fill="none" stroke="#000" stroke-opacity=".06" stroke-width="1"/>';
+    return '<svg class="dollhouse" viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">'+out+'</svg>';
+  }
+
+  function renderClosetIllustration(){
+    var el=document.getElementById('closetIllustration');
+    if(viewingMock){ el.innerHTML=closetDollhouse(viewingMock.stage,null,null); }
+    else { el.innerHTML=closetDollhouse(stage(),st.equippedWall,st.equippedFloor); }
   }
 
   function renderCloset(){
@@ -928,27 +690,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     document.getElementById('closetTokBig').textContent=st.tokens;
     document.getElementById('closetStrkBig').textContent=st.streak;
     document.getElementById('closetStageBig').textContent=(s+1)+'/10';
-    if(window.MoonCloset3D&&!viewingMock)window.MoonCloset3D.setStage(s);
-  }
-
-  // Lazy-loads the 3D scene only once the "Your Closet" tab is actually
-  // opened (avoids building a WebGL context for people who never click it).
-  // window.MoonCloset3D is set by the module <script> once three.js has
-  // finished loading from the CDN, which can race this - poll briefly.
-  var closet3dReady=false;
-  function initCloset3DOnce(){
-    if(closet3dReady)return;
-    (function tryInit(){
-      if(window.MoonCloset3D){
-        closet3dReady=true;
-        window.MoonCloset3D.init(document.getElementById('closet3dWrap'));
-        window.MoonCloset3D.setStage(stage());
-        window.MoonCloset3D.setSkin(st.equippedWall,st.equippedFloor);
-        var loading=document.getElementById('closet3dLoading'); if(loading)loading.remove();
-      }else{
-        setTimeout(tryInit,150);
-      }
-    })();
+    renderClosetIllustration();
   }
 
   // ── browse other closets ── mock data for showcase: the real pilot cohort
@@ -974,16 +716,16 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     });
   }
   function viewMock(i){
-    var m=MOCK_CLOSETS[i]; if(!m||!window.MoonCloset3D)return;
+    var m=MOCK_CLOSETS[i]; if(!m)return;
     viewingMock=m;
-    window.MoonCloset3D.setStage(m.stage);
+    renderClosetIllustration();
     document.getElementById('closetViewingBar').style.display='flex';
     document.getElementById('closetViewingLabel').textContent='Viewing '+m.name+"'s closet";
   }
   document.getElementById('closetBackBtn').addEventListener('click',function(){
     viewingMock=null;
     document.getElementById('closetViewingBar').style.display='none';
-    if(window.MoonCloset3D)window.MoonCloset3D.setStage(stage());
+    renderClosetIllustration();
   });
 
   document.getElementById('compareBtn').addEventListener('click',function(){ toast('Compare Collections — coming soon!'); });
@@ -1123,7 +865,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
       else { st.owned[it.id]=true; }
       if(it.category==='wall'){ st.equippedWall=it.hex; }
       if(it.category==='floor'){ st.equippedFloor=it.hex; }
-      if(window.MoonCloset3D)window.MoonCloset3D.setSkin(st.equippedWall,st.equippedFloor);
       refreshAll();
       toast('Purchased '+it.n+'!'+(it.id==='levelup'?' Closet leveled up.':''));
     }catch(e){ console.error(e); toast('Purchase failed - check your connection.'); }
