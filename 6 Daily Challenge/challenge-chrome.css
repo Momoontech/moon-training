@@ -1,0 +1,122 @@
+/* MOON DAILY CHALLENGE - SHARED APP CHROME (CSS)
+   =================================================
+   This is the canonical baseline for what a Daily Challenge task looks
+   like - the surrounding app frame (topbar, view tabs, toolbar, floor
+   plan/panel shell, win feedback), matched against the real Sales
+   Designer App's Figma file (Momoontech Design-Handoff, file key
+   9w55PcT67108JnMvcS6TqC):
+     - topbar / breadcrumb + avatar cluster: node 23739:41376, 23739:41289
+     - bottom toolbar (All Systems/Top/3D/Front/undo/redo/...): node 23739:41365
+     - side panel shell (title/Learn More/field rows):          node 23739:41298
+     - floor plan (dimension pills, corner handles, wall style): node 23739:41335
+
+   EVERY new Daily Challenge file should load this file (plus
+   challenge-chrome.js) rather than re-implementing or copy-pasting any
+   of this - that's what makes "does it look like the real app" a single
+   place to fix instead of something that quietly drifts per-file. Only
+   task-specific content (a settings panel's field list, a catalog
+   browser, a drag-and-drop puzzle) belongs in the challenge's own file.
+   If the real app's design changes, update this file once. */
+
+:root{
+  --primary:#7239EA; --primary-deep:#3E2472; --primary-soft:#F1ECFD;
+  --ink:#211C33; --muted:#6B6B7E; --line:#EAEAF1; --bg:#EDECF2; --card:#fff;
+  --wall:#6E6E7A; --grid:#ECECF4; --green:#12B886; --red:#E0553D; --gold:#FCE96A;
+}
+html,body{height:100%;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;touch-action:manipulation;overflow:hidden;}
+
+/* Full-screen immersive frame - no branded header, no boxed task/result
+   cards floating around the mockup. The task strip is the only chrome
+   outside the app itself, docked flush to the top like a notification
+   bar rather than a separate page section. */
+.fullapp{display:flex;flex-direction:column;height:100vh;background:var(--bg);}
+.taskstrip{flex:0 0 auto;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--line);padding:11px 18px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(33,28,51,.05);z-index:10;}
+.taskstrip .tnum{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;}
+.lvlpill{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:5px 11px;white-space:nowrap;}
+.lvlpill.easy{background:#e3f8f1;color:#0b6b52;} .lvlpill.med{background:#fdf0dd;color:#9a5b06;} .lvlpill.hard{background:#fbe4e0;color:#8f2a17;}
+.taskstrip .tp{flex:1;min-width:200px;font-size:13px;font-weight:600;color:var(--ink);}
+.taskstrip .streak{font-size:12px;font-weight:700;white-space:nowrap;}
+.taskstrip .hintlink{color:var(--primary);font-weight:700;text-decoration:underline;cursor:pointer;white-space:nowrap;}
+
+/* ===== app frame - fills all remaining space, no card chrome ===== */
+.app{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--card);overflow:hidden;}
+.apptop{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;}
+.expand{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#8a8a99;font-size:13px;}
+
+.appbody{position:relative;width:100%;flex:1;min-height:0;background:
+    linear-gradient(var(--grid) 1px,transparent 1px) 0 0/100% 5%,
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/5% 100%,
+    #FCFCFE;overflow:hidden;}
+.room{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+
+/* topbar breadcrumb + avatar cluster */
+.mx-crumb{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;box-shadow:0 3px 9px rgba(33,28,51,.07);font-size:13px;font-weight:800;color:var(--ink);cursor:default;}
+.mx-crumb .seg{display:flex;align-items:center;gap:4px;cursor:pointer;}
+.mx-crumb .seg svg{width:14px;height:14px;}
+.mx-crumb .sep{width:1px;height:16px;background:var(--line);}
+.mx-crumb .cur{color:#8e66b1;}
+.mx-crumb .chev{color:#8a8a99;font-size:10px;}
+.mx-iconbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#57576a;box-shadow:0 3px 9px rgba(33,28,51,.07);cursor:pointer;}
+.mx-orb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#cfe0ff,#8e66b1 70%);box-shadow:0 3px 9px rgba(33,28,51,.1);}
+.mx-avatar{width:34px;height:34px;border-radius:50%;background:#42275a;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+
+/* Floor Plan / Architecture / Systems view tabs */
+.mx-viewtabs{position:absolute;top:16px;right:16px;display:flex;gap:2px;background:#f5f4f6;border-radius:999px;padding:4px;z-index:5;}
+.mx-viewtabs b{font-size:12.5px;font-weight:700;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;}
+.mx-viewtabs b.on{background:#8e66b1;color:#fff;font-weight:800;}
+
+/* bottom toolbar: All Systems / Top / 3D / Front+Back Wall / undo/redo/comment/ruler */
+.mx-toolbar{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 8px;box-shadow:0 5px 14px rgba(33,28,51,.1);z-index:6;}
+.mx-toolbar .grp{display:flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--ink);padding:7px 12px;border-radius:999px;cursor:pointer;}
+.mx-toolbar .grp.on{background:#f1f1f6;font-weight:800;}
+.mx-toolbar .grp svg{width:15px;height:15px;color:#8a8a99;}
+.mx-toolbar .sep{width:1px;height:20px;background:var(--line);margin:0 3px;}
+.mx-toolbar .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:transparent;color:#57576a;cursor:pointer;}
+.mx-toolbar .grp.frontwall{display:flex;align-items:center;gap:6px;}
+.mx-toolbar .fwsep{width:1px;height:16px;background:var(--line);}
+.mx-toolbar .bw{color:#42275a;}
+
+.appbottom{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#fff;}
+.backpill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--muted);flex:0 0 auto;cursor:pointer;}
+.helper{flex:1;text-align:center;font-size:12.5px;color:#57576a;}
+.fwd{flex:0 0 auto;border:none;border-radius:999px;padding:11px 20px;font-family:inherit;font-size:12.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#5a34b0,var(--primary-deep));cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 6px 14px rgba(62,36,114,.3);}
+
+/* side panel shell - a challenge fills in .settings/.tabs/.cards content */
+.panel{position:absolute;top:16px;right:16px;width:38%;max-width:330px;max-height:calc(100% - 32px);background:#fff;border:1px solid #ececf2;border-radius:16px;box-shadow:0 10px 30px rgba(33,28,51,.14);z-index:5;display:flex;flex-direction:column;overflow:hidden;}
+.panel.obst{bottom:16px;}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:13px 15px 8px;}
+.ph .pt{font-size:14.5px;font-weight:800;}
+.ph .lm{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+
+/* generic "settings panel with dropdown fields" pattern (Plan Details-style) */
+.settings{padding:13px 15px 16px;overflow-y:auto;}
+.field{margin-bottom:11px;}
+.field label{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.field label .finfo{color:#a0a0b0;display:flex;}
+.select{position:relative;border:1.4px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#57576a;display:flex;align-items:center;gap:8px;justify-content:space-between;cursor:pointer;background:#fff;}
+.select.open{border-color:var(--primary);}
+.select .cv{font-weight:600;flex:1;}
+.select.ph .cv{color:#d4d1d6;font-weight:500;}
+.select .chevicon{display:flex;align-items:center;color:#8a8a99;}
+.select .fswatch{width:18px;height:18px;border-radius:5px;background:#e7cd9a;border:1px solid #d9bd8f;flex:0 0 auto;}
+.field-divider{height:1px;background:var(--line);margin:14px 0;}
+.menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e6e6ee;border-radius:10px;box-shadow:0 10px 24px rgba(33,28,51,.16);z-index:9;overflow:hidden;}
+.menu button{display:block;width:100%;text-align:left;border:none;background:#fff;padding:9px 12px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;border-bottom:1px solid #f4f4f8;}
+.menu button:last-child{border-bottom:none;}
+.menu button:hover{background:#f5f3fe;}
+
+/* feedback: wrong-answer shake/toast, and the win flash + banner */
+.toast{position:absolute;bottom:64px;left:44%;transform:translateX(-50%);background:#211C33;color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:10px;z-index:20;opacity:0;transition:opacity .15s;pointer-events:none;text-align:center;max-width:70%;}
+.toast.show{opacity:.97;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+.shake{animation:shake .34s;}
+.badflash{box-shadow:0 0 0 2px var(--red) !important;border-color:var(--red) !important;}
+.correct{outline:3px solid var(--green) !important;outline-offset:2px;border-radius:10px;animation:correctPulse 1.1s ease;}
+@keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(18,184,134,.45);}100%{box-shadow:0 0 0 16px rgba(18,184,134,0);}}
+.winbanner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--green);color:#fff;font-size:16px;font-weight:800;padding:16px 26px;border-radius:16px;box-shadow:0 14px 34px rgba(18,184,134,.35);z-index:30;text-align:center;pointer-events:none;animation:winPop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes winPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.7);}100%{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+
+.btn{border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;background:var(--primary);color:#fff;box-shadow:0 6px 14px rgba(114,57,234,.26);margin-top:13px;}
+.btn:hover{background:var(--primary-deep);}
