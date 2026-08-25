@@ -13,30 +13,26 @@
     --ink:#211C33; --muted:#6B6B7E; --line:#EAEAF1; --bg:#EDECF2; --card:#fff;
     --wall:#6E6E7A; --grid:#ECECF4; --green:#12B886; --red:#E0553D; --gold:#FCE96A;
   }
+  html,body{height:100%;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 46px;touch-action:manipulation;}
-  .brand{background:linear-gradient(135deg,#2A2140,var(--primary));color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-  .brand .l{display:flex;align-items:center;gap:11px;}
-  .brand .badge{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:17px;}
-  .brand h1{font-size:16px;font-weight:800;}
-  .brand .sub{font-size:11px;opacity:.85;}
-  .brand .r{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;}
-  .brand .streak{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 12px;}
-  .brand .tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:4px 11px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+  body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;touch-action:manipulation;overflow:hidden;}
 
-  .wrap{max-width:940px;margin:16px auto 0;padding:0 16px;}
-
-  .taskbar{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:12px;box-shadow:0 6px 16px rgba(33,28,51,.06);flex-wrap:wrap;}
-  .taskbar .tnum{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;}
+  /* Full-screen immersive frame - no branded header, no boxed task/result
+     cards floating around the mockup. The task strip is the only chrome
+     outside the app itself, docked flush to the top like a notification
+     bar rather than a separate page section. */
+  .fullapp{display:flex;flex-direction:column;height:100vh;background:var(--bg);}
+  .taskstrip{flex:0 0 auto;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--line);padding:11px 18px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(33,28,51,.05);z-index:10;}
+  .taskstrip .tnum{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;}
   .lvlpill{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:5px 11px;white-space:nowrap;}
   .lvlpill.easy{background:#e3f8f1;color:#0b6b52;} .lvlpill.med{background:#fdf0dd;color:#9a5b06;} .lvlpill.hard{background:#fbe4e0;color:#8f2a17;}
-  .taskbar .tp{flex:1;min-width:200px;font-size:13.5px;font-weight:600;color:var(--ink);}
-  .taskbar .hintlink{color:var(--primary);font-weight:700;text-decoration:underline;cursor:pointer;white-space:nowrap;}
+  .taskstrip .tp{flex:1;min-width:200px;font-size:13px;font-weight:600;color:var(--ink);}
+  .taskstrip .streak{font-size:12px;font-weight:700;white-space:nowrap;}
+  .taskstrip .hintlink{color:var(--primary);font-weight:700;text-decoration:underline;cursor:pointer;white-space:nowrap;}
 
-  /* ===== app frame ===== */
-  .app{background:var(--card);border:1px solid #dcdce6;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(33,28,51,.14);}
-  .osbar{height:10px;background:#8b8b97;}
-  .apptop{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;}
+  /* ===== app frame - fills all remaining space, no card chrome ===== */
+  .app{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--card);overflow:hidden;}
+  .apptop{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;}
   .pillcard{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;box-shadow:0 3px 9px rgba(33,28,51,.07);}
   .pillcard .ic{width:24px;height:24px;border-radius:50%;background:conic-gradient(from 210deg,#211C33 0 50%,#c9c9d6 50% 100%);flex:0 0 auto;}
   .pillcard .t{font-size:12.5px;font-weight:800;line-height:1.1;}
@@ -45,7 +41,7 @@
   .hl{background:var(--gold);border-radius:3px;padding:0 3px;font-weight:700;color:#5a4b00;}
   .expand{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#8a8a99;font-size:13px;}
 
-  .appbody{position:relative;width:100%;aspect-ratio:1.52/1;background:
+  .appbody{position:relative;width:100%;flex:1;min-height:0;background:
       linear-gradient(var(--grid) 1px,transparent 1px) 0 0/100% 5%,
       linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/5% 100%,
       #FCFCFE;overflow:hidden;}
@@ -95,13 +91,13 @@
   .mx-toolbar .fwsep{width:1px;height:16px;background:var(--line);}
   .mx-toolbar .bw{color:#42275a;}
 
-  .appbottom{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#fff;}
+  .appbottom{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#fff;}
   .backpill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--muted);flex:0 0 auto;cursor:pointer;}
   .helper{flex:1;text-align:center;font-size:12.5px;color:#57576a;}
   .fwd{flex:0 0 auto;border:none;border-radius:999px;padding:11px 20px;font-family:inherit;font-size:12.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#5a34b0,var(--primary-deep));cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 6px 14px rgba(62,36,114,.3);}
 
   /* right panels */
-  .panel{position:absolute;top:16px;right:16px;width:38%;max-width:330px;background:#fff;border:1px solid #ececf2;border-radius:16px;box-shadow:0 10px 30px rgba(33,28,51,.14);z-index:5;display:flex;flex-direction:column;overflow:hidden;}
+  .panel{position:absolute;top:16px;right:16px;width:38%;max-width:330px;max-height:calc(100% - 32px);background:#fff;border:1px solid #ececf2;border-radius:16px;box-shadow:0 10px 30px rgba(33,28,51,.14);z-index:5;display:flex;flex-direction:column;overflow:hidden;}
   .panel.obst{bottom:16px;}
   .ph{display:flex;align-items:center;justify-content:space-between;padding:13px 15px 8px;}
   .ph .pt{font-size:14.5px;font-weight:800;}
@@ -170,22 +166,19 @@
   .menu button:hover{background:#f5f3fe;}
 
   .toast{position:absolute;bottom:64px;left:44%;transform:translateX(-50%);background:#211C33;color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:10px;z-index:20;opacity:0;transition:opacity .15s;pointer-events:none;text-align:center;max-width:70%;}
+  /* Win feedback: a field/element flashes green (correct), and a celebratory
+     banner announces the reward - replacing the old separate "Nailed it"
+     explanation card entirely. */
+  .correct{outline:3px solid var(--green) !important;outline-offset:2px;border-radius:10px;animation:correctPulse 1.1s ease;}
+  @keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(18,184,134,.45);}100%{box-shadow:0 0 0 16px rgba(18,184,134,0);}}
+  .winbanner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--green);color:#fff;font-size:16px;font-weight:800;padding:16px 26px;border-radius:16px;box-shadow:0 14px 34px rgba(18,184,134,.35);z-index:30;text-align:center;pointer-events:none;animation:winPop .4s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes winPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.7);}100%{opacity:1;transform:translate(-50%,-50%) scale(1);}}
   .toast.show{opacity:.97;}
   @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
   .shake{animation:shake .34s;}
   .badflash{box-shadow:0 0 0 2px var(--red) !important;border-color:var(--red) !important;}
 
   /* feedback */
-  .coach{max-width:940px;margin:12px auto 0;padding:0 16px;}
-  .fcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 6px 18px rgba(33,28,51,.06);}
-  .react{font-size:15.5px;font-weight:800;color:var(--green);}
-  .exp{background:var(--primary-soft);border-left:4px solid var(--primary);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;color:#3f3a63;}
-  .tries{font-size:11.5px;color:var(--muted);margin-top:8px;}
-  .fb{margin-top:13px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .fb span{font-size:12.5px;color:var(--muted);font-weight:700;}
-  .fbtn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-size:15px;cursor:pointer;}
-  .fbtn:hover{border-color:var(--primary);} .fbtn.picked{border-color:var(--primary);background:var(--primary-soft);}
-  .fbmsg{font-size:12.5px;color:var(--green);font-weight:700;}
   .btn{border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;background:var(--primary);color:#fff;box-shadow:0 6px 14px rgba(114,57,234,.26);margin-top:13px;}
   .btn:hover{background:var(--primary-deep);}
 
@@ -195,28 +188,27 @@
 </style>
 </head>
 <body>
-  <div class="brand">
-    <div class="l"><div class="badge">🧩</div><div><h1>Daily Challenge</h1><div class="sub">One hands-on task a day, inside the real designer screens.</div></div></div>
-    <div class="r"><span class="tag">Concept preview</span><span class="streak" id="streak">🔥 0</span></div>
-  </div>
-
-  <div class="wrap">
-    <div class="taskbar">
-      <span class="tnum" id="tnum">Task 1 of 2</span>
+  <!-- No branded header, no separate task/result cards - the whole screen
+       is the app mockup itself, per Mo's call to make it feel like you're
+       actually in the app rather than in a training wrapper around it.
+       Task context lives in a slim strip docked to the top of the app
+       frame instead of a boxed card floating above it. -->
+  <div class="fullapp">
+    <div class="taskstrip">
+      <span class="tnum" id="tnum">Task 1 of 3</span>
       <span class="lvlpill" id="lvl">Easy</span>
       <span class="tp" id="tp"></span>
+      <span class="streak" id="streak">🔥 0</span>
       <span class="hintlink" id="hintlink">Hint</span>
     </div>
     <div class="hintbox" id="hintbox" style="display:none;"></div>
     <div class="app" id="app"></div>
   </div>
 
-  <div class="coach" id="coach"></div>
-
 <script>
 (function(){
   "use strict";
-  var app=document.getElementById('app'), coach=document.getElementById('coach');
+  var app=document.getElementById('app');
   var tnum=document.getElementById('tnum'), lvlEl=document.getElementById('lvl'), tp=document.getElementById('tp');
   var streakEl=document.getElementById('streak'), hintLink=document.getElementById('hintlink'), hintBox=document.getElementById('hintbox');
   var i=0, streak=0, solved=false, misses=0, toastT=null;
@@ -224,6 +216,14 @@
   function elc(html){var t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstChild;}
   function toast(msg){var body=app.querySelector('.appbody');var t=body.querySelector('.toast');if(!t){t=elc('<div class="toast"></div>');body.appendChild(t);}t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},1700);}
   function wrong(elm,msg){ if(solved)return; misses++; elm.classList.remove('shake');void elm.offsetWidth; elm.classList.add('shake','badflash'); setTimeout(function(){elm.classList.remove('badflash');},450); toast(msg||'Not quite - try again.'); }
+  // Win feedback: highlight what was just solved, show a quick moon-rocks
+  // toast, then move on - no separate explanation card to read through.
+  function winToast(msg){
+    var body=app.querySelector('.appbody');
+    var t=elc('<div class="winbanner">'+msg+'</div>');
+    body.appendChild(t);
+    setTimeout(function(){ t.remove(); },1400);
+  }
 
   // shared chrome
   // Clean monochrome line icons (stroke="currentColor" so they pick up each
@@ -407,23 +407,19 @@
     tp.textContent=c.prompt;
     hintBox.style.display='none'; hintBox.className='hintbox';
     hintBox.innerHTML='<div style="background:#fff8ee;border:1px solid #f4e4c6;border-radius:12px;padding:11px 14px;font-size:13px;color:#7a5a1e;margin-bottom:12px;">'+c.hint+'</div>';
-    coach.innerHTML='';
   }
   hintLink.addEventListener('click',function(){ hintBox.style.display = hintBox.style.display==='none'?'block':'none'; });
 
-  function win(c){
+  // Win: flash the solved element green, show a quick "+10 moon rocks"
+  // banner, then move on - no separate explanation card to click through.
+  // `target` is whatever the player just got right (a dropdown, a placed
+  // door, a filled bay) so it's the thing that lights up.
+  function win(c,target){
     if(solved)return; solved=true; streak++;
     streakEl.textContent='🔥 '+streak;
-    coach.innerHTML='<div class="fcard"><div class="react">✅ Nailed it.</div>'+
-      '<div class="exp">'+c.exp+'</div>'+
-      (misses>0?'<div class="tries">Took '+(misses+1)+' taps - that’s the point, the misses show us where to add practice.</div>':'<div class="tries">First try. 🔥</div>')+
-      '<div class="fb"><span>Was this helpful?</span><button class="fbtn" data-v="up">👍</button><button class="fbtn" data-v="down">👎</button><span class="fbmsg" id="fbmsg"></span></div>'+
-      '<button class="btn" id="next">'+(i===P.length-1?'Finish':'Next task')+' →</button></div>';
-    [].slice.call(coach.querySelectorAll('.fbtn')).forEach(function(fb){fb.addEventListener('click',function(){
-      coach.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('picked');});fb.classList.add('picked');
-      document.getElementById('fbmsg').textContent=fb.dataset.v==='up'?'Thanks!':'Noted - we’ll sharpen this one.';});});
-    document.getElementById('next').addEventListener('click',function(){i++;render();});
-    if(coach.scrollIntoView)try{coach.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(_){}
+    if(target){ target.classList.add('correct'); }
+    winToast('✅ +10 moon rocks earned!');
+    setTimeout(function(){ i++; render(); },1500);
   }
 
   // ===== MEASURE screen =====
@@ -450,9 +446,9 @@
       var div=idx===2?'<div class="field-divider"></div>':'';
       return div+'<div class="field"><label>'+s[0]+'*'+info+'</label><div class="select'+ph+'" data-f="'+idx+'">'+swatch+'<span class="cv">'+s[1]+'</span><span class="chevicon">'+chev+'</span></div></div>';
     }).join('');
-    app.innerHTML='<div class="osbar"></div>'+measureTopbar()+
+    app.innerHTML=measureTopbar()+
       '<div class="appbody">'+roomSVG(true)+measureViewTabs()+measureToolbar()+
-        '<div class="panel" style="top:66px;"><div class="ph"><div class="pt">Plan Details</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
+        '<div class="panel" style="top:66px;max-height:calc(100% - 82px);"><div class="ph"><div class="pt">Plan Details</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
       '</div>'+
       bottombar('Previous','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles','Continue');
     var body=app.querySelector('.appbody');
@@ -474,7 +470,7 @@
           b.addEventListener('click',function(ev){
             ev.stopPropagation();
             var val=b.dataset.o;
-            if(SET[idx][0]==='Molding' && val!=='No'){ sel.querySelector('.cv').textContent=val; sel.classList.remove('ph'); menu.remove();openMenu=null;sel.classList.remove('open'); win(c); }
+            if(SET[idx][0]==='Molding' && val!=='No'){ sel.querySelector('.cv').textContent=val; sel.classList.remove('ph'); menu.remove();openMenu=null;sel.classList.remove('open'); win(c,sel); }
             else if(SET[idx][0]==='Molding' && val==='No'){ menu.remove();openMenu=null;sel.classList.remove('open'); wrong(sel,'That keeps molding off - pick a profile like Crown.'); }
             else { menu.remove();openMenu=null;sel.classList.remove('open'); wrong(sel,'That’s the '+SET[idx][0]+' setting - the client asked about Molding.'); }
           });
@@ -532,7 +528,7 @@
   };
 
   function buildObstacles(c){
-    app.innerHTML='<div class="osbar"></div>'+topbar(c.step)+
+    app.innerHTML=topbar(c.step)+
       '<div class="appbody">'+roomSVG(false,true)+railHTML(1)+toggleHTML('obstacles')+
         '<div class="panel obst">'+
           '<div class="ph"><div class="pt">All Obstacles</div><div class="lm">Learn More ⓘ</div></div>'+
@@ -581,7 +577,7 @@
           token.remove(); token=null; if(hint){hint.remove();hint=null;}
           var pl=elc('<div class="placed'+(slots[n].o==='v'?' v':'')+'" style="left:'+slots[n].x+'%;top:'+slots[n].y+'%;">'+doorAsset(selKind)+'</div>');
           body.appendChild(pl);
-          win(c);
+          win(c,pl);
         }
         token.addEventListener('pointermove',mv);token.addEventListener('pointerup',up);token.addEventListener('pointercancel',up);
       });
@@ -638,7 +634,7 @@
     return '<svg viewBox="0 0 70 40"><rect x="10" y="17" width="50" height="7" rx="2.5" fill="#efeafe" stroke="#7239EA" stroke-width="2.4"/></svg>';
   }
   function buildSection(c){
-    app.innerHTML='<div class="osbar"></div>'+topbar(c.step)+
+    app.innerHTML=topbar(c.step)+
       '<div class="appbody">'+
         '<svg class="room" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet">'+
           '<rect x="120" y="90" width="770" height="440" rx="6" fill="#fbfaff" stroke="#e0e0ea" stroke-width="3"/>'+
@@ -753,7 +749,7 @@
         if(selAcc!=='shelf'){ token.style.left='24%';token.style.top='26%'; if(hint)hint.style.display=''; wrong(token,'The client asked for a shelf, not a '+selAcc+'. Try the shelf.'); return; }
         token.remove(); token=null; if(hint){hint.remove();hint=null;}
         emptyBay.classList.remove('empty'); emptyBay.innerHTML='<div class="shelf" style="top:50%;"></div>';
-        win(c);
+        win(c,emptyBay);
       });
     }
 
@@ -771,12 +767,11 @@
   function done(){
     tnum.textContent='Done for today'; lvlEl.style.display='none';
     tp.textContent='That’s today’s set - nice work.'; hintLink.style.display='none';
-    app.innerHTML='<div class="osbar"></div><div class="appbody" style="display:flex;align-items:center;justify-content:center;">'+
+    app.innerHTML='<div class="appbody" style="display:flex;align-items:center;justify-content:center;">'+
       '<div style="text-align:center;padding:24px;"><div style="font-size:46px;">🎉</div>'+
       '<div style="font-size:19px;font-weight:800;margin-top:8px;">Streak complete.</div>'+
       '<p style="color:#6B6B7E;font-size:13px;margin-top:8px;max-width:380px;">In the real thing you’d get one task a day. This preview runs all three so you can feel the format.</p>'+
       '<button class="btn" id="again">Run again ↺</button></div></div>';
-    coach.innerHTML='';
     document.getElementById('again').addEventListener('click',function(){i=0;streak=0;streakEl.textContent='🔥 0';lvlEl.style.display='';hintLink.style.display='';render();});
   }
   render();
