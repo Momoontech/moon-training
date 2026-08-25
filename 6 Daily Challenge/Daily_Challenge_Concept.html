@@ -33,12 +33,6 @@
   /* ===== app frame - fills all remaining space, no card chrome ===== */
   .app{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--card);overflow:hidden;}
   .apptop{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;}
-  .pillcard{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;box-shadow:0 3px 9px rgba(33,28,51,.07);}
-  .pillcard .ic{width:24px;height:24px;border-radius:50%;background:conic-gradient(from 210deg,#211C33 0 50%,#c9c9d6 50% 100%);flex:0 0 auto;}
-  .pillcard .t{font-size:12.5px;font-weight:800;line-height:1.1;}
-  .pillcard .s{font-size:10px;color:var(--muted);}
-  .pillcard .chev{color:var(--muted);font-size:11px;margin-left:2px;}
-  .hl{background:var(--gold);border-radius:3px;padding:0 3px;font-weight:700;color:#5a4b00;}
   .expand{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#8a8a99;font-size:13px;}
 
   .appbody{position:relative;width:100%;flex:1;min-height:0;background:
@@ -47,26 +41,8 @@
       #FCFCFE;overflow:hidden;}
   .room{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
 
-  .rail{position:absolute;left:14px;top:50%;transform:translateY(-50%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 8px;display:flex;flex-direction:column;align-items:center;gap:9px;box-shadow:0 4px 12px rgba(33,28,51,.07);z-index:6;}
-  .rail .cap{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;text-align:center;line-height:1.15;}
-  .rail .bar{width:30px;height:3px;border-radius:3px;background:var(--line);overflow:hidden;}
-  .rail .bar i{display:block;height:100%;width:34%;background:var(--primary);}
-  .rdot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.6px solid var(--line);background:#fff;position:relative;color:#9a9aae;font-size:12px;cursor:pointer;}
-  .rdot .num{position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:50%;background:#fff;border:1.4px solid var(--line);font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#8a8a99;}
-  .rdot.done{border-color:var(--green);color:var(--green);} .rdot.done .num{border-color:var(--green);color:var(--green);}
-  .rdot.active{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);} .rdot.active .num{border-color:var(--primary);color:var(--primary);}
-
-  .toggle{position:absolute;left:44%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 7px;box-shadow:0 5px 14px rgba(33,28,51,.1);z-index:6;}
-  .toggle .seg b{font-size:12px;font-weight:700;color:var(--muted);padding:6px 13px;border-radius:999px;cursor:pointer;}
-  .toggle .seg b.on{background:#f1f1f6;color:var(--ink);font-weight:800;}
-  .toggle .sep{width:1px;height:20px;background:var(--line);margin:0 3px;}
-  .toggle .tool{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#f3f3f8;color:#8b8b9c;font-size:13px;cursor:pointer;}
-  .toggle .tool.on{background:var(--primary);color:#fff;}
-
-  /* ===== Measure task only - matches the real "Floor Details" Figma frame
-     exactly (node 23739:41376). Scoped with mx- so the Obstacles/Design
-     tasks, which still use the topbar()/railHTML()/toggleHTML() chrome
-     above, are unaffected. ===== */
+  /* ===== App chrome - matches the real Figma frames exactly, shared by
+     all three tasks (Measure/Obstacles/Design). ===== */
   .mx-crumb{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;box-shadow:0 3px 9px rgba(33,28,51,.07);font-size:13px;font-weight:800;color:var(--ink);cursor:default;}
   .mx-crumb .seg{display:flex;align-items:center;gap:4px;cursor:pointer;}
   .mx-crumb .seg svg{width:14px;height:14px;}
@@ -225,53 +201,18 @@
     setTimeout(function(){ t.remove(); },1400);
   }
 
-  // shared chrome
-  // Clean monochrome line icons (stroke="currentColor" so they pick up each
-  // .rdot's state color - green done, purple active, gray upcoming - same
-  // way the old text glyphs did, but without emoji's fixed full-color look).
-  var RICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">';
-  var RAIL_ICONS=[
-    RICN+'<rect x="3" y="2.5" width="10" height="4" rx="1.2"/><path d="M8 6.5v4"/><rect x="6" y="10.5" width="4" height="3" rx="1"/></svg>',
-    RICN+'<path d="M10.5 2.5l3 3-7.5 7.5H3v-3z"/><path d="M9 4l3 3"/></svg>',
-    RICN+'<rect x="2.5" y="3" width="11" height="10" rx="1.2"/><path d="M6 3v10M10 3v10"/></svg>',
-    RICN+'<rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></svg>',
-    RICN+'<rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/></svg>'
-  ];
-  function railHTML(active){
-    var d='';
-    for(var s=0;s<5;s++){ var cls=s<active?'rdot done':(s===active?'rdot active':'rdot'); d+='<div class="'+cls+'" data-step="'+s+'">'+RAIL_ICONS[s]+'<span class="num">'+(s+1)+'</span></div>'; }
-    return '<div class="rail"><div class="cap">Room<br>Progress</div><div class="bar"><i></i></div>'+d+'</div>';
-  }
-  var TICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15">';
+  // ===== App chrome - matches the real Figma frames exactly (topbar node
+  // 23739:41376/41289, toolbar node 23739:41365, panel node 23739:41298),
+  // fetched via get_screenshot/get_design_context since some of this detail
+  // (the floor plan, corner handles) is a flattened image in Figma, not
+  // live vector layers. All three tasks (Measure/Obstacles/Design) share
+  // this chrome - only the side panel's content differs per task.
+  var MICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">';
   // Exact undo/redo glyphs pulled from the real design (node 23739:41365's
-  // imgUndo/imgRedo assets) - a filled hook-shaped arrow, not the circular
-  // "refresh" style icon this used to hand-draw.
+  // imgUndo/imgRedo assets) - a filled hook-shaped arrow, not a hand-drawn
+  // circular "refresh" icon.
   var REAL_UNDO='<svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.6122 14.0425C18.6122 12.2094 17.1868 10.7233 15.4285 10.7233H6.42659L9.09082 13.5009C9.37773 13.8001 9.37773 14.2849 9.09082 14.584C8.8039 14.8832 8.33883 14.8832 8.05191 14.584L4.13354 10.4989C3.84662 10.1998 3.84662 9.71494 4.13354 9.41582L8.05191 5.3307C8.33883 5.03157 8.8039 5.03157 9.09082 5.3307C9.37773 5.62983 9.37773 6.11469 9.09082 6.41381L6.42659 9.19141H15.4285C17.9983 9.19141 20.0816 11.3633 20.0816 14.0425C20.0816 16.7217 17.9983 18.8936 15.4285 18.8936H14.4489C14.0432 18.8936 13.7142 18.5506 13.7142 18.1276C13.7142 17.7046 14.0432 17.3616 14.4489 17.3616H15.4285C17.1868 17.3616 18.6122 15.8756 18.6122 14.0425Z"/></svg>';
   var REAL_REDO='<svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M3.91835 13.8823C3.91835 12.6966 4.40893 11.5599 5.28155 10.7215C6.15417 9.88306 7.33735 9.41172 8.57142 9.41172H17.5734L14.9091 6.85197C14.6222 6.5763 14.6222 6.12947 14.9091 5.8538C15.196 5.57814 15.6611 5.57814 15.948 5.8538L19.8664 9.61852C20.1533 9.89418 20.1533 10.341 19.8664 10.6167L15.948 14.3814C15.6611 14.6571 15.196 14.6571 14.9091 14.3814C14.6222 14.1057 14.6222 13.6589 14.9091 13.3832L17.5734 10.8235H8.57142C7.72706 10.8235 6.91751 11.146 6.32046 11.7196C5.7234 12.2933 5.38774 13.0711 5.38774 13.8823C5.38774 14.6936 5.7234 15.4714 6.32046 16.045C6.91752 16.6186 7.72706 16.9411 8.57142 16.9411H9.55102C9.95678 16.9411 10.2857 17.2572 10.2857 17.647C10.2857 18.0369 9.95678 18.3529 9.55102 18.3529H8.57142C7.33735 18.3529 6.15417 17.8816 5.28155 17.0432C4.40893 16.2048 3.91835 15.068 3.91835 13.8823Z"/></svg>';
-  var TOOL_ICONS={
-    pencil: TICN+'<path d="M10.5 2.5l3 3-7.5 7.5H3v-3z"/><path d="M9 4l3 3"/></svg>',
-    ruler: TICN+'<rect x="2.5" y="7" width="11" height="6" rx="1" transform="rotate(-25 8 10)"/><path d="M6 8.5l.6 1.2M8 7.6l.6 1.2M10 6.7l.6 1.2" transform="rotate(-25 8 10)"/></svg>',
-    add: TICN+'<path d="M8 3v10M3 8h10"/></svg>',
-    undo: REAL_UNDO,
-    redo: REAL_REDO,
-    panel: TICN+'<rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M6 2.5v11"/></svg>'
-  };
-  function toggleHTML(mode,view){
-    view=view||'Top';
-    function b(n){return '<b class="'+(n===view?'on':'')+'" data-v="'+n+'">'+n+'</b>';}
-    var second = mode==='obstacles' ? '<div class="tool" data-t="add" style="background:#7239EA;color:#fff;">'+TOOL_ICONS.add+'</div>' : '<div class="tool" data-t="ruler">'+TOOL_ICONS.ruler+'</div>';
-    var panel = mode==='measure' ? '<div class="tool on" data-t="panel">'+TOOL_ICONS.panel+'</div>' : '<div class="tool" data-t="panel">'+TOOL_ICONS.panel+'</div>';
-    return '<div class="toggle"><div class="seg">'+b('Top')+b('Front')+b('3D')+'</div>'+
-      '<div class="sep"></div><div class="tool on" data-t="pencil">'+TOOL_ICONS.pencil+'</div>'+second+
-      '<div class="tool" data-t="undo">'+TOOL_ICONS.undo+'</div><div class="tool" data-t="redo">'+TOOL_ICONS.redo+'</div>'+panel+'</div>';
-  }
-  // ===== Measure task chrome - matches the real "Floor Details" Figma
-  // frame exactly (node 23739:41376, fetched via get_screenshot since its
-  // room-progress rail and floor plan are a flattened image in that file,
-  // not live vector layers). Only buildMeasure() uses these - the Obstacles
-  // and Design tasks keep the topbar()/railHTML()/toggleHTML() chrome above
-  // since their real designs haven't been checked against Figma yet.
-  var MICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">';
   var MX_ICONS={
     pencil: MICN+'<path d="M10.5 2.5l3 3-7.5 7.5H3v-3z"/><path d="M9 4l3 3"/></svg>',
     chev: '<svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="9" height="6"><path d="M1 1l4 4 4-4"/></svg>',
@@ -304,17 +245,18 @@
     function b(n){return '<b class="'+(n===view?'on':'')+'" data-v="'+n+'">'+n+'</b>';}
     return '<div class="mx-viewtabs">'+b('Floor Plan')+b('Architecture')+b('Systems')+'</div>';
   }
-  function measureToolbar(){
+  function measureToolbar(view){
+    view=view||'Top';
     // `label` (plain text) drives data-x; `lead`/`trail` icons are appended
     // to the displayed content only - never folded into the attribute, or
     // their embedded quoted SVG attributes would truncate data-x early.
     function grp(lead,label,on,trail){ return '<div class="grp'+(on?' on':'')+'" data-x="'+label+'">'+(lead||'')+' '+label+(trail?' '+trail:'')+'</div>'; }
     // "Front" and "Back Wall" are one clickable unit in the real toolbar
     // (an internal divider between them, not two separate pills).
-    var frontWall='<div class="grp frontwall" data-x="Front">'+MX_ICONS.cube+' Front<span class="fwsep"></span><span class="bw">Back Wall</span>'+MX_ICONS.chev+'</div>';
+    var frontWall='<div class="grp frontwall'+(view==='Front'?' on':'')+'" data-x="Front">'+MX_ICONS.cube+' Front<span class="fwsep"></span><span class="bw">Back Wall</span>'+MX_ICONS.chev+'</div>';
     return '<div class="mx-toolbar">'+
       grp('','All Systems',false,MX_ICONS.chev)+'<div class="sep"></div>'+
-      grp(MX_ICONS.cube,'Top',true)+grp(MX_ICONS.cube,'3D',false)+frontWall+
+      grp(MX_ICONS.cube,'Top',view==='Top')+grp(MX_ICONS.cube,'3D',view==='3D')+frontWall+
       '<div class="sep"></div>'+
       '<div class="ico" data-x="undo">'+MX_ICONS.undo+'</div><div class="ico" data-x="redo">'+MX_ICONS.redo+'</div>'+
       '<div class="sep"></div>'+
@@ -369,18 +311,11 @@
       h(520,150)+h(760,150)+h(760,560)+h(300,560)+h(300,380)+h(520,380)+
       '</svg>';
   }
-  function topbar(step){
-    return '<div class="apptop">'+
-      '<div class="pillcard"><div class="ic"></div><div><div class="t">{Room Name}</div><div class="s">Primary Room · <span class="hl">'+step+'</span></div></div><div class="chev">▾</div></div>'+
-      '<div class="expand">⤢</div>'+
-      '<div class="pillcard"><div><div class="t">{Client Name}</div><div class="s">Now Active</div></div></div>'+
-    '</div>';
-  }
   function bottombar(back,helper,fwd){
     return '<div class="appbottom"><div class="backpill" data-x="back">← '+back+'</div><div class="helper">'+helper+'</div><button class="fwd" data-x="fwd">'+fwd+' →</button></div>';
   }
   function wireChrome(body){
-    [].slice.call(body.querySelectorAll('.rdot,.toggle .seg b,.toggle .tool,.expand')).forEach(function(elm){
+    [].slice.call(body.querySelectorAll('.mx-crumb .seg,.mx-viewtabs b,.mx-toolbar .grp,.mx-toolbar .ico,.mx-iconbtn,.mx-orb,.expand')).forEach(function(elm){
       elm.addEventListener('click',function(){ wrong(elm,'That control isn’t part of this task - try again.'); });
     });
   }
@@ -457,10 +392,7 @@
         '<div class="panel" style="top:66px;max-height:calc(100% - 82px);"><div class="ph"><div class="pt">Plan Details</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
       '</div>'+
       bottombar('Previous','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles','Continue');
-    var body=app.querySelector('.appbody');
-    [].slice.call(body.querySelectorAll('.mx-crumb .seg,.mx-viewtabs b,.mx-toolbar .grp,.mx-toolbar .ico,.mx-iconbtn,.mx-orb,.expand')).forEach(function(elm){
-      elm.addEventListener('click',function(){ wrong(elm,'That control isn’t part of this task - try again.'); });
-    });
+    var body=app.querySelector('.appbody'); wireChrome(body);
     wireNav(app,'Finish the settings task first - then you’d head back.','Set the molding first - then Continue would move you on.');
     var openMenu=null;
     [].slice.call(app.querySelectorAll('.select')).forEach(function(sel){
@@ -534,16 +466,16 @@
   };
 
   function buildObstacles(c){
-    app.innerHTML=topbar(c.step)+
-      '<div class="appbody">'+roomSVG(false,true)+railHTML(1)+toggleHTML('obstacles')+
-        '<div class="panel obst">'+
+    app.innerHTML=measureTopbar()+
+      '<div class="appbody">'+roomSVG(false,true)+measureViewTabs()+measureToolbar()+
+        '<div class="panel obst" style="top:66px;">'+
           '<div class="ph"><div class="pt">All Obstacles</div><div class="lm">Learn More ⓘ</div></div>'+
           '<div class="searchrow" id="srow"><span class="mg">🔍</span><span class="chip" id="chip">Doors <span class="x">✕</span></span><input id="sin" placeholder="Search"></div>'+
           '<div class="tabs" id="tabs"><button class="tab on" data-c="Doors">Doors</button><button class="tab" data-c="Windows">Windows</button><button class="tab" data-c="Electrical">Electrical</button><button class="tab" data-c="Filter">Filter</button></div>'+
           '<div class="cards" id="cards"></div>'+
         '</div>'+
       '</div>'+
-      bottombar('Measure','Add all obstacles the client prefers to keep','Plot Products');
+      bottombar('Previous','Add all obstacles the client prefers to keep','Continue');
     var body=app.querySelector('.appbody'); wireChrome(body);
     wireNav(app,'Give the reach-in a door first, then you would head back to Measure.','Add a door in front of the reach-in first, then you can Plot Products.');
     var cat='Doors', filter='', selKind=null, selName='';
@@ -640,20 +572,20 @@
     return '<svg viewBox="0 0 70 40"><rect x="10" y="17" width="50" height="7" rx="2.5" fill="#efeafe" stroke="#7239EA" stroke-width="2.4"/></svg>';
   }
   function buildSection(c){
-    app.innerHTML=topbar(c.step)+
+    app.innerHTML=measureTopbar()+
       '<div class="appbody">'+
         '<svg class="room" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet">'+
           '<rect x="120" y="90" width="770" height="440" rx="6" fill="#fbfaff" stroke="#e0e0ea" stroke-width="3"/>'+
           '<rect x="120" y="470" width="770" height="60" fill="#f2f0f7"/>'+
           '<line x1="120" y1="470" x2="890" y2="470" stroke="#cfcfda" stroke-width="4"/>'+
         '</svg>'+
-        railHTML(2)+toggleHTML('obstacles','Front')+
-        '<div class="panel"><div class="ph"><div class="pt" id="ptitle">Add Section</div><div class="lm">Learn More ⓘ</div></div>'+
+        measureViewTabs()+measureToolbar('Front')+
+        '<div class="panel" style="top:66px;"><div class="ph"><div class="pt" id="ptitle">Add Section</div><div class="lm">Learn More ⓘ</div></div>'+
           '<div class="tabs" id="tabs"></div>'+
           '<div class="cards" id="cards"></div>'+
         '</div>'+
       '</div>'+
-      bottombar('Obstacles','Drop a section onto the floor, then fill it with accessories','Customize');
+      bottombar('Previous','Drop a section onto the floor, then fill it with accessories','Continue');
     var body=app.querySelector('.appbody'); wireChrome(body);
     wireNav(app,'Finish building the section first, then you would head back.','Add the section and a shelf first, then continue.');
     var cards=document.getElementById('cards'), tabs=document.getElementById('tabs'), ptitle=document.getElementById('ptitle');
