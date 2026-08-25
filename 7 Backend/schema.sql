@@ -78,6 +78,7 @@ create or replace view leaderboard as
   select u.id as user_id, u.name, u.email,
          coalesce(b.tokens, 0) as tokens,
          coalesce(c.streak, 0) as streak,
+         coalesce(c.visits, 1) as visits,
          coalesce(e.lifetime_earned, 0) as lifetime_earned
   from users u
   left join user_balances b on b.user_id = u.id

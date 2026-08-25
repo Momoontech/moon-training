@@ -202,6 +202,16 @@
   .rcollect{margin-top:18px;width:100%;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:13px;font-family:inherit;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(56,33,95,.28);}
 
   /* ─── Leaderboard ─── */
+  /* ─── Your Closet (3D) ─── */
+  .closet3d-wrap{position:relative;height:440px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#2a2140,#1a1523);box-shadow:0 8px 24px rgba(26,21,35,.18);margin-top:14px;}
+  .closet3d-wrap canvas{display:block;width:100%;height:100%;}
+  .closet3d-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.45);color:#fff;font-size:11.5px;font-weight:600;padding:6px 14px;border-radius:999px;pointer-events:none;}
+  .closet3d-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#cfc7e6;font-size:13px;font-weight:600;}
+  .closet-stats-row{display:flex;gap:28px;margin-top:18px;flex-wrap:wrap;}
+  .closet-stats-row div b{font-size:22px;font-weight:800;color:var(--ink);display:block;}
+  .closet-stats-row div span{font-size:11.5px;color:var(--muted);}
+  .lb-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;}
+  @media (max-width:760px){.lb-cols{grid-template-columns:1fr;}}
   .lb{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
   .lbrow{display:grid;grid-template-columns:44px 1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 18px;box-shadow:0 2px 8px rgba(26,21,35,.05);}
   .lbrow.me{background:#faf8ff;border-color:#ddd0fb;}
@@ -254,7 +264,7 @@
     <button class="nl on" data-sec="dashboard">Dashboard</button>
     <button class="nl" data-sec="quizzes">Quizzes</button>
     <button class="nl" data-sec="trainings">Trainings</button>
-    <button class="nl" data-sec="leaderboard">Leaderboard</button>
+    <button class="nl" data-sec="closet">Your Closet</button>
     <button class="nl" data-sec="shop">Shop</button>
   </div>
   <div class="nav-avatar">JD</div>
@@ -392,11 +402,31 @@
     </div>
   </section>
 
-  <!-- ═══ LEADERBOARD ═══ -->
-  <section data-sec="leaderboard">
-    <h1 class="title">Leaderboard</h1>
-    <p class="lead">The designers with the most moon rocks. Earn rocks by doing puzzles, quizzes, trainings and weekly trivia.</p>
-    <div class="lb" id="lbList"></div>
+  <!-- ═══ YOUR CLOSET ═══ -->
+  <section data-sec="closet">
+    <h1 class="title">Your Closet</h1>
+    <p class="lead">Your closet in 3D - drag to look around. Unlock new colors and textures in the Shop.</p>
+    <div class="closet3d-wrap" id="closet3dWrap">
+      <div class="closet3d-loading" id="closet3dLoading">Loading 3D view…</div>
+      <div class="closet3d-hint">Drag to rotate</div>
+    </div>
+    <div class="closet-stats-row">
+      <div><b id="closetTokBig">1</b><span>moon rocks</span></div>
+      <div><b id="closetStrkBig">1</b><span>day streak</span></div>
+      <div><b id="closetStageBig">1/10</b><span>closet level</span></div>
+    </div>
+
+    <div class="sechead" style="margin-top:28px;"><h2>Leaderboards</h2></div>
+    <div class="lb-cols">
+      <div>
+        <div class="sechead"><h2 style="font-size:13px;">Most Moon Rocks</h2></div>
+        <div class="lb" id="lbListRocks"></div>
+      </div>
+      <div>
+        <div class="sechead"><h2 style="font-size:13px;">Highest Closet Level</h2></div>
+        <div class="lb" id="lbListLevel"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══ SHOP ═══ -->
@@ -414,6 +444,183 @@
 <div class="modal" id="triviaModal"><div class="msheet" id="triviaSheet"></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@auth0/auth0-spa-js@2/dist/auth0-spa-js.production.js"></script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// Your Closet - 3D walk-in room. Stage 0-9 mirrors the same thresholds the
+// flat SVG version (closetSVG in the main script) uses, just built from
+// simple primitives instead of illustrated paths - this is a first pass,
+// not meant to be photorealistic furniture.
+(function(){
+  var SHIRT_COLORS=['#7239EA','#12B886','#f4c95d','#e0553d','#4a9de0','#b98be0'];
+  var scene,camera,renderer,controls,furnitureGroup,container,ro;
+
+  function build(){
+    scene=new THREE.Scene();
+    scene.background=new THREE.Color(0x1a1523);
+
+    camera=new THREE.PerspectiveCamera(45,1,0.1,50);
+    camera.position.set(4.2,3.6,5.2);
+
+    renderer=new THREE.WebGLRenderer({antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    container.innerHTML='';
+    container.appendChild(renderer.domElement);
+
+    var hint=document.createElement('div');
+    hint.className='closet3d-hint';
+    hint.textContent='Drag to rotate';
+    container.appendChild(hint);
+
+    controls=new OrbitControls(camera,renderer.domElement);
+    controls.target.set(0,1.2,0);
+    controls.enableDamping=true;
+    controls.enablePan=false;
+    controls.minDistance=4;
+    controls.maxDistance=9;
+    controls.maxPolarAngle=Math.PI/2-0.03;
+
+    scene.add(new THREE.AmbientLight(0xffffff,0.55));
+    var sun=new THREE.DirectionalLight(0xfff2d9,0.9);
+    sun.position.set(5,8,4);
+    scene.add(sun);
+
+    var floorMat=new THREE.MeshStandardMaterial({color:0xece2d3});
+    var wallMat=new THREE.MeshStandardMaterial({color:0xf1ece0});
+    var floor=new THREE.Mesh(new THREE.PlaneGeometry(6,5),floorMat);
+    floor.rotation.x=-Math.PI/2;
+    scene.add(floor);
+    var back=new THREE.Mesh(new THREE.PlaneGeometry(6,3),wallMat);
+    back.position.set(0,1.5,-2.5);
+    scene.add(back);
+    var left=new THREE.Mesh(new THREE.PlaneGeometry(5,3),wallMat);
+    left.rotation.y=Math.PI/2;
+    left.position.set(-3,1.5,0);
+    scene.add(left);
+    var right=new THREE.Mesh(new THREE.PlaneGeometry(5,3),wallMat);
+    right.rotation.y=-Math.PI/2;
+    right.position.set(3,1.5,0);
+    scene.add(right);
+
+    furnitureGroup=new THREE.Group();
+    scene.add(furnitureGroup);
+
+    resize();
+    renderer.setAnimationLoop(function(){ controls.update(); renderer.render(scene,camera); });
+
+    ro=new ResizeObserver(resize);
+    ro.observe(container);
+  }
+
+  function resize(){
+    if(!container||!renderer)return;
+    var w=container.clientWidth,h=container.clientHeight;
+    if(!w||!h)return;
+    renderer.setSize(w,h);
+    camera.aspect=w/h;
+    camera.updateProjectionMatrix();
+  }
+
+  function box(w,h,d,color,emissive){
+    var mat=emissive?new THREE.MeshStandardMaterial({color:color,emissive:color,emissiveIntensity:0.6})
+                    :new THREE.MeshStandardMaterial({color:color});
+    return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  }
+
+  function buildFurniture(s){
+    while(furnitureGroup.children.length){
+      var c=furnitureGroup.children.pop();
+      c.geometry.dispose(); c.material.dispose();
+    }
+    if(s<1){
+      // stage 0: messy room - laundry pile + two "monsters"
+      var pile=box(1.4,0.35,1.1,0x8a7a58); pile.position.set(-1.2,0.17,-1.4);
+      furnitureGroup.add(pile);
+      [[0.9,0x7239EA],[1.9,0x12B886]].forEach(function(m){
+        var body=new THREE.Mesh(new THREE.ConeGeometry(0.4,0.9,8),new THREE.MeshStandardMaterial({color:m[1]}));
+        body.position.set(m[0],0.45,-1.6);
+        furnitureGroup.add(body);
+      });
+      return;
+    }
+    if(s>=2){
+      var shelf=box(2.2,0.08,0.5,0xf6f1e6); shelf.position.set(-1.6,1.6,-2.2);
+      furnitureGroup.add(shelf);
+      var storageBox=box(0.6,0.5,0.5,0xdccfa8); storageBox.position.set(1.7,0.25,-2.1);
+      furnitureGroup.add(storageBox);
+    }
+    if(s>=3){
+      var drawers=box(1.2,1.0,0.5,0xf7f3ec); drawers.position.set(-1.6,0.5,-2.2);
+      furnitureGroup.add(drawers);
+      for(var i=0;i<2;i++){
+        var handle=box(0.4,0.06,0.05,0xc6a23c); handle.position.set(-1.6,0.35+i*0.4,-1.94);
+        furnitureGroup.add(handle);
+      }
+    }
+    if(s>=4){
+      var rod=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,2.2,8),new THREE.MeshStandardMaterial({color:0xc6a23c}));
+      rod.rotation.z=Math.PI/2; rod.position.set(0.6,2.0,-2.2);
+      furnitureGroup.add(rod);
+      var shirtCount=s>=6?7:4;
+      for(var k=0;k<shirtCount;k++){
+        var sh=box(0.28,0.75,0.12,parseInt(SHIRT_COLORS[k%SHIRT_COLORS.length].slice(1),16));
+        sh.position.set(-0.4+k*0.35,1.55,-2.2);
+        furnitureGroup.add(sh);
+      }
+    }
+    if(s>=5){
+      for(var st2=0;st2<3;st2++){
+        var stack=box(0.7,0.12,0.45,parseInt(SHIRT_COLORS[st2%SHIRT_COLORS.length].slice(1),16));
+        stack.position.set(1.7,0.55+st2*0.14,-2.2);
+        furnitureGroup.add(stack);
+      }
+    }
+    if(s>=7){
+      var led=box(2.4,0.06,0.06,0xffe6a8,true);
+      led.position.set(0.6,2.85,-2.4);
+      furnitureGroup.add(led);
+      var glow=new THREE.PointLight(0xffe6a8,0.6,4);
+      glow.position.set(0.6,2.7,-1.8);
+      furnitureGroup.add(glow);
+    }
+    if(s>=8){
+      for(var sh2=0;sh2<4;sh2++){
+        var shoe=box(0.35,0.18,0.5,0x2f2a28);
+        shoe.position.set(-2.3+sh2*0.45,0.09,1.6);
+        furnitureGroup.add(shoe);
+      }
+    }
+    if(s>=9){
+      for(var sp=0;sp<5;sp++){
+        var sparkle=new THREE.Mesh(new THREE.SphereGeometry(0.05,8,8),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:1}));
+        sparkle.position.set(-1.5+sp*0.8,2.2+Math.sin(sp)*0.3,-1.0);
+        furnitureGroup.add(sparkle);
+      }
+    }
+  }
+
+  window.MoonCloset3D={
+    init:function(el){
+      container=el;
+      if(!scene)build();
+    },
+    setStage:function(s){
+      if(!scene)return;
+      buildFurniture(Math.max(0,Math.min(9,s)));
+    }
+  };
+})();
+</script>
 <script>
 (function(){
   "use strict";
@@ -425,6 +632,7 @@
     document.querySelectorAll('section[data-sec]').forEach(function(s){s.classList.toggle('show',s.dataset.sec===sec);});
     window.scrollTo({top:0,behavior:'smooth'});
     if(history.replaceState)history.replaceState(null,'','#'+sec);
+    if(sec==='closet')initCloset3DOnce();
   }
   tabs.addEventListener('click',function(e){var b=e.target.closest('.nl'); if(b)go(b.dataset.sec);});
 
@@ -568,6 +776,29 @@
     document.getElementById('strkBig').textContent=st.streak;
     document.getElementById('stageBig').textContent=(s+1)+'/10';
     var s2=document.getElementById('strkBig2'); if(s2)s2.innerHTML=FLAME+' '+st.streak+' day'+(st.streak>1?'s':'');
+    document.getElementById('closetTokBig').textContent=st.tokens;
+    document.getElementById('closetStrkBig').textContent=st.streak;
+    document.getElementById('closetStageBig').textContent=(s+1)+'/10';
+    if(window.MoonCloset3D)window.MoonCloset3D.setStage(s);
+  }
+
+  // Lazy-loads the 3D scene only once the "Your Closet" tab is actually
+  // opened (avoids building a WebGL context for people who never click it).
+  // window.MoonCloset3D is set by the module <script> once three.js has
+  // finished loading from the CDN, which can race this - poll briefly.
+  var closet3dReady=false;
+  function initCloset3DOnce(){
+    if(closet3dReady)return;
+    (function tryInit(){
+      if(window.MoonCloset3D){
+        closet3dReady=true;
+        window.MoonCloset3D.init(document.getElementById('closet3dWrap'));
+        window.MoonCloset3D.setStage(stage());
+        var loading=document.getElementById('closet3dLoading'); if(loading)loading.remove();
+      }else{
+        setTimeout(tryInit,150);
+      }
+    })();
   }
 
   document.getElementById('compareBtn').addEventListener('click',function(){ toast('Compare Collections — coming soon!'); });
@@ -602,17 +833,23 @@
   document.addEventListener('click',function(e){ var a=e.target.closest('[data-eid]'); if(a) earn(a.dataset.eid,+a.dataset.earn); });
 
   /* ── leaderboard ── */
-  async function renderLeaderboard(){
-    var rows;
-    try{ rows=await apiFetch('/api/leaderboard'); }catch(e){ console.error(e); return; }
-    var medals=['<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#f4d477;color:#7a5606;font-weight:800;font-size:11px;">1</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#dcdde3;color:#4a4a56;font-weight:800;font-size:11px;">2</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e3b088;color:#6b3d17;font-weight:800;font-size:11px;">3</span>'];
-    document.getElementById('lbList').innerHTML=rows.map(function(r,i){
-      var rank=i<3?medals[i]:(i+1), me=r.email===st.email;
+  var LB_MEDALS=['<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#f4d477;color:#7a5606;font-weight:800;font-size:11px;">1</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#dcdde3;color:#4a4a56;font-weight:800;font-size:11px;">2</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e3b088;color:#6b3d17;font-weight:800;font-size:11px;">3</span>'];
+  function renderLbList(containerId,sorted,valueHtmlFn){
+    document.getElementById(containerId).innerHTML=sorted.map(function(r,i){
+      var rank=i<3?LB_MEDALS[i]:(i+1), me=r.email===st.email;
       var badges=(r.badges||[]).map(function(b){return '<span class="badge">'+b+'</span>';}).join('');
       return '<div class="lbrow'+(i<3?' top':'')+(me?' me':'')+'"><div class="rank">'+rank+'</div>'+
         '<div class="who"><div class="n">'+r.name+(me?' (you)':'')+'</div></div>'+
-        '<div class="rocks">'+MR+' '+r.tokens+'</div><div class="badges">'+badges+'</div></div>';
+        valueHtmlFn(r)+'<div class="badges">'+badges+'</div></div>';
     }).join('');
+  }
+  async function renderLeaderboard(){
+    var rows;
+    try{ rows=await apiFetch('/api/leaderboard'); }catch(e){ console.error(e); return; }
+    var byRocks=rows.slice().sort(function(a,b){return b.tokens-a.tokens;});
+    var byLevel=rows.slice().sort(function(a,b){return b.stage-a.stage;});
+    renderLbList('lbListRocks',byRocks,function(r){return '<div class="rocks">'+MR+' '+r.tokens+'</div>';});
+    renderLbList('lbListLevel',byLevel,function(r){return '<div class="rocks">'+(r.stage+1)+'/10</div>';});
   }
 
   /* ── shop ── */

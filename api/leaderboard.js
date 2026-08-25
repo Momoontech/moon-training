@@ -37,15 +37,18 @@ module.exports = async (req, res) => {
     const supabase = db();
     const { data, error } = await supabase
       .from('leaderboard')
-      .select('name, email, tokens, streak, lifetime_earned')
+      .select('name, email, tokens, streak, visits, lifetime_earned')
       .order('tokens', { ascending: false })
       .limit(50);
     if (error) throw error;
 
+    // stage mirrors the client's stage() = min(9, visits-1) - returned so the
+    // frontend can rank by closet level without duplicating that formula.
     res.status(200).json(data.map(r => ({
       name: r.name || r.email,
       email: r.email,
       tokens: r.tokens,
+      stage: Math.min(9, (r.visits || 1) - 1),
       badges: badgesFor(r),
     })));
   } catch (e) {
