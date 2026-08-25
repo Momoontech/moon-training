@@ -25,8 +25,9 @@ moon-logo.png                      # circular Moon logo, also the "moon rock" cu
 2 Handouts & Guide/Handout_Gestures_Cheat_Sheet.html       # exists but removed from dashboard nav
 3 Quizzes/index.html + Quiz_1_Setup_and_Measure.html + Quiz_2_Design_and_Present.html + Quiz_3_Final.html
 4 Day 2 Activities/Client_Cards_Checklist.html + Tournament_Voting.html
-5 Planning/  (internal, NOT deployed): Training_Materials_Overview.html, App_Training_Presentation_Framework.md, Training_Dashboard_Refinement_Plan.md
+5 Planning/  (internal, NOT deployed): Training_Materials_Overview.html, App_Training_Presentation_Framework.md, Training_Dashboard_Refinement_Plan.md, SoCal_Closets_Configurator_Catalog_Oct2025.pdf
 6 Daily Challenge/Daily_Challenge_Concept.html
+catalog-data.js                    # MOON_CATALOG - shared source-of-truth data (real components/materials/pricing tiers/business rules), digested from the PDF above
 ```
 
 Deployed to Vercel: everything EXCEPT `5 Planning/`, `1 Decks/Day1_Presentation_Content.md`, and `1 Decks/Day 1 Slide Pictures/`.
@@ -46,7 +47,7 @@ git add -A && git commit -m "..." && git push
 
 ## Architecture
 
-**No shared code between files - each HTML file is fully standalone.** There are zero `.js` files and zero `<script src=...>` includes anywhere in the repo. Every page reimplements its own inline `<script>` logic and its own `:root` CSS variables. This is a deliberate tradeoff for zero-build-step, file-portable pages, but it means:
+**No shared code between files - each HTML file is fully standalone**, with one deliberate exception: `catalog-data.js` (`MOON_CATALOG`), the real Closet World component/pricing catalog digested into curated categories, materials, price tiers, and business rules. It's shared (`<script src="catalog-data.js">` in `index.html`, `require()`'d by `api/_lib/shop.js`) because duplicating a catalog that size per-file would defeat the point of having one source of truth. Everything else is zero `.js` files and zero `<script src=...>`. Every page reimplements its own inline `<script>` logic and its own `:root` CSS variables. This is a deliberate tradeoff for zero-build-step, file-portable pages, but it means:
 - Fixing a bug or changing a design token in one file (e.g. the quiz scoring logic, or the primary purple) does **not** propagate anywhere else - each of the 3 quiz files, for example, carries a byte-identical copy of the same 5 scoring functions (`shuffle`/`prep`/`start`/`render`/`results`/`confetti`); only the `QUIZ` question-bank array and title differ between them.
 - Design tokens have already drifted: `index.html` and the app-mock surfaces use primary purple `#7239EA`, but `3 Quizzes/index.html` independently defines `#6C5CE7`. Don't assume one file's `:root` vars match another's - check the specific file.
 - `2 Handouts & Guide/Interactive_Designer_Guide.html` hardcodes absolute links out to a *different* deployed quiz site (`quizzes-pied-two.vercel.app`) rather than relative paths to `3 Quizzes/` in this repo - a real cross-deployment coupling point to be aware of if either site's URL changes.

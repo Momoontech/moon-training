@@ -510,6 +510,7 @@
 <div class="modal" id="prepModal"><div class="msheet" id="prepSheet"></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@auth0/auth0-spa-js@2/dist/auth0-spa-js.production.js"></script>
+<script src="catalog-data.js"></script>
 <script>
 (function(){
   "use strict";
@@ -594,7 +595,15 @@
   // shared by the small Dashboard preview (closetSVG) and the bigger
   // dollhouse room view (closetDollhouse) so the furniture drawing logic
   // only lives in one place.
-  function closetScene(s){
+  function closetScene(s,ownedAcc){
+    function accIcon(key){ var c='#7239EA'; switch(key){
+      case 'hook': return '<path d="M-3 -5v6a3 3 0 0 0 6 0v-3" stroke="'+c+'" stroke-width="1.6" fill="none"/><circle cx="3" cy="-2" r="1" fill="'+c+'"/>';
+      case 'bracket': return '<path d="M-4 6V-4h8" stroke="'+c+'" stroke-width="1.6" fill="none"/>';
+      case 'rod': return '<path d="M-6 0h12" stroke="'+c+'" stroke-width="1.6"/><circle cx="-6" cy="0" r="1.2" fill="'+c+'"/><circle cx="6" cy="0" r="1.2" fill="'+c+'"/>';
+      case 'basket': return '<rect x="-6" y="-2" width="12" height="7" rx="1" fill="none" stroke="'+c+'" stroke-width="1.4"/><path d="M-5 -2v-3h10v3" stroke="'+c+'" stroke-width="1.2" fill="none"/>';
+      case 'drawer': return '<rect x="-6" y="-4" width="12" height="9" rx="1" fill="none" stroke="'+c+'" stroke-width="1.4"/><path d="M-2 0.5h4" stroke="'+c+'" stroke-width="1.4"/>';
+      default: return '<rect x="-5" y="-5" width="10" height="10" rx="1.5" fill="none" stroke="'+c+'" stroke-width="1.4"/>';
+    } }
     function shirt(cx,top,w,h,c){ var hw=w/2;
       return '<path d="M'+cx+' '+(top-1)+' L'+(cx-hw)+' '+(top+5)+' M'+cx+' '+(top-1)+' L'+(cx+hw)+' '+(top+5)+'" stroke="#8a7a58" stroke-width="1.2" fill="none"/>'+
         '<path d="M'+(cx-6)+' '+top+' Q'+cx+' '+(top+3.5)+' '+(cx+6)+' '+top+' L'+(cx+hw)+' '+(top+5)+' L'+(cx+hw+3)+' '+(top+11)+' L'+(cx+hw-2)+' '+(top+15)+' L'+(cx+hw-4)+' '+(top+h)+' L'+(cx-hw+4)+' '+(top+h)+' L'+(cx-hw+2)+' '+(top+15)+' L'+(cx-hw-3)+' '+(top+11)+' L'+(cx-hw)+' '+(top+5)+' Z" fill="'+c+'"/>'; }
@@ -651,10 +660,27 @@
       p+='<g fill="#FDC63A"><path d="M405 96 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/></g>';
       p+='<g transform="translate(430,220)"><rect x="-10" y="14" width="20" height="16" rx="3" fill="#d8c19a" stroke="#c3a877" stroke-width="1.2"/><path d="M0 14 q-15 -20 -4 -34 q9 8 4 34 M0 14 q15 -18 4 -32 q-8 10 -4 32" fill="#3f9f66"/></g>';
     }
+    // Real accessories a designer has bought (see MOON_CATALOG.shopAccessories)
+    // show up as a row of small badges along the floor - once the closet is
+    // set up (s>=2), so they don't collide with the "before" mess/piles.
+    if(s>=2&&ownedAcc&&ownedAcc.length){
+      var slotX=[46,102,158,214,270,326,382],y=268;
+      ownedAcc.slice(0,slotX.length).forEach(function(a,idx){
+        var x=slotX[idx];
+        p+='<circle cx="'+x+'" cy="'+y+'" r="11" fill="#fff" stroke="#e6ddcb" stroke-width="1.3"/>';
+        p+='<g transform="translate('+x+','+y+')">'+accIcon(a.icon)+'</g>';
+      });
+    }
     return p;
   }
-  function closetSVG(s){
-    return '<svg class="cl" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">'+closetScene(s)+'</svg>';
+  function closetSVG(s,ownedAcc){
+    return '<svg class="cl" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">'+closetScene(s,ownedAcc)+'</svg>';
+  }
+  // Which real accessories (see MOON_CATALOG.shopAccessories) this player
+  // currently owns, for drawing into the closet scene.
+  function ownedAccessories(){
+    if(typeof MOON_CATALOG==='undefined')return [];
+    return MOON_CATALOG.shopAccessories.filter(function(a){ return st.owned['acc_'+a.id]; });
   }
 
   // Bigger "dollhouse" view: the same scene as the back wall of a static,
@@ -662,7 +688,7 @@
   // polygons around it) - not a real rotatable 3D space, just styled to look
   // like one, per Mo's call to drop the WebGL room in favor of something
   // fully static that renders reliably everywhere.
-  function closetDollhouse(s,wallHex,floorHex){
+  function closetDollhouse(s,wallHex,floorHex,ownedAcc){
     var wall=wallHex?'#'+wallHex:'#fbfaf9';
     var floor=floorHex?'#'+floorHex:'#d9bd8f';
     var backX=170,backY=18,backW=360,backH=246; // where the 440x300 scene sits, scaled ~0.818
@@ -677,20 +703,20 @@
     out+='<polygon points="'+backX+','+(backY+backH)+' '+(backX+backW)+','+(backY+backH)+' 690,478 10,478" fill="#000" opacity=".08"/>';
     // subtle side-wall shading for depth
     out+='<polygon points="'+backX+','+backY+' 46,58 0,458 '+backX+','+(backY+backH)+'" fill="#000" opacity=".05"/>';
-    out+='<g transform="translate('+backX+','+backY+') scale('+scale+')">'+closetScene(s)+'</g>';
+    out+='<g transform="translate('+backX+','+backY+') scale('+scale+')">'+closetScene(s,ownedAcc)+'</g>';
     out+='<rect x="'+backX+'" y="'+backY+'" width="'+backW+'" height="'+backH+'" fill="none" stroke="#000" stroke-opacity=".06" stroke-width="1"/>';
     return '<svg class="dollhouse" viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">'+out+'</svg>';
   }
 
   function renderClosetIllustration(){
     var el=document.getElementById('closetIllustration');
-    if(viewingMock){ el.innerHTML=closetDollhouse(viewingMock.stage,null,null); }
-    else { el.innerHTML=closetDollhouse(stage(),st.equippedWall,st.equippedFloor); }
+    if(viewingMock){ el.innerHTML=closetDollhouse(viewingMock.stage,null,null,[]); }
+    else { el.innerHTML=closetDollhouse(stage(),st.equippedWall,st.equippedFloor,ownedAccessories()); }
   }
 
   function renderCloset(){
     var s=stage();
-    document.getElementById('closetArt').innerHTML=closetSVG(s);
+    document.getElementById('closetArt').innerHTML=closetSVG(s,ownedAccessories());
     document.getElementById('closetCaption').textContent=STAGES[s].cap;
     document.getElementById('closetDay').textContent='Day '+(st.visits||1);
     document.getElementById('closetMood').textContent=STAGES[s].mood;
@@ -798,6 +824,16 @@
   /* ── closet customize panel (overlaid on the 3D view - stuff that changes
      how your closet looks) ── */
   var SHOPICN='<svg viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">';
+  // Placeholder shapes for real accessories that don't have dedicated
+  // illustrations yet (see MOON_CATALOG.shopAccessories `icon` field).
+  var ACC_ICONS={
+    hook:'<path d="M8 3v9a4 4 0 0 0 8 0V9"/><circle cx="16" cy="9" r="1.4"/>',
+    bracket:'<path d="M6 20V8h10"/><path d="M6 8l4-4M6 8l4 4"/>',
+    rod:'<path d="M4 8h16"/><circle cx="6" cy="8" r="1.6"/><circle cx="18" cy="8" r="1.6"/><path d="M9 8v6M15 8v6"/>',
+    basket:'<rect x="4" y="9" width="16" height="10" rx="1"/><path d="M4 13h16M8 9V6h8v3"/>',
+    box:'<path d="M4 8l8-4 8 4-8 4-8-4z"/><path d="M4 8v9l8 4 8-4V8"/><path d="M12 12v9"/>',
+    drawer:'<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M4 12h16"/><path d="M10 15.5h4"/>'
+  };
   // `group` controls which header a row falls under - Mo's sending a fuller
   // item list later, this is the structure it'll slot into.
   var CLOSET_ITEMS=[
@@ -808,7 +844,25 @@
     {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Wall: Blush',d:'Blush pink walls.',price:20,type:'cosmetic',category:'wall',hex:'f3dede',group:'Colors & Textures'},
     {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Colors & Textures'},
     {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Colors & Textures'}
-  ];
+  ].concat(
+    // Real Closet World panel finishes (see catalog-data.js) - a curated
+    // spread across the real material tiers, so "wall color" in the app
+    // matches actual finish names/pricing order a designer would see.
+    (typeof MOON_CATALOG!=='undefined'?['white','antiqueWhite','darkGrey','fusionMaple','signiaEspresso','walnut']:[]).map(function(mid){
+      var m=MOON_CATALOG.materials.filter(function(x){return x.id===mid;})[0];
+      return {id:'wall_'+m.id,i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Wall: '+m.name,d:'Real Closet World finish.',price:Math.max(10,m.rocks),type:'cosmetic',category:'wall',hex:m.hex,group:'Colors & Textures'};
+    }),
+    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.rods:[]).map(function(r){
+      return {id:'rod_'+r.id,i:SHOPICN+'<path d="M4 7h16"/><circle cx="6" cy="7" r="1.6"/><circle cx="18" cy="7" r="1.6"/><path d="M8 7v3M12 7v5M16 7v3"/></svg>',n:'Rod: '+r.name,d:'Real Closet World rod finish.',price:r.rocks,type:'cosmetic',group:'Accessories'};
+    }),
+    // Real Closet World accessories (tie racks, hampers, baskets, etc.) - no
+    // dedicated illustration per item yet, just a shared placeholder shape
+    // per category (see ACC_ICONS) until real art exists.
+    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.shopAccessories:[]).map(function(a){
+      var shape=ACC_ICONS[a.icon]||ACC_ICONS.box;
+      return {id:'acc_'+a.id,i:SHOPICN+shape+'</svg>',n:a.name,d:a.desc,price:a.rocks,type:'cosmetic',group:'Accessories'};
+    })
+  );
   // Real-world perks, unrelated to the closet itself - live in the standalone Shop tab.
   var REWARD_ITEMS=[
     {id:'coffee',i:SHOPICN+'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10h1a2 2 0 1 1 0 4h-1"/><path d="M7 3c0 1-1 1-1 2M11 3c0 1-1 1-1 2"/></svg>',n:'Coffee voucher',d:'Redeem for a coffee on the house.',price:35,type:'cosmetic'},
