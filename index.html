@@ -203,10 +203,10 @@
 
   /* ─── Leaderboard ─── */
   /* ─── Your Closet (3D) ─── */
-  .closet3d-wrap{position:relative;height:440px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#2a2140,#1a1523);box-shadow:0 8px 24px rgba(26,21,35,.18);margin-top:14px;}
+  .closet3d-wrap{position:relative;height:440px;border-radius:18px;overflow:hidden;background:#f7f6fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(26,21,35,.08);margin-top:14px;}
   .closet3d-wrap canvas{display:block;width:100%;height:100%;}
   .closet3d-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.45);color:#fff;font-size:11.5px;font-weight:600;padding:6px 14px;border-radius:999px;pointer-events:none;}
-  .closet3d-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#cfc7e6;font-size:13px;font-weight:600;}
+  .closet3d-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;font-weight:600;}
   .closet-stats-row{display:flex;gap:28px;margin-top:18px;flex-wrap:wrap;}
   .closet-stats-row div b{font-size:22px;font-weight:800;color:var(--ink);display:block;}
   .closet-stats-row div span{font-size:11.5px;color:var(--muted);}
@@ -467,7 +467,11 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   function build(){
     scene=new THREE.Scene();
-    scene.background=new THREE.Color(0x1a1523);
+    // Light, clean showroom look to match the real app's 3D view (white
+    // walls, pale wood floor, soft grid stage) rather than a game-y dark
+    // scene - this is meant to look like the actual product, not an arcade.
+    scene.background=new THREE.Color(0xf7f6fb);
+    scene.fog=new THREE.Fog(0xf7f6fb,9,22);
 
     camera=new THREE.PerspectiveCamera(45,1,0.1,50);
     camera.position.set(4.2,3.6,5.2);
@@ -490,13 +494,20 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     controls.maxDistance=9;
     controls.maxPolarAngle=Math.PI/2-0.03;
 
-    scene.add(new THREE.AmbientLight(0xffffff,0.55));
-    var sun=new THREE.DirectionalLight(0xfff2d9,0.9);
+    scene.add(new THREE.AmbientLight(0xffffff,0.85));
+    var sun=new THREE.DirectionalLight(0xffffff,0.7);
     sun.position.set(5,8,4);
     scene.add(sun);
 
-    var floorMat=new THREE.MeshStandardMaterial({color:0xece2d3});
-    var wallMat=new THREE.MeshStandardMaterial({color:0xf1ece0});
+    // Pale grid extending beyond the room footprint, like the real app's
+    // "big empty stage" floor - sits just under the room's own floor plane
+    // so it only shows past the room's edges.
+    var grid=new THREE.GridHelper(24,24,0xdcd9e4,0xeceaf1);
+    grid.position.y=-0.005;
+    scene.add(grid);
+
+    var floorMat=new THREE.MeshStandardMaterial({color:0xd6b98c});
+    var wallMat=new THREE.MeshStandardMaterial({color:0xfafafc});
     var floor=new THREE.Mesh(new THREE.PlaneGeometry(6,5),floorMat);
     floor.rotation.x=-Math.PI/2;
     scene.add(floor);
