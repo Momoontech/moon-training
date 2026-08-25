@@ -25,7 +25,7 @@ moon-logo.png                      # circular Moon logo, also the "moon rock" cu
 2 Handouts & Guide/Handout_Gestures_Cheat_Sheet.html       # exists but removed from dashboard nav
 3 Quizzes/index.html + Quiz_1_Setup_and_Measure.html + Quiz_2_Design_and_Present.html + Quiz_3_Final.html
 4 Day 2 Activities/Client_Cards_Checklist.html + Tournament_Voting.html
-5 Planning/  (internal, NOT deployed): Training_Materials_Overview.html, App_Training_Presentation_Framework.md, Training_Dashboard_Refinement_Plan.md, SoCal_Closets_Configurator_Catalog_Oct2025.pdf
+5 Planning/  (internal, NOT deployed): Training_Materials_Overview.html, App_Training_Presentation_Framework.md, Training_Dashboard_Refinement_Plan.md, SoCal_Closets_Configurator_Catalog_Oct2025.pdf, app-catalog-private.json (real Sales Designer App catalog export - product IDs/names/hosted thumbnail images, digested into catalog-data.js's `appCatalog`)
 6 Daily Challenge/Daily_Challenge_Concept.html
 6 Daily Challenge/challenge-chrome.js   # shared app chrome (topbar/toolbar/floor plan/panel shell/win feedback) - see note below
 6 Daily Challenge/challenge-chrome.css  # shared app chrome CSS - loaded alongside challenge-chrome.js

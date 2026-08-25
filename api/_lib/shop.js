@@ -36,5 +36,13 @@ MOON_CATALOG.rods.forEach(function (r) {
 MOON_CATALOG.shopAccessories.forEach(function (a) {
   SHOP_ITEMS['acc_' + a.id] = { price: a.rocks };
 });
+// Real closet layouts from the app's own catalog (appCatalog.closetContent)
+// - prices mirror the curated subset/pricing chosen in index.html.
+[
+  ['shelvesStack', 25], ['longHung', 30], ['doubleHung', 35],
+  ['oneBottomHangerWithShelves', 40], ['threeDrawerShelves', 50], ['fourDrawerShelves', 65],
+].forEach(function (pair) {
+  SHOP_ITEMS['layout_' + pair[0]] = { price: pair[1] };
+});
 
 module.exports = { SHOP_ITEMS };
