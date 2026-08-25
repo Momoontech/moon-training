@@ -234,21 +234,26 @@
   @media (max-width:640px){.closet-customize{left:14px;width:auto;}}
   .side-bal{font-size:12px;color:var(--muted);margin-bottom:10px;}
   .side-bal b{color:var(--ink);font-weight:800;}
-  .shop-group-head{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 6px;}
-  .shop-group-head:first-child{margin-top:0;}
-  .shop-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-radius:10px;}
-  .shop-row:hover{background:#faf9fc;}
-  .shop-row .si2{width:32px;height:32px;border-radius:9px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
-  .shop-row .si2 svg{width:16px;height:16px;}
-  .shop-row .info{flex:1;min-width:0;}
-  .shop-row .info b{font-size:12.5px;display:block;font-weight:700;}
-  .shop-row .info span{font-size:10.5px;color:var(--muted);}
-  .buybtn.sm{padding:6px 11px;font-size:10.5px;white-space:nowrap;}
 
-  .side-subtabs{display:flex;gap:6px;margin-bottom:10px;}
-  .side-subtabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px;font-family:inherit;font-size:10.5px;font-weight:700;cursor:pointer;color:var(--muted);}
-  .side-subtabs button.on{background:var(--purple-2);color:var(--color-button-primary);border-color:#ddd0fb;}
-  .side-lb-row{display:flex;align-items:center;gap:8px;padding:6px 4px;border-radius:8px;}
+  /* Pill category tabs (Boosts / Accessories / Colors & Textures) - matches
+     the real app's Customize panel sub-tab row (Rods / Door Hinges / ...):
+     fully-rounded pills, purple underline on the active one. */
+  .side-subtabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--line);}
+  .side-subtabs button{flex:1;border:none;background:none;border-radius:999px 999px 0 0;padding:9px 4px;font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .side-subtabs button.on{color:var(--primary);font-weight:700;border-bottom-color:var(--primary);}
+
+  /* Swatch card grid - mirrors the real app's material/color swatch tiles:
+     square card, gradient/icon preview, a green "equipped" badge and purple
+     selection border when active, label + price below. */
+  .swatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .swatch-card{border:1px solid var(--line);border-radius:8px;position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#f8f8f8;}
+  .swatch-card.equipped{border:2px solid #aa81cf;}
+  .swatch-card svg{width:22px;height:22px;}
+  .swatch-badge{position:absolute;top:-2px;right:-2px;background:#f8fff4;border:1px solid #ccebdb;color:#006b39;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:2px 6px;border-radius:6px;}
+  .swatch-label{margin-top:7px;}
+  .swatch-label b{font-size:10px;font-weight:600;display:block;}
+  .swatch-label .price{font-size:9px;color:#8e66b1;font-weight:500;display:flex;align-items:center;gap:3px;margin-top:2px;}
+  .swatch-label .buybtn.sm{margin-top:5px;width:100%;}
   .side-lb-row.me{background:#faf8ff;}
   .side-lb-row .rank{width:16px;font-size:11px;font-weight:800;color:var(--muted);text-align:center;flex:0 0 auto;}
   .side-lb-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -470,6 +475,7 @@
           <button id="customizeClose" style="border:none;background:#f1f1f6;border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--muted);font-size:13px;">✕</button>
         </div>
         <div class="side-bal">You have <b id="shopBal"></b></div>
+        <div class="side-subtabs" id="shopTabs"></div>
         <div id="shopGroups"></div>
       </div>
     </div>
@@ -812,28 +818,34 @@
     {id:'mini',i:SHOPICN+'<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>',n:'Miniature closet figurine',d:'A collectible miniature closet figurine for your desk.',price:120,type:'cosmetic'}
   ];
   var ALL_SHOP_ITEMS=CLOSET_ITEMS.concat(REWARD_ITEMS);
-  function shopRowHtml(it){
+  var SHOP_GROUPS=['Boosts','Accessories','Colors & Textures'];
+  var shopCat=SHOP_GROUPS[0];
+  function swatchCardHtml(it){
     var owned=st.owned[it.id],afford=st.tokens>=it.price;
     var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
-    var btn;
+    var preview=it.hex?'background:linear-gradient(180deg,#ffffff 0%,#'+it.hex+' 55%,#5e5e5e 100%);':'background:var(--primary-soft);';
+    var badge=equipped?'<span class="swatch-badge">Equipped</span>':'';
+    var action;
     if(it.category&&owned){
-      btn=equipped?'<button class="buybtn sm owned" disabled>Equipped</button>':'<button class="buybtn sm" data-buy="'+it.id+'">Equip</button>';
-    }else if(it.type==='cosmetic'&&owned){
-      btn='<button class="buybtn sm owned" disabled>Owned</button>';
-    }else if(afford){
-      btn='<button class="buybtn sm" data-buy="'+it.id+'">'+it.price+'</button>';
+      action=equipped?'<div class="price">Equipped</div>':'<button class="buybtn sm" data-buy="'+it.id+'">Equip</button>';
+    }else if(it.type==='cosmetic'&&owned&&!it.category){
+      action='<div class="price">Owned</div>';
     }else{
-      btn='<button class="buybtn sm" disabled>'+it.price+'</button>';
+      action='<button class="buybtn sm" data-buy="'+it.id+'"'+(afford?'':' disabled')+'>'+MR+' '+it.price+'</button>';
     }
-    return '<div class="shop-row"><div class="si2">'+it.i+'</div><div class="info"><b>'+it.n+'</b><span>'+it.d+'</span></div>'+btn+'</div>';
+    return '<div><div class="swatch-card'+(equipped?' equipped':'')+'" style="'+preview+'">'+(it.hex?'':it.i)+badge+'</div>'+
+      '<div class="swatch-label"><b>'+it.n+'</b>'+action+'</div></div>';
   }
   function renderShop(){
     document.getElementById('shopBal').innerHTML=MR+' '+st.tokens;
-    var groups={};
-    CLOSET_ITEMS.forEach(function(it){ (groups[it.group]=groups[it.group]||[]).push(it); });
-    document.getElementById('shopGroups').innerHTML=Object.keys(groups).map(function(g){
-      return '<div class="shop-group-head">'+g+'</div>'+groups[g].map(shopRowHtml).join('');
+    document.getElementById('shopTabs').innerHTML=SHOP_GROUPS.map(function(g){
+      return '<button class="'+(g===shopCat?'on':'')+'" data-cat="'+g+'">'+g+'</button>';
     }).join('');
+    document.getElementById('shopGroups').innerHTML='<div class="swatch-grid">'+
+      CLOSET_ITEMS.filter(function(it){return it.group===shopCat;}).map(swatchCardHtml).join('')+'</div>';
+    [].slice.call(document.querySelectorAll('#shopTabs button')).forEach(function(b){
+      b.addEventListener('click',function(){ shopCat=b.dataset.cat; renderShop(); });
+    });
     [].slice.call(document.querySelectorAll('[data-buy]')).forEach(function(b){ b.addEventListener('click',function(){buy(b.dataset.buy);}); });
   }
   document.getElementById('customizeBtn').addEventListener('click',function(){
