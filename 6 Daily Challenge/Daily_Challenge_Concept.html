@@ -6,7 +6,7 @@
 <title>Daily Challenge - Concept</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
     --primary:#7239EA; --primary-deep:#3E2472; --primary-soft:#F1ECFD;
@@ -14,7 +14,7 @@
     --wall:#6E6E7A; --grid:#ECECF4; --green:#12B886; --red:#E0553D; --gold:#FCE96A;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 46px;touch-action:manipulation;}
+  body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:0 0 46px;touch-action:manipulation;}
   .brand{background:linear-gradient(135deg,#2A2140,var(--primary));color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
   .brand .l{display:flex;align-items:center;gap:11px;}
   .brand .badge{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:17px;}
@@ -230,7 +230,7 @@
   function roomSVG(hatch,reachIn){
     var fill = hatch ? 'url(#hpat)' : 'rgba(140,140,156,.06)';
     var RI = '<g>'+
-      '<text x="445" y="500" text-anchor="middle" font-size="13" font-weight="800" fill="#7239EA" font-family="Inter">Reach-in closet</text>'+
+      '<text x="445" y="500" text-anchor="middle" font-size="13" font-weight="800" fill="#7239EA" font-family="Manrope">Reach-in closet</text>'+
       '<rect x="335" y="508" width="220" height="48" rx="4" fill="#f4f2fb" stroke="#7239EA" stroke-width="2.4"/>'+
       '<line x1="350" y1="520" x2="540" y2="520" stroke="#7239EA" stroke-width="2.4" stroke-linecap="round"/>'+
       '<path d="M365 520 v8 M388 520 v8 M411 520 v8 M434 520 v8 M457 520 v8 M480 520 v8 M503 520 v8 M526 520 v8" stroke="#b9a7ef" stroke-width="1.6"/>'+
@@ -239,8 +239,8 @@
       '</g>';
     var gl='#a7a7b6'; // guide line color
     function pill(cx,cy,n,txt){ return '<g><rect x="'+(cx-31)+'" y="'+(cy-12)+'" width="62" height="24" rx="12" fill="#7239EA"/>'+
-      '<circle cx="'+(cx-18)+'" cy="'+cy+'" r="8" fill="#fff"/><text x="'+(cx-18)+'" y="'+(cy+3.3)+'" text-anchor="middle" font-size="9.5" font-weight="800" fill="#7239EA" font-family="Inter">'+n+'</text>'+
-      '<text x="'+(cx+7)+'" y="'+(cy+3.6)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff" font-family="Inter">'+txt+'</text></g>'; }
+      '<circle cx="'+(cx-18)+'" cy="'+cy+'" r="8" fill="#fff"/><text x="'+(cx-18)+'" y="'+(cy+3.3)+'" text-anchor="middle" font-size="9.5" font-weight="800" fill="#7239EA" font-family="Manrope">'+n+'</text>'+
+      '<text x="'+(cx+7)+'" y="'+(cy+3.6)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff" font-family="Manrope">'+txt+'</text></g>'; }
     function h(x,y){ return '<rect x="'+(x-6)+'" y="'+(y-6)+'" width="12" height="12" rx="2.5" fill="#fff" stroke="#8a8a99" stroke-width="2.5"/>'; }
     function dimH(x1,x2,y,wy,n,txt){ // horizontal dim line at y, wall at wy
       return '<g stroke="'+gl+'" stroke-width="1.4">'+

@@ -76,7 +76,7 @@ Paginated slide decks, not scrolling pages: `<section class="slide">` elements t
 
 ### App-mock surfaces (Guide, Daily Challenge)
 
-`2 Handouts & Guide/Interactive_Designer_Guide.html` and `6 Daily Challenge/Daily_Challenge_Concept.html` mock the real app's UI (Inter font, gray walls `#6E6E7A`, purple `#7239EA` dimension pills, gold rods/accents) rather than the training-hub look.
+`2 Handouts & Guide/Interactive_Designer_Guide.html` and `6 Daily Challenge/Daily_Challenge_Concept.html` mock the real app's UI (Manrope font - see note below, gray walls `#6E6E7A`, purple `#7239EA` dimension pills, gold rods/accents) rather than the training-hub look.
 - The Guide drives a step list (`STEPS[]` → `show(i)`) plus small looping inline-SVG gesture demos (`DEMOS` object, single `requestAnimationFrame` loop guarded so it no-ops on absent elements), an interactive draggable floor-plan sandbox with wall-snapping (`proj`/`snapDoor`), and a canned FAQ chat widget that keyword-matches a local `KB` array (`match()`) - no real LLM call.
 - Daily Challenge builds mocked app screens per task (`buildMeasure`/`buildObstacles`/`buildSection`-style functions keyed off a `P[]` task array of `{screen, lvl, prompt, hint, exp}`) and wires up its own separate pointer-drag-and-snap logic (`wrong()`/`win()` feedback) - it does not share code with the Guide's sandbox despite similar drag-to-target mechanics.
 
@@ -87,7 +87,7 @@ Standalone worksheet-style tools (DM Sans, `#6C5CE7`/`#1A1A2E` palette - not the
 ## Conventions
 
 - **No em dashes anywhere** in any file. Use hyphens or rephrase.
-- **Fonts:** hub, quizzes, and Day 2 activities/decks generally use Manrope or DM Sans; app-mock surfaces (Daily Challenge, Interactive Guide) use **Inter** to match the real app.
+- **Fonts:** hub, quizzes, and Day 2 activities/decks generally use Manrope or DM Sans. App-mock surfaces were previously believed to use Inter "to match the real app," but every real Figma pull this session (Options panel, Catalog panel, Room Settings panel) specifies Manrope, not Inter - that assumption was wrong. `Daily_Challenge_Concept.html` has been corrected to Manrope; `Interactive_Designer_Guide.html` has NOT been updated yet and still uses Inter.
 - **Design system (canonical):** primary purple `#7239EA`, deep plum `#3E2472`/`#4A2596`, ink `#211C33`, green `#12B886`. App-mock screens: gray walls `#6E6E7A`, purple dimension pills, gold rods. (Note the quiz landing page drift documented above - flag it if asked to unify.)
 - **Hub look:** glassy - frosted translucent panels (`backdrop-filter: blur`), soft colored gradient background.
 - **Currency:** "moon rocks" (never "tokens" in UI text, though the internal localStorage field is still named `tokens`). Icon = `moon-logo.png`. Shop items must NOT be Moon-branded.
