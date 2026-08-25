@@ -1,13 +1,6 @@
 const { requireUser, AuthError } = require('./_lib/auth');
 const { db, getOrCreateUser } = require('./_lib/db');
-
-// Mirrors the SHOP[] prices in index.html - keep these two lists in sync
-// until there's a single shared source (see CLAUDE.md's "no shared code"
-// note - the same caveat applies here).
-const SHOP_PRICES = {
-  levelup: 15, accessory: 25, coffee: 35, walkin: 40,
-  lunch: 50, tee: 60, giftcard: 90, mini: 120,
-};
+const { SHOP_ITEMS } = require('./_lib/shop');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -15,8 +8,9 @@ module.exports = async (req, res) => {
     const identity = await requireUser(req);
     const user = await getOrCreateUser(identity);
     const { itemId } = req.body || {};
-    const price = SHOP_PRICES[itemId];
-    if (!price) return res.status(400).json({ error: 'Unknown itemId' });
+    const item = SHOP_ITEMS[itemId];
+    if (!item) return res.status(400).json({ error: 'Unknown itemId' });
+    const price = item.price;
 
     const supabase = db();
     const { data: balanceRow } = await supabase.from('user_balances').select('tokens').eq('user_id', user.id).maybeSingle();
