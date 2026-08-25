@@ -212,6 +212,49 @@
   .browse-card:hover{border-color:#c9c4db;box-shadow:0 4px 14px rgba(26,21,35,.1);}
   .browse-card .lvl{font-size:11px;font-weight:800;color:var(--primary);}
   .closet-stats-row{display:flex;gap:28px;margin-top:18px;flex-wrap:wrap;}
+
+  /* ─── Your Closet: main + side panel layout ─── */
+  .closet-layout{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;margin-top:14px;}
+  @media (max-width:900px){.closet-layout{grid-template-columns:1fr;}}
+  .closet-side{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(26,21,35,.06);}
+  .side-tabs{display:flex;gap:4px;background:#f5f4f9;border-radius:999px;padding:4px;margin-bottom:14px;}
+  .side-tab{flex:1;border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:700;padding:8px;border-radius:999px;cursor:pointer;color:var(--muted);}
+  .side-tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(26,21,35,.08);}
+  .side-bal{font-size:12px;color:var(--muted);margin-bottom:10px;}
+  .side-bal b{color:var(--ink);font-weight:800;}
+  .shop-group-head{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 6px;}
+  .shop-group-head:first-child{margin-top:0;}
+  .shop-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-radius:10px;}
+  .shop-row:hover{background:#faf9fc;}
+  .shop-row .si2{width:32px;height:32px;border-radius:9px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .shop-row .si2 svg{width:16px;height:16px;}
+  .shop-row .info{flex:1;min-width:0;}
+  .shop-row .info b{font-size:12.5px;display:block;font-weight:700;}
+  .shop-row .info span{font-size:10.5px;color:var(--muted);}
+  .buybtn.sm{padding:6px 11px;font-size:10.5px;white-space:nowrap;}
+
+  .side-subtabs{display:flex;gap:6px;margin-bottom:10px;}
+  .side-subtabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px;font-family:inherit;font-size:10.5px;font-weight:700;cursor:pointer;color:var(--muted);}
+  .side-subtabs button.on{background:var(--purple-2);color:var(--color-button-primary);border-color:#ddd0fb;}
+  .side-lb-row{display:flex;align-items:center;gap:8px;padding:6px 4px;border-radius:8px;}
+  .side-lb-row.me{background:#faf8ff;}
+  .side-lb-row .rank{width:16px;font-size:11px;font-weight:800;color:var(--muted);text-align:center;flex:0 0 auto;}
+  .side-lb-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .side-lb-row .val{font-size:11px;font-weight:800;flex:0 0 auto;display:flex;align-items:center;gap:4px;}
+  .side-subhead{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:16px 0 6px;}
+  .browse-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-radius:8px;cursor:pointer;}
+  .browse-row:hover{background:#faf9fc;}
+  .browse-row .av{width:24px;height:24px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;letter-spacing:.02em;}
+  .browse-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .browse-row .lvl2{font-size:10px;color:var(--muted);flex:0 0 auto;}
+  .browse-badges{display:flex;gap:3px;flex:0 0 auto;}
+
+  /* ─── Badge icon UI (hover on desktop, tap on touch) ─── */
+  .badge-ic{position:relative;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#fff7e6,#fdeecb);border:1px solid #f4e2b0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;}
+  .badge-ic svg{width:11px;height:11px;stroke:#8a6a15;fill:none;stroke-width:2;}
+  .badge-ic .tip{position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:#211C33;color:#fff;font-size:10.5px;font-weight:600;padding:6px 10px;border-radius:8px;white-space:nowrap;opacity:0;visibility:hidden;transition:.12s;z-index:5;}
+  .badge-ic .tip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#211C33;}
+  .badge-ic:hover .tip,.badge-ic.show .tip{opacity:1;visibility:visible;}
   .closet-stats-row div b{font-size:22px;font-weight:800;color:var(--ink);display:block;}
   .closet-stats-row div span{font-size:11.5px;color:var(--muted);}
   .lb-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;}
@@ -269,7 +312,6 @@
     <button class="nl" data-sec="quizzes">Quizzes</button>
     <button class="nl" data-sec="trainings">Trainings</button>
     <button class="nl" data-sec="closet">Your Closet</button>
-    <button class="nl" data-sec="shop">Shop</button>
   </div>
   <div class="nav-avatar">JD</div>
 </nav>
@@ -409,43 +451,46 @@
   <!-- ═══ YOUR CLOSET ═══ -->
   <section data-sec="closet">
     <h1 class="title">Your Closet</h1>
-    <p class="lead">Your closet in 3D - drag to look around. Unlock new colors and textures in the Shop.</p>
-    <div class="closet3d-wrap" id="closet3dWrap">
-      <div class="closet3d-loading" id="closet3dLoading">Loading 3D view…</div>
-      <div class="closet3d-hint">Drag to rotate</div>
-    </div>
-    <div class="closet-viewing-bar" id="closetViewingBar" style="display:none;">
-      <span id="closetViewingLabel"></span>
-      <button class="cbtn" id="closetBackBtn">Back to my closet</button>
-    </div>
-    <div class="closet-stats-row">
-      <div><b id="closetTokBig">1</b><span>moon rocks</span></div>
-      <div><b id="closetStrkBig">1</b><span>day streak</span></div>
-      <div><b id="closetStageBig">1/10</b><span>closet level</span></div>
-    </div>
-
-    <div class="sechead" style="margin-top:28px;"><h2>Browse Closets</h2><span class="cnt" id="browseCnt"></span></div>
-    <p class="lead" style="margin-top:-6px;">See how other designers are decorating theirs - tap a card to view it in 3D above.</p>
-    <div class="grid" id="browseGrid" style="margin-top:12px;"></div>
-
-    <div class="sechead" style="margin-top:28px;"><h2>Leaderboards</h2></div>
-    <div class="lb-cols">
-      <div>
-        <div class="sechead"><h2 style="font-size:13px;">Most Moon Rocks</h2></div>
-        <div class="lb" id="lbListRocks"></div>
+    <p class="lead">Your closet in 3D - drag to look around.</p>
+    <div class="closet-layout">
+      <div class="closet-main">
+        <div class="closet3d-wrap" id="closet3dWrap">
+          <div class="closet3d-loading" id="closet3dLoading">Loading 3D view…</div>
+          <div class="closet3d-hint">Drag to rotate</div>
+        </div>
+        <div class="closet-viewing-bar" id="closetViewingBar" style="display:none;">
+          <span id="closetViewingLabel"></span>
+          <button class="cbtn" id="closetBackBtn">Back to my closet</button>
+        </div>
+        <div class="closet-stats-row">
+          <div><b id="closetTokBig">1</b><span>moon rocks</span></div>
+          <div><b id="closetStrkBig">1</b><span>day streak</span></div>
+          <div><b id="closetStageBig">1/10</b><span>closet level</span></div>
+        </div>
       </div>
-      <div>
-        <div class="sechead"><h2 style="font-size:13px;">Highest Closet Level</h2></div>
-        <div class="lb" id="lbListLevel"></div>
+
+      <div class="closet-side">
+        <div class="side-tabs" id="sideTabs">
+          <button class="side-tab on" data-side="shop">Shop</button>
+          <button class="side-tab" data-side="community">Community</button>
+        </div>
+
+        <div class="side-panel" data-panel="shop">
+          <div class="side-bal">You have <b id="shopBal"></b></div>
+          <div id="shopGroups"></div>
+        </div>
+
+        <div class="side-panel" data-panel="community" style="display:none;">
+          <div class="side-subtabs" id="lbTabs">
+            <button class="on" data-lb="tokens">Most Rocks</button>
+            <button data-lb="stage">Closet Level</button>
+          </div>
+          <div id="sideLbList"></div>
+          <div class="side-subhead">Browse Closets</div>
+          <div id="browseList"></div>
+        </div>
       </div>
     </div>
-  </section>
-
-  <!-- ═══ SHOP ═══ -->
-  <section data-sec="shop">
-    <h1 class="title">Shop</h1>
-    <p class="lead">Spend your moon rocks on closet upgrades and perks. <b id="shopBal"></b></p>
-    <div class="grid" id="shopGrid" style="margin-top:16px;"></div>
   </section>
 
   <div class="foot"><span>Moon · Sales Designer App Training</span><span>PTP-247 · First 5 designers</span></div>
@@ -844,12 +889,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     {name:'Sam T.',stage:2,tokens:40,badges:[]}
   ];
   var viewingMock=null;
+  function initials(name){ return (name||'?').split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase(); }
   function renderBrowse(){
-    document.getElementById('browseCnt').textContent='('+MOCK_CLOSETS.length+')';
-    document.getElementById('browseGrid').innerHTML=MOCK_CLOSETS.map(function(m,i){
-      var badges=(m.badges||[]).map(function(b){return '<span class="badge">'+b+'</span>';}).join('')||'<span style="color:var(--muted);font-size:11px;">No badges yet</span>';
-      return '<div class="acard browse-card" data-mock="'+i+'"><div class="ah"><h4>'+m.name+'</h4><span class="lvl">'+(m.stage+1)+'/10</span></div>'+
-        '<p>'+MR+' '+m.tokens+' moon rocks</p><div class="badges" style="justify-content:flex-start;">'+badges+'</div></div>';
+    document.getElementById('browseList').innerHTML=MOCK_CLOSETS.map(function(m,i){
+      var badges=(m.badges||[]).map(badgeIcon).join('');
+      return '<div class="browse-row" data-mock="'+i+'"><div class="av">'+initials(m.name)+'</div>'+
+        '<div class="nm2">'+m.name+'</div><div class="lvl2">'+(m.stage+1)+'/10</div><div class="browse-badges">'+badges+'</div></div>';
     }).join('');
     [].slice.call(document.querySelectorAll('[data-mock]')).forEach(function(card){
       card.addEventListener('click',function(){ viewMock(+card.dataset.mock); });
@@ -868,6 +913,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     if(window.MoonCloset3D)window.MoonCloset3D.setStage(stage());
   });
 
+  document.getElementById('sideTabs').addEventListener('click',function(e){
+    var b=e.target.closest('.side-tab'); if(!b)return;
+    document.querySelectorAll('.side-tab').forEach(function(x){x.classList.toggle('on',x===b);});
+    document.querySelectorAll('.side-panel').forEach(function(p){p.style.display=(p.dataset.panel===b.dataset.side)?'':'none';});
+  });
+
   document.getElementById('compareBtn').addEventListener('click',function(){ toast('Compare Collections — coming soon!'); });
 
   /* ── toast ── */
@@ -875,6 +926,29 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   function toast(html){ toastEl.innerHTML=html; toastEl.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){toastEl.classList.remove('show');},2200); }
   var MR='<img class="mr" src="moon-logo.png">';
   var FLAME='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;"><path d="M12 2c1.2 3.2-2.6 4.6-2.6 8.4a2.6 2.6 0 0 0 5.2 0c0-1-.8-1.8-.8-2.8 1.8 1 3.2 3 3.2 5.6a5 5 0 0 1-10 0C7 8.6 10 6.4 12 2z"/></svg>';
+
+  /* ── badge icons (small icon UI, hover on desktop / tap on touch shows what it is) ── */
+  var BADGE_ICON_SVGS={
+    flame:'<path d="M12 2c1.2 3.2-2.6 4.6-2.6 8.4a2.6 2.6 0 0 0 5.2 0c0-1-.8-1.8-.8-2.8 1.8 1 3.2 3 3.2 5.6a5 5 0 0 1-10 0C7 8.6 10 6.4 12 2z"/>',
+    gem:'<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 6-3 12M15 3l-3 6 3 12"/>'
+  };
+  var BADGE_DEFS={
+    '7-Day Streak':{icon:'flame',desc:'Logged in 7 days in a row'},
+    '30-Day Streak':{icon:'flame',desc:'Logged in 30 days in a row'},
+    '50-Day Streak':{icon:'flame',desc:'Logged in 50 days in a row'},
+    '100 Rocks Club':{icon:'gem',desc:'Earned 100 lifetime moon rocks'},
+    '500 Rocks Club':{icon:'gem',desc:'Earned 500 lifetime moon rocks'}
+  };
+  function badgeIcon(label){
+    var def=BADGE_DEFS[label]||{icon:'gem',desc:label};
+    return '<span class="badge-ic"><svg viewBox="0 0 24 24">'+BADGE_ICON_SVGS[def.icon]+'</svg>'+
+      '<span class="tip">'+label+' - '+def.desc+'</span></span>';
+  }
+  document.addEventListener('click',function(e){
+    var badge=e.target.closest('.badge-ic');
+    [].slice.call(document.querySelectorAll('.badge-ic.show')).forEach(function(b){ if(b!==badge)b.classList.remove('show'); });
+    if(badge)badge.classList.toggle('show');
+  });
 
   /* ── earning ── */
   function updateEarnBadges(){
@@ -900,58 +974,70 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   document.addEventListener('click',function(e){ var a=e.target.closest('[data-eid]'); if(a) earn(a.dataset.eid,+a.dataset.earn); });
 
   /* ── leaderboard ── */
-  var LB_MEDALS=['<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#f4d477;color:#7a5606;font-weight:800;font-size:11px;">1</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#dcdde3;color:#4a4a56;font-weight:800;font-size:11px;">2</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#e3b088;color:#6b3d17;font-weight:800;font-size:11px;">3</span>'];
-  function renderLbList(containerId,sorted,valueHtmlFn){
-    document.getElementById(containerId).innerHTML=sorted.map(function(r,i){
-      var rank=i<3?LB_MEDALS[i]:(i+1), me=r.email===st.email;
-      var badges=(r.badges||[]).map(function(b){return '<span class="badge">'+b+'</span>';}).join('');
-      return '<div class="lbrow'+(i<3?' top':'')+(me?' me':'')+'"><div class="rank">'+rank+'</div>'+
-        '<div class="who"><div class="n">'+r.name+(me?' (you)':'')+'</div></div>'+
-        valueHtmlFn(r)+'<div class="badges">'+badges+'</div></div>';
+  var LB_MEDALS=['<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#f4d477;color:#7a5606;font-weight:800;font-size:9px;">1</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#dcdde3;color:#4a4a56;font-weight:800;font-size:9px;">2</span>','<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#e3b088;color:#6b3d17;font-weight:800;font-size:9px;">3</span>'];
+  var lbMode='tokens',lastLbRows=[];
+  function renderLbList(){
+    var sorted=lastLbRows.slice().sort(function(a,b){
+      return lbMode==='tokens'?b.tokens-a.tokens:b.stage-a.stage;
+    });
+    document.getElementById('sideLbList').innerHTML=sorted.map(function(r,i){
+      var rank=i<3?LB_MEDALS[i]:'<span style="font-size:10px;">'+(i+1)+'</span>', me=r.email===st.email;
+      var val=lbMode==='tokens'?(MR+' '+r.tokens):((r.stage+1)+'/10');
+      var badges=(r.badges||[]).map(badgeIcon).join('');
+      return '<div class="side-lb-row'+(me?' me':'')+'"><div class="rank">'+rank+'</div>'+
+        '<div class="nm2">'+r.name+(me?' (you)':'')+'</div>'+
+        '<div class="val">'+val+'</div><div class="browse-badges">'+badges+'</div></div>';
     }).join('');
   }
+  document.getElementById('lbTabs').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    document.querySelectorAll('#lbTabs button').forEach(function(x){x.classList.toggle('on',x===b);});
+    lbMode=b.dataset.lb; renderLbList();
+  });
   async function renderLeaderboard(){
-    var rows;
-    try{ rows=await apiFetch('/api/leaderboard'); }catch(e){ console.error(e); return; }
-    var byRocks=rows.slice().sort(function(a,b){return b.tokens-a.tokens;});
-    var byLevel=rows.slice().sort(function(a,b){return b.stage-a.stage;});
-    renderLbList('lbListRocks',byRocks,function(r){return '<div class="rocks">'+MR+' '+r.tokens+'</div>';});
-    renderLbList('lbListLevel',byLevel,function(r){return '<div class="rocks">'+(r.stage+1)+'/10</div>';});
+    try{ lastLbRows=await apiFetch('/api/leaderboard'); }catch(e){ console.error(e); return; }
+    renderLbList();
   }
 
   /* ── shop ── */
   var SHOPICN='<svg viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">';
+  // `group` just controls which header a row falls under in the side panel -
+  // Mo's sending a fuller item list later, this is the structure it'll slot into.
   var SHOP=[
-    {id:'levelup',i:SHOPICN+'<circle cx="12" cy="12" r="9"/><path d="M12 16V8M8 12l4-4 4 4"/></svg>',n:'Instant closet level',d:'Skip ahead and level up your closet by one day.',price:15,type:'action'},
-    {id:'accessory',i:SHOPICN+'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>',n:'New closet accessory',d:'Unlock a new accessory for your closet.',price:25,type:'cosmetic'},
-    {id:'coffee',i:SHOPICN+'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10h1a2 2 0 1 1 0 4h-1"/><path d="M7 3c0 1-1 1-1 2M11 3c0 1-1 1-1 2"/></svg>',n:'Coffee voucher',d:'Redeem for a coffee on the house.',price:35,type:'cosmetic'},
-    {id:'walkin',i:SHOPICN+'<rect x="5" y="3" width="12" height="18" rx="1"/><circle cx="13.5" cy="12" r="1"/></svg>',n:'Walk-in upgrade',d:'Upgrade your closet from a reach-in to a walk-in.',price:40,type:'cosmetic'},
-    {id:'lunch',i:SHOPICN+'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>',n:'Free lunch',d:'A free lunch, on us.',price:50,type:'cosmetic'},
-    {id:'tee',i:SHOPICN+'<path d="M8 4l4 2.4L16 4l3 4-3 2v10H8V10L5 8z"/></svg>',n:'"I love closets" tee',d:'Grab an "I love closets" t-shirt.',price:60,type:'cosmetic'},
-    {id:'giftcard',i:SHOPICN+'<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 9h16M12 9v11M8 9c-2 0-3-1-3-2.5S6 4 8 4s4 3 4 5M16 9c2 0 3-1 3-2.5S18 4 16 4s-4 3-4 5"/></svg>',n:'$25 gift card',d:'A $25 gift card of your choice.',price:90,type:'cosmetic'},
-    {id:'mini',i:SHOPICN+'<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>',n:'Miniature closet figurine',d:'A collectible miniature closet figurine for your desk.',price:120,type:'cosmetic'},
-    {id:'wallSage',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Wall color: Sage',d:'Recolor your 3D closet walls sage green.',price:20,type:'cosmetic',category:'wall',hex:'c9d9c4'},
-    {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Wall color: Blush',d:'Recolor your 3D closet walls blush pink.',price:20,type:'cosmetic',category:'wall',hex:'f3dede'},
-    {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Swap your 3D closet floor to a lighter oak.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0'},
-    {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Swap your 3D closet floor to a richer walnut.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28'}
+    {id:'levelup',i:SHOPICN+'<circle cx="12" cy="12" r="9"/><path d="M12 16V8M8 12l4-4 4 4"/></svg>',n:'Instant closet level',d:'Skip ahead one day.',price:15,type:'action',group:'Boosts'},
+    {id:'accessory',i:SHOPICN+'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>',n:'New closet accessory',d:'Unlock a new accessory.',price:25,type:'cosmetic',group:'Accessories'},
+    {id:'coffee',i:SHOPICN+'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10h1a2 2 0 1 1 0 4h-1"/><path d="M7 3c0 1-1 1-1 2M11 3c0 1-1 1-1 2"/></svg>',n:'Coffee voucher',d:'On the house.',price:35,type:'cosmetic',group:'Accessories'},
+    {id:'walkin',i:SHOPICN+'<rect x="5" y="3" width="12" height="18" rx="1"/><circle cx="13.5" cy="12" r="1"/></svg>',n:'Walk-in upgrade',d:'Reach-in to walk-in.',price:40,type:'cosmetic',group:'Accessories'},
+    {id:'lunch',i:SHOPICN+'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>',n:'Free lunch',d:'A free lunch, on us.',price:50,type:'cosmetic',group:'Accessories'},
+    {id:'tee',i:SHOPICN+'<path d="M8 4l4 2.4L16 4l3 4-3 2v10H8V10L5 8z"/></svg>',n:'"I love closets" tee',d:'A branded t-shirt.',price:60,type:'cosmetic',group:'Accessories'},
+    {id:'giftcard',i:SHOPICN+'<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 9h16M12 9v11M8 9c-2 0-3-1-3-2.5S6 4 8 4s4 3 4 5M16 9c2 0 3-1 3-2.5S18 4 16 4s-4 3-4 5"/></svg>',n:'$25 gift card',d:'Your choice.',price:90,type:'cosmetic',group:'Accessories'},
+    {id:'mini',i:SHOPICN+'<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>',n:'Miniature figurine',d:'For your desk.',price:120,type:'cosmetic',group:'Accessories'},
+    {id:'wallSage',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Wall: Sage',d:'Sage green walls.',price:20,type:'cosmetic',category:'wall',hex:'c9d9c4',group:'Colors & Textures'},
+    {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Wall: Blush',d:'Blush pink walls.',price:20,type:'cosmetic',category:'wall',hex:'f3dede',group:'Colors & Textures'},
+    {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Colors & Textures'},
+    {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Colors & Textures'}
   ];
+  function shopRowHtml(it){
+    var owned=st.owned[it.id],afford=st.tokens>=it.price;
+    var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
+    var btn;
+    if(it.category&&owned){
+      btn=equipped?'<button class="buybtn sm owned" disabled>Equipped</button>':'<button class="buybtn sm" data-buy="'+it.id+'">Equip</button>';
+    }else if(it.type==='cosmetic'&&owned){
+      btn='<button class="buybtn sm owned" disabled>Owned</button>';
+    }else if(afford){
+      btn='<button class="buybtn sm" data-buy="'+it.id+'">'+it.price+'</button>';
+    }else{
+      btn='<button class="buybtn sm" disabled>'+it.price+'</button>';
+    }
+    return '<div class="shop-row"><div class="si2">'+it.i+'</div><div class="info"><b>'+it.n+'</b><span>'+it.d+'</span></div>'+btn+'</div>';
+  }
   function renderShop(){
-    document.getElementById('shopBal').innerHTML='You have '+MR+' '+st.tokens+' moon rocks.';
-    document.getElementById('shopGrid').innerHTML=SHOP.map(function(it){
-      var owned=st.owned[it.id],afford=st.tokens>=it.price;
-      var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
-      var btn;
-      if(it.category&&owned){
-        btn=equipped?'<button class="buybtn owned" disabled>Equipped ✓</button>':'<button class="buybtn" data-buy="'+it.id+'">Equip</button>';
-      }else if(it.type==='cosmetic'&&owned){
-        btn='<button class="buybtn owned" disabled>Owned ✓</button>';
-      }else if(afford){
-        btn='<button class="buybtn" data-buy="'+it.id+'">Buy for '+it.price+'</button>';
-      }else{
-        btn='<button class="buybtn" disabled>Need '+(it.price-st.tokens)+' more</button>';
-      }
-      return '<div class="shopcard"><div class="si">'+it.i+'</div><h4>'+it.n+'</h4><p>'+it.d+'</p>'+
-        '<div class="price">'+MR+' '+it.price+'</div>'+btn+'</div>';
+    document.getElementById('shopBal').innerHTML=MR+' '+st.tokens;
+    var groups={};
+    SHOP.forEach(function(it){ (groups[it.group]=groups[it.group]||[]).push(it); });
+    document.getElementById('shopGroups').innerHTML=Object.keys(groups).map(function(g){
+      return '<div class="shop-group-head">'+g+'</div>'+groups[g].map(shopRowHtml).join('');
     }).join('');
     [].slice.call(document.querySelectorAll('[data-buy]')).forEach(function(b){ b.addEventListener('click',function(){buy(b.dataset.buy);}); });
   }
