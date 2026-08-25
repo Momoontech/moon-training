@@ -67,6 +67,31 @@
   .toggle .tool{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#f3f3f8;color:#8b8b9c;font-size:13px;cursor:pointer;}
   .toggle .tool.on{background:var(--primary);color:#fff;}
 
+  /* ===== Measure task only - matches the real "Floor Details" Figma frame
+     exactly (node 23739:41376). Scoped with mx- so the Obstacles/Design
+     tasks, which still use the topbar()/railHTML()/toggleHTML() chrome
+     above, are unaffected. ===== */
+  .mx-crumb{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;box-shadow:0 3px 9px rgba(33,28,51,.07);font-size:13px;font-weight:800;color:var(--ink);cursor:default;}
+  .mx-crumb .seg{display:flex;align-items:center;gap:4px;cursor:pointer;}
+  .mx-crumb .seg svg{width:14px;height:14px;}
+  .mx-crumb .sep{width:1px;height:16px;background:var(--line);}
+  .mx-crumb .cur{color:#8e66b1;}
+  .mx-crumb .chev{color:#8a8a99;font-size:10px;}
+  .mx-iconbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#57576a;box-shadow:0 3px 9px rgba(33,28,51,.07);cursor:pointer;}
+  .mx-orb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#cfe0ff,#8e66b1 70%);box-shadow:0 3px 9px rgba(33,28,51,.1);}
+  .mx-avatar{width:34px;height:34px;border-radius:50%;background:#42275a;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+
+  .mx-viewtabs{position:absolute;top:16px;right:16px;display:flex;gap:2px;background:#f5f4f6;border-radius:999px;padding:4px;z-index:5;}
+  .mx-viewtabs b{font-size:12.5px;font-weight:700;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;}
+  .mx-viewtabs b.on{background:#8e66b1;color:#fff;font-weight:800;}
+
+  .mx-toolbar{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 8px;box-shadow:0 5px 14px rgba(33,28,51,.1);z-index:6;}
+  .mx-toolbar .grp{display:flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--ink);padding:7px 12px;border-radius:999px;cursor:pointer;}
+  .mx-toolbar .grp.on{background:#f1f1f6;font-weight:800;}
+  .mx-toolbar .grp svg{width:15px;height:15px;color:#8a8a99;}
+  .mx-toolbar .sep{width:1px;height:20px;background:var(--line);margin:0 3px;}
+  .mx-toolbar .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:transparent;color:#57576a;cursor:pointer;}
+
   .appbottom{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#fff;}
   .backpill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--muted);flex:0 0 auto;cursor:pointer;}
   .helper{flex:1;text-align:center;font-size:12.5px;color:#57576a;}
@@ -128,9 +153,13 @@
   .settings{padding:13px 15px 16px;overflow-y:auto;}
   .field{margin-bottom:11px;}
   .field label{display:block;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
-  .select{position:relative;border:1.4px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#57576a;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:#fff;}
+  .select{position:relative;border:1.4px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#57576a;display:flex;align-items:center;gap:8px;justify-content:space-between;cursor:pointer;background:#fff;}
   .select.open{border-color:var(--primary);}
-  .select .cv{font-weight:600;}
+  .select .cv{font-weight:600;flex:1;}
+  .select.ph .cv{color:var(--muted);font-weight:500;}
+  .select .chevicon{display:flex;align-items:center;color:#8a8a99;}
+  .select .fswatch{width:18px;height:18px;border-radius:5px;background:#e7cd9a;border:1px solid #d9bd8f;flex:0 0 auto;}
+  .field-divider{height:1px;background:var(--line);margin:14px 0;}
   .menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e6e6ee;border-radius:10px;box-shadow:0 10px 24px rgba(33,28,51,.16);z-index:9;overflow:hidden;}
   .menu button{display:block;width:100%;text-align:left;border:none;background:#fff;padding:9px 12px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;border-bottom:1px solid #f4f4f8;}
   .menu button:last-child{border-bottom:none;}
@@ -227,6 +256,58 @@
       '<div class="sep"></div><div class="tool on" data-t="pencil">'+TOOL_ICONS.pencil+'</div>'+second+
       '<div class="tool" data-t="undo">'+TOOL_ICONS.undo+'</div><div class="tool" data-t="redo">'+TOOL_ICONS.redo+'</div>'+panel+'</div>';
   }
+  // ===== Measure task chrome - matches the real "Floor Details" Figma
+  // frame exactly (node 23739:41376, fetched via get_screenshot since its
+  // room-progress rail and floor plan are a flattened image in that file,
+  // not live vector layers). Only buildMeasure() uses these - the Obstacles
+  // and Design tasks keep the topbar()/railHTML()/toggleHTML() chrome above
+  // since their real designs haven't been checked against Figma yet.
+  var MICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">';
+  var MX_ICONS={
+    pencil: MICN+'<path d="M10.5 2.5l3 3-7.5 7.5H3v-3z"/><path d="M9 4l3 3"/></svg>',
+    chev: '<svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="9" height="6"><path d="M1 1l4 4 4-4"/></svg>',
+    expand: MICN+'<path d="M6 2H2v4M10 2h4v4M2 10v4h4M14 10v4h-4"/></svg>',
+    clipboard: MICN+'<rect x="3" y="2.5" width="10" height="12" rx="1.5"/><path d="M6 2v1.5h4V2"/><path d="M5.5 8.5l2 2 3-4"/></svg>',
+    cube: MICN+'<path d="M8 2l5.5 3.2v5.6L8 14l-5.5-3.2V5.2z"/><path d="M2.5 5.2L8 8.4l5.5-3.2M8 8.4V14"/></svg>',
+    undo: MICN+'<path d="M4 4v4h4"/><path d="M4.5 8a5.5 5.5 0 1 1 1.6 4"/></svg>',
+    redo: MICN+'<path d="M12 4v4H8"/><path d="M11.5 8a5.5 5.5 0 1 1-1.6 4"/></svg>',
+    comment: MICN+'<path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/></svg>',
+    ruler: MICN+'<rect x="2.5" y="6.5" width="11" height="6" rx="1" transform="rotate(-25 8 9.5)"/><path d="M6 8l.6 1.2M8 7.1l.6 1.2M10 6.2l.6 1.2" transform="rotate(-25 8 9.5)"/></svg>'
+  };
+  function measureTopbar(){
+    return '<div class="apptop">'+
+      '<div class="mx-crumb">'+
+        '<span class="seg" data-x="configure">'+MX_ICONS.pencil+' Configure <span class="chev">'+MX_ICONS.chev+'</span></span>'+
+        '<span class="sep"></span><span class="seg" data-x="room">Room 1 <span class="chev">'+MX_ICONS.chev+'</span></span>'+
+        '<span class="sep"></span><span class="seg cur" data-x="step">Measure &amp; Design <span class="chev">'+MX_ICONS.chev+'</span></span>'+
+      '</div>'+
+      '<div class="expand" data-x="expand">'+MX_ICONS.expand+'</div>'+
+      '<div style="display:flex;align-items:center;gap:8px;">'+
+        '<div class="mx-iconbtn" data-x="clipboard">'+MX_ICONS.clipboard+'</div>'+
+        '<div class="mx-orb" data-x="ai"></div>'+
+        '<div class="mx-avatar">JD</div>'+
+      '</div>'+
+    '</div>';
+  }
+  function measureViewTabs(view){
+    view=view||'Floor Plan';
+    function b(n){return '<b class="'+(n===view?'on':'')+'" data-v="'+n+'">'+n+'</b>';}
+    return '<div class="mx-viewtabs">'+b('Floor Plan')+b('Architecture')+b('Systems')+'</div>';
+  }
+  function measureToolbar(){
+    // `label` (plain text) drives data-x; `lead`/`trail` icons are appended
+    // to the displayed content only - never folded into the attribute, or
+    // their embedded quoted SVG attributes would truncate data-x early.
+    function grp(lead,label,on,trail){ return '<div class="grp'+(on?' on':'')+'" data-x="'+label+'">'+(lead||'')+' '+label+(trail?' '+trail:'')+'</div>'; }
+    return '<div class="mx-toolbar">'+
+      grp('','All Systems',false,MX_ICONS.chev)+'<div class="sep"></div>'+
+      grp(MX_ICONS.cube,'Top',true)+grp(MX_ICONS.cube,'3D',false)+grp(MX_ICONS.cube,'Front',false)+
+      grp('','Back Wall',false,MX_ICONS.chev).replace('class="grp"','class="grp" style="color:#8e66b1;"')+
+      '<div class="sep"></div>'+
+      '<div class="ico" data-x="undo">'+MX_ICONS.undo+'</div><div class="ico" data-x="redo">'+MX_ICONS.redo+'</div>'+
+      '<div class="ico" data-x="comment">'+MX_ICONS.comment+'</div><div class="ico" data-x="ruler">'+MX_ICONS.ruler+'</div>'+
+    '</div>';
+  }
   function roomSVG(hatch,reachIn){
     var fill = hatch ? 'url(#hpat)' : 'rgba(140,140,156,.06)';
     var RI = '<g>'+
@@ -238,10 +319,13 @@
       '<rect x="454" y="537" width="86" height="15" rx="2" fill="#efeafe" stroke="#d9d2f4" stroke-width="1.3"/>'+
       '</g>';
     var gl='#a7a7b6'; // guide line color
-    function pill(cx,cy,n,txt){ return '<g><rect x="'+(cx-31)+'" y="'+(cy-12)+'" width="62" height="24" rx="12" fill="#7239EA"/>'+
-      '<circle cx="'+(cx-18)+'" cy="'+cy+'" r="8" fill="#fff"/><text x="'+(cx-18)+'" y="'+(cy+3.3)+'" text-anchor="middle" font-size="9.5" font-weight="800" fill="#7239EA" font-family="Manrope">'+n+'</text>'+
-      '<text x="'+(cx+7)+'" y="'+(cy+3.6)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff" font-family="Manrope">'+txt+'</text></g>'; }
-    function h(x,y){ return '<rect x="'+(x-6)+'" y="'+(y-6)+'" width="12" height="12" rx="2.5" fill="#fff" stroke="#8a8a99" stroke-width="2.5"/>'; }
+    // Real "Measurement Input Tab" style: light lavender pill, plum border,
+    // solid plum number badge, plum text (not the solid-purple/white pill
+    // this used to be).
+    function pill(cx,cy,n,txt){ return '<g><rect x="'+(cx-31)+'" y="'+(cy-12)+'" width="62" height="24" rx="12" fill="#f1e2ff" stroke="#42275a" stroke-width="1.5"/>'+
+      '<circle cx="'+(cx-18)+'" cy="'+cy+'" r="8" fill="#42275a"/><text x="'+(cx-18)+'" y="'+(cy+3.3)+'" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff" font-family="Manrope">'+n+'</text>'+
+      '<text x="'+(cx+7)+'" y="'+(cy+3.6)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#42275a" font-family="Manrope">'+txt+'</text></g>'; }
+    function h(x,y){ return '<circle cx="'+x+'" cy="'+y+'" r="6.5" fill="#fff" stroke="#8a8a99" stroke-width="2"/>'; }
     function dimH(x1,x2,y,wy,n,txt){ // horizontal dim line at y, wall at wy
       return '<g stroke="'+gl+'" stroke-width="1.4">'+
         '<line x1="'+x1+'" y1="'+wy+'" x2="'+x1+'" y2="'+y+'" stroke-dasharray="3 3"/>'+
@@ -335,22 +419,33 @@
 
   // ===== MEASURE screen =====
   function buildMeasure(c){
+    // Field list, order and copy match the real "Reach In" panel exactly.
+    // type: 'select' = dropdown (chevron-down), 'flyout' = sub-panel style
+    // (chevron-right, used for Floor Look which shows a color swatch),
+    // 'display' = filled-in read-only value, no menu (Wall Height).
     var SET=[
-      ['Flooring','No',['No','Carpet','Hardwood','Tile']],
-      ['Molding','No',['No','Crown','Cove','Simple']],
-      ['Deco Molding','No',['No','Yes']],
-      ['Baseboard','No',['No','3 in','5 in']],
-      ['Ceiling Type','Select ceiling type',['Flat','Tray','Vaulted']]
+      ['Ceiling Type','Flat',['Flat','Tray','Vaulted'],'select'],
+      ['Wall Height (in)','96"',null,'display'],
+      ['Baseboard','Select option',['No','3 in','5 in'],'select'],
+      ['Molding','Select option',['No','Crown','Cove','Simple'],'select'],
+      ['Floor Look','Fine Wood',['Fine Wood','Carpet','Tile'],'flyout']
     ];
     var fields=SET.map(function(s,idx){
-      return '<div class="field"><label>'+s[0]+'</label><div class="select" data-f="'+idx+'"><span class="cv">'+s[1]+'</span><span>▾</span></div></div>';
+      var ph=(s[1]==='Select option')?' ph':'';
+      var chev=s[3]==='flyout'?'<svg viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="6" height="10"><path d="M1 1l4 4-4 4"/></svg>':MX_ICONS.chev;
+      var swatch=s[3]==='flyout'?'<span class="fswatch"></span>':'';
+      var div=idx===2?'<div class="field-divider"></div>':'';
+      return div+'<div class="field"><label>'+s[0]+'*</label><div class="select'+ph+'" data-f="'+idx+'">'+swatch+'<span class="cv">'+s[1]+'</span><span class="chevicon">'+chev+'</span></div></div>';
     }).join('');
-    app.innerHTML='<div class="osbar"></div>'+topbar(c.step)+
-      '<div class="appbody">'+roomSVG(true)+railHTML(1)+toggleHTML('measure')+
-        '<div class="panel"><div class="ph"><div class="pt">Room Settings</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
+    app.innerHTML='<div class="osbar"></div>'+measureTopbar()+
+      '<div class="appbody">'+roomSVG(true)+measureViewTabs()+measureToolbar()+
+        '<div class="panel" style="top:66px;"><div class="ph"><div class="pt">Reach In</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
       '</div>'+
-      bottombar('Room Shape','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles.','Obstacles');
-    var body=app.querySelector('.appbody'); wireChrome(body);
+      bottombar('Previous','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles.','Continue');
+    var body=app.querySelector('.appbody');
+    [].slice.call(body.querySelectorAll('.mx-crumb .seg,.mx-viewtabs b,.mx-toolbar .grp,.mx-toolbar .ico,.mx-iconbtn,.mx-orb,.expand')).forEach(function(elm){
+      elm.addEventListener('click',function(){ wrong(elm,'That control isn’t part of this task - try again.'); });
+    });
     wireNav(app,'Finish the settings task first - then you’d head back.','Set the molding first - then Continue would move you on.');
     var openMenu=null;
     [].slice.call(app.querySelectorAll('.select')).forEach(function(sel){
@@ -358,6 +453,7 @@
         if(solved)return; e.stopPropagation();
         if(openMenu){openMenu.remove();openMenu=null;app.querySelectorAll('.select').forEach(function(x){x.classList.remove('open');});}
         var idx=+sel.dataset.f, opts=SET[idx][2];
+        if(!opts){ wrong(sel,'That’s the '+SET[idx][0]+' setting - the client asked about Molding.'); return; }
         sel.classList.add('open');
         var menu=elc('<div class="menu">'+opts.map(function(o){return '<button data-o="'+o+'">'+o+'</button>';}).join('')+'</div>');
         sel.appendChild(menu); openMenu=menu;
@@ -365,7 +461,7 @@
           b.addEventListener('click',function(ev){
             ev.stopPropagation();
             var val=b.dataset.o;
-            if(SET[idx][0]==='Molding' && val!=='No'){ sel.querySelector('.cv').textContent=val; sel.querySelector('.cv').style.color='#211C33'; menu.remove();openMenu=null;sel.classList.remove('open'); win(c); }
+            if(SET[idx][0]==='Molding' && val!=='No'){ sel.querySelector('.cv').textContent=val; sel.classList.remove('ph'); menu.remove();openMenu=null;sel.classList.remove('open'); win(c); }
             else if(SET[idx][0]==='Molding' && val==='No'){ menu.remove();openMenu=null;sel.classList.remove('open'); wrong(sel,'That keeps molding off - pick a profile like Crown.'); }
             else { menu.remove();openMenu=null;sel.classList.remove('open'); wrong(sel,'That’s the '+SET[idx][0]+' setting - the client asked about Molding.'); }
           });
