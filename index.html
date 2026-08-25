@@ -548,10 +548,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     controls.maxDistance=9;
     controls.maxPolarAngle=Math.PI/2-0.03;
 
-    scene.add(new THREE.AmbientLight(0xffffff,0.85));
-    var sun=new THREE.DirectionalLight(0xffffff,0.7);
+    scene.add(new THREE.AmbientLight(0xffffff,1.3));
+    scene.add(new THREE.HemisphereLight(0xffffff,0xe4e0f0,0.6));
+    var sun=new THREE.DirectionalLight(0xffffff,1.0);
     sun.position.set(5,8,4);
     scene.add(sun);
+    var fill=new THREE.DirectionalLight(0xffffff,0.5);
+    fill.position.set(-4,5,6);
+    scene.add(fill);
 
     // Pale grid extending beyond the room footprint, like the real app's
     // "big empty stage" floor - sits just under the room's own floor plane
