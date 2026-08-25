@@ -91,6 +91,9 @@
   .mx-toolbar .grp svg{width:15px;height:15px;color:#8a8a99;}
   .mx-toolbar .sep{width:1px;height:20px;background:var(--line);margin:0 3px;}
   .mx-toolbar .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:transparent;color:#57576a;cursor:pointer;}
+  .mx-toolbar .grp.frontwall{display:flex;align-items:center;gap:6px;}
+  .mx-toolbar .fwsep{width:1px;height:16px;background:var(--line);}
+  .mx-toolbar .bw{color:#42275a;}
 
   .appbottom{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#fff;}
   .backpill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--muted);flex:0 0 auto;cursor:pointer;}
@@ -152,11 +155,12 @@
 
   .settings{padding:13px 15px 16px;overflow-y:auto;}
   .field{margin-bottom:11px;}
-  .field label{display:block;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+  .field label{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+  .field label .finfo{color:#a0a0b0;display:flex;}
   .select{position:relative;border:1.4px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#57576a;display:flex;align-items:center;gap:8px;justify-content:space-between;cursor:pointer;background:#fff;}
   .select.open{border-color:var(--primary);}
   .select .cv{font-weight:600;flex:1;}
-  .select.ph .cv{color:var(--muted);font-weight:500;}
+  .select.ph .cv{color:#d4d1d6;font-weight:500;}
   .select .chevicon{display:flex;align-items:center;color:#8a8a99;}
   .select .fswatch{width:18px;height:18px;border-radius:5px;background:#e7cd9a;border:1px solid #d9bd8f;flex:0 0 auto;}
   .field-divider{height:1px;background:var(--line);margin:14px 0;}
@@ -272,7 +276,8 @@
     undo: MICN+'<path d="M4 4v4h4"/><path d="M4.5 8a5.5 5.5 0 1 1 1.6 4"/></svg>',
     redo: MICN+'<path d="M12 4v4H8"/><path d="M11.5 8a5.5 5.5 0 1 1-1.6 4"/></svg>',
     comment: MICN+'<path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/></svg>',
-    ruler: MICN+'<rect x="2.5" y="6.5" width="11" height="6" rx="1" transform="rotate(-25 8 9.5)"/><path d="M6 8l.6 1.2M8 7.1l.6 1.2M10 6.2l.6 1.2" transform="rotate(-25 8 9.5)"/></svg>'
+    ruler: MICN+'<rect x="2.5" y="6.5" width="11" height="6" rx="1" transform="rotate(-25 8 9.5)"/><path d="M6 8l.6 1.2M8 7.1l.6 1.2M10 6.2l.6 1.2" transform="rotate(-25 8 9.5)"/></svg>',
+    info: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="8" cy="8" r="6.5"/><path d="M8 7.3v4M8 5.2v.1"/></svg>'
   };
   function measureTopbar(){
     return '<div class="apptop">'+
@@ -299,12 +304,15 @@
     // to the displayed content only - never folded into the attribute, or
     // their embedded quoted SVG attributes would truncate data-x early.
     function grp(lead,label,on,trail){ return '<div class="grp'+(on?' on':'')+'" data-x="'+label+'">'+(lead||'')+' '+label+(trail?' '+trail:'')+'</div>'; }
+    // "Front" and "Back Wall" are one clickable unit in the real toolbar
+    // (an internal divider between them, not two separate pills).
+    var frontWall='<div class="grp frontwall" data-x="Front">'+MX_ICONS.cube+' Front<span class="fwsep"></span><span class="bw">Back Wall</span>'+MX_ICONS.chev+'</div>';
     return '<div class="mx-toolbar">'+
       grp('','All Systems',false,MX_ICONS.chev)+'<div class="sep"></div>'+
-      grp(MX_ICONS.cube,'Top',true)+grp(MX_ICONS.cube,'3D',false)+grp(MX_ICONS.cube,'Front',false)+
-      grp('','Back Wall',false,MX_ICONS.chev).replace('class="grp"','class="grp" style="color:#8e66b1;"')+
+      grp(MX_ICONS.cube,'Top',true)+grp(MX_ICONS.cube,'3D',false)+frontWall+
       '<div class="sep"></div>'+
       '<div class="ico" data-x="undo">'+MX_ICONS.undo+'</div><div class="ico" data-x="redo">'+MX_ICONS.redo+'</div>'+
+      '<div class="sep"></div>'+
       '<div class="ico" data-x="comment">'+MX_ICONS.comment+'</div><div class="ico" data-x="ruler">'+MX_ICONS.ruler+'</div>'+
     '</div>';
   }
@@ -347,10 +355,11 @@
       '<path d="M520 150 H760 V560 H300 V380 H520 Z" fill="'+fill+'" stroke="#6E6E7A" stroke-width="10" stroke-linejoin="round"/>'+
       (reachIn?RI:'')+
       dimH(520,760,116,150,'1','48.5"')+
-      dimV(150,380,486,520,'2','48.5"')+
-      dimH(300,520,352,380,'3','48.5"')+
+      dimV(150,560,830,760,'2','96.5"')+
+      dimH(300,760,594,560,'3','96.5"')+
       dimV(380,560,266,300,'4','48.5"')+
-      dimH(300,760,594,560,'5','96.5"')+
+      dimH(300,520,352,380,'5','48.5"')+
+      dimV(150,380,486,520,'6','48.5"')+
       h(520,150)+h(760,150)+h(760,560)+h(300,560)+h(300,380)+h(520,380)+
       '</svg>';
   }
@@ -419,29 +428,33 @@
 
   // ===== MEASURE screen =====
   function buildMeasure(c){
-    // Field list, order and copy match the real "Reach In" panel exactly.
-    // type: 'select' = dropdown (chevron-down), 'flyout' = sub-panel style
-    // (chevron-right, used for Floor Look which shows a color swatch),
-    // 'display' = filled-in read-only value, no menu (Wall Height).
+    // Field list, order, and copy match the real "Plan Details" panel
+    // exactly (node 23739:41298). type: 'select' = dropdown (chevron-down),
+    // 'flyout' = sub-panel style (chevron-right + a color/finish swatch,
+    // used for Floor Look and Wall Look), 'display' = filled-in read-only
+    // value with no menu (Wall Height).
     var SET=[
-      ['Ceiling Type','Flat',['Flat','Tray','Vaulted'],'select'],
+      ['Ceiling Type','Flat',['Flat','Tray','Vaulted'],'select',true],
       ['Wall Height (in)','96"',null,'display'],
       ['Baseboard','Select option',['No','3 in','5 in'],'select'],
       ['Molding','Select option',['No','Crown','Cove','Simple'],'select'],
-      ['Floor Look','Fine Wood',['Fine Wood','Carpet','Tile'],'flyout']
+      ['Floor Look','Fine Wood',['Fine Wood','Carpet','Tile'],'flyout'],
+      ['Wall Type','Select option',['Drywall','Brick','Wood Panel'],'select'],
+      ['Wall Look','White',['White','Almond','Grey'],'flyout']
     ];
     var fields=SET.map(function(s,idx){
       var ph=(s[1]==='Select option')?' ph':'';
       var chev=s[3]==='flyout'?'<svg viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="6" height="10"><path d="M1 1l4 4-4 4"/></svg>':MX_ICONS.chev;
       var swatch=s[3]==='flyout'?'<span class="fswatch"></span>':'';
+      var info=s[4]?'<span class="finfo">'+MX_ICONS.info+'</span>':'';
       var div=idx===2?'<div class="field-divider"></div>':'';
-      return div+'<div class="field"><label>'+s[0]+'*</label><div class="select'+ph+'" data-f="'+idx+'">'+swatch+'<span class="cv">'+s[1]+'</span><span class="chevicon">'+chev+'</span></div></div>';
+      return div+'<div class="field"><label>'+s[0]+'*'+info+'</label><div class="select'+ph+'" data-f="'+idx+'">'+swatch+'<span class="cv">'+s[1]+'</span><span class="chevicon">'+chev+'</span></div></div>';
     }).join('');
     app.innerHTML='<div class="osbar"></div>'+measureTopbar()+
       '<div class="appbody">'+roomSVG(true)+measureViewTabs()+measureToolbar()+
-        '<div class="panel" style="top:66px;"><div class="ph"><div class="pt">Reach In</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
+        '<div class="panel" style="top:66px;"><div class="ph"><div class="pt">Plan Details</div><div class="lm">Learn More ⓘ</div></div><div class="settings">'+fields+'</div></div>'+
       '</div>'+
-      bottombar('Previous','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles.','Continue');
+      bottombar('Previous','Edit measurements by selecting walls to drag or editing the number. Drag corners to create angles','Continue');
     var body=app.querySelector('.appbody');
     [].slice.call(body.querySelectorAll('.mx-crumb .seg,.mx-viewtabs b,.mx-toolbar .grp,.mx-toolbar .ico,.mx-iconbtn,.mx-orb,.expand')).forEach(function(elm){
       elm.addEventListener('click',function(){ wrong(elm,'That control isn’t part of this task - try again.'); });
