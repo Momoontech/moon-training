@@ -513,7 +513,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // simple primitives instead of illustrated paths - this is a first pass,
 // not meant to be photorealistic furniture.
 (function(){
-  var SHIRT_COLORS=['#7239EA','#12B886','#f4c95d','#e0553d','#4a9de0','#b98be0'];
+  // Muted, believable clothing tones instead of saturated rainbow colors -
+  // reads as an actual wardrobe rather than an abstract art piece.
+  var GARMENT_COLORS=['#2c3e6b','#ece7dc','#c9a876','#3a3a3f','#6b2c3e','#5c6b47','#8fa8c2'];
   var scene,camera,renderer,controls,furnitureGroup,container,ro,floorMat,wallMat;
   var DEFAULT_WALL=0xfafafc,DEFAULT_FLOOR=0xd6b98c;
 
@@ -595,15 +597,83 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   }
 
   function box(w,h,d,color,emissive){
-    var mat=emissive?new THREE.MeshStandardMaterial({color:color,emissive:color,emissiveIntensity:0.6})
-                    :new THREE.MeshStandardMaterial({color:color});
+    var mat=emissive?new THREE.MeshStandardMaterial({color:color,emissive:color,emissiveIntensity:0.6,roughness:0.6})
+                    :new THREE.MeshStandardMaterial({color:color,roughness:0.85});
     return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  }
+
+  // A hanging garment: rounded capsule body (reads as a shirt/dress
+  // silhouette, not a flat rectangle) plus a small metal hanger hook.
+  // `topY` is the rod height the hook sits just under.
+  function garment(x,topY,z,radius,length,colorHex){
+    var g=new THREE.Group();
+    var body=new THREE.Mesh(new THREE.CapsuleGeometry(radius,length,4,10),
+      new THREE.MeshStandardMaterial({color:colorHex,roughness:0.75}));
+    g.add(body);
+    var hook=new THREE.Mesh(new THREE.TorusGeometry(0.045,0.011,6,12,Math.PI*1.5),
+      new THREE.MeshStandardMaterial({color:0x8d8d95,metalness:0.7,roughness:0.35}));
+    hook.rotation.z=Math.PI/2.3;
+    hook.position.y=radius+length/2+0.02;
+    g.add(hook);
+    g.position.set(x,topY-radius-length/2-0.06,z);
+    return g;
+  }
+
+  // A simple rounded shoe silhouette (squashed capsule) instead of a plain box.
+  function shoeMesh(x,z,colorHex){
+    var m=new THREE.Mesh(new THREE.CapsuleGeometry(0.09,0.22,4,8),
+      new THREE.MeshStandardMaterial({color:colorHex,roughness:0.7}));
+    m.rotation.z=Math.PI/2;
+    m.scale.set(1,0.62,1);
+    m.position.set(x,0.09,z);
+    return m;
+  }
+
+  // Open shelving cubby: frame + internal shelf boards, instead of one
+  // floating plank - reads as actual built-in shelving.
+  function shelfUnit(x,y,z,w,h,d,levels){
+    var g=new THREE.Group();
+    var frameMat=new THREE.MeshStandardMaterial({color:0xf6f1e6,roughness:0.8});
+    var back=new THREE.Mesh(new THREE.BoxGeometry(w,h,0.03),frameMat); back.position.set(0,0,-d/2); g.add(back);
+    [-1,1].forEach(function(side){
+      var wall=new THREE.Mesh(new THREE.BoxGeometry(0.03,h,d),frameMat); wall.position.set(side*w/2,0,0); g.add(wall);
+    });
+    for(var i=0;i<=levels;i++){
+      var shelf=new THREE.Mesh(new THREE.BoxGeometry(w,0.03,d),frameMat);
+      shelf.position.set(0,-h/2+(h/levels)*i,0);
+      g.add(shelf);
+    }
+    g.position.set(x,y,z);
+    return g;
+  }
+
+  // Dresser with individually visible drawer fronts, instead of one tall
+  // box with floating handle bars.
+  function drawerUnit(x,y,z,w,d,count){
+    var g=new THREE.Group();
+    var caseMat=new THREE.MeshStandardMaterial({color:0xf7f3ec,roughness:0.8});
+    var carcass=new THREE.Mesh(new THREE.BoxGeometry(w,count*0.36,d),caseMat);
+    g.add(carcass);
+    var faceH=0.32;
+    for(var i=0;i<count;i++){
+      var face=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,faceH,0.02),
+        new THREE.MeshStandardMaterial({color:0xfbf8f2,roughness:0.7}));
+      face.position.set(0,(count*0.36)/2-0.18-i*0.36,d/2+0.011);
+      g.add(face);
+      var handle=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.32,6),
+        new THREE.MeshStandardMaterial({color:0x8d8d95,metalness:0.7,roughness:0.3}));
+      handle.rotation.z=Math.PI/2;
+      handle.position.set(0,(count*0.36)/2-0.18-i*0.36,d/2+0.03);
+      g.add(handle);
+    }
+    g.position.set(x,y,z);
+    return g;
   }
 
   function buildFurniture(s){
     while(furnitureGroup.children.length){
       var c=furnitureGroup.children.pop();
-      c.geometry.dispose(); c.material.dispose();
+      c.traverse(function(o){ if(o.geometry)o.geometry.dispose(); if(o.material)o.material.dispose(); });
     }
     if(s<1){
       // stage 0: messy room - laundry pile + two "monsters"
@@ -617,35 +687,41 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
       return;
     }
     if(s>=2){
-      var shelf=box(2.2,0.08,0.5,0xf6f1e6); shelf.position.set(-1.6,1.6,-2.2);
-      furnitureGroup.add(shelf);
-      var storageBox=box(0.6,0.5,0.5,0xdccfa8); storageBox.position.set(1.7,0.25,-2.1);
+      var shelves=shelfUnit(-1.9,1.9,-2.42,1.6,1.1,0.4,3);
+      furnitureGroup.add(shelves);
+      var storageBox=box(0.5,0.4,0.4,0xdccfa8); storageBox.position.set(1.9,0.2,-2.2);
       furnitureGroup.add(storageBox);
     }
     if(s>=3){
-      var drawers=box(1.2,1.0,0.5,0xf7f3ec); drawers.position.set(-1.6,0.5,-2.2);
-      furnitureGroup.add(drawers);
-      for(var i=0;i<2;i++){
-        var handle=box(0.4,0.06,0.05,0xc6a23c); handle.position.set(-1.6,0.35+i*0.4,-1.94);
-        furnitureGroup.add(handle);
-      }
+      furnitureGroup.add(drawerUnit(-1.9,0.72,-2.2,1.4,0.5,3));
     }
     if(s>=4){
-      var rod=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,2.2,8),new THREE.MeshStandardMaterial({color:0xc6a23c}));
-      rod.rotation.z=Math.PI/2; rod.position.set(0.6,2.0,-2.2);
+      var rodY=2.0;
+      var rod=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,2.0,10),
+        new THREE.MeshStandardMaterial({color:0xc9c9d1,metalness:0.75,roughness:0.3}));
+      rod.rotation.z=Math.PI/2; rod.position.set(0.55,rodY,-2.2);
       furnitureGroup.add(rod);
-      var shirtCount=s>=6?7:4;
+      var shirtCount=s>=6?6:4;
       for(var k=0;k<shirtCount;k++){
-        var sh=box(0.28,0.75,0.12,parseInt(SHIRT_COLORS[k%SHIRT_COLORS.length].slice(1),16));
-        sh.position.set(-0.4+k*0.35,1.55,-2.2);
-        furnitureGroup.add(sh);
+        furnitureGroup.add(garment(-0.35+k*0.32,rodY,-2.2,0.14,0.5,GARMENT_COLORS[k%GARMENT_COLORS.length]));
       }
     }
     if(s>=5){
       for(var st2=0;st2<3;st2++){
-        var stack=box(0.7,0.12,0.45,parseInt(SHIRT_COLORS[st2%SHIRT_COLORS.length].slice(1),16));
-        stack.position.set(1.7,0.55+st2*0.14,-2.2);
+        var stack=box(0.55,0.1,0.35,GARMENT_COLORS[(st2+2)%GARMENT_COLORS.length]);
+        stack.position.set(1.9,0.5+st2*0.12,-2.2);
         furnitureGroup.add(stack);
+      }
+    }
+    if(s>=6){
+      // second, lower rod for longer items (dresses/pants)
+      var rod2Y=1.15;
+      var rod2=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,1.6,10),
+        new THREE.MeshStandardMaterial({color:0xc9c9d1,metalness:0.75,roughness:0.3}));
+      rod2.rotation.z=Math.PI/2; rod2.position.set(0.55,rod2Y,-2.2);
+      furnitureGroup.add(rod2);
+      for(var d2=0;d2<4;d2++){
+        furnitureGroup.add(garment(-0.2+d2*0.4,rod2Y,-2.2,0.13,0.85,GARMENT_COLORS[(d2+4)%GARMENT_COLORS.length]));
       }
     }
     if(s>=7){
@@ -657,10 +733,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
       furnitureGroup.add(glow);
     }
     if(s>=8){
+      var shoeColors=[0x2f2a28,0x5c4632,0x8d8d95,0x2c3e6b];
       for(var sh2=0;sh2<4;sh2++){
-        var shoe=box(0.35,0.18,0.5,0x2f2a28);
-        shoe.position.set(-2.3+sh2*0.45,0.09,1.6);
-        furnitureGroup.add(shoe);
+        furnitureGroup.add(shoeMesh(-2.3+sh2*0.45,1.6,shoeColors[sh2%shoeColors.length]));
       }
     }
     if(s>=9){
