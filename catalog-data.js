@@ -244,80 +244,97 @@ var MOON_CATALOG = {
     // Closet interior "content" configurations - what actually fills a
     // section (Your Closet uses these as real hang/shelf/drawer options).
     closetContent: [
-      { id: 'oneBottomHangerWithShelves', name: 'Bottom Hang + Shelves', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/onebottomhangerwithshelvescontenttall-1-bottom-hanger-with-shelves.png', source: 'master/Parts/General/OneBottomHangerWithShelvesContentTall' },
-      { id: 'doubleHung', name: 'Double Hang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/doublehungcontenttall-double-hung.png', source: 'master/Parts/General/DoubleHungContentTall' },
-      { id: 'longHung', name: 'Long Hang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/longhungcontenttall-long-hung.png', source: 'master/Parts/General/LongHungContentTall' },
-      { id: 'fourDrawerShelves', name: '4 Drawer + Shelves', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/10-10-10-10dbshelvescontenttall-10-10-10-10-db-shelves.png', source: 'master/Parts/General/10-10-10-10DBShelvesContentTall' },
-      { id: 'threeDrawerShelves', name: '3 Drawer + Shelves', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/10-10-10dbshelvescontenttall-10-10-10-db-shelves.png', source: 'master/Parts/General/10-10-10DBShelvesContentTall' },
-      { id: 'shelvesStack', name: 'Shelves', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/shelvesstackcontenttall-shelves-stack.png', source: 'master/Parts/General/ShelvesStackContentTall' },
+      { id: 'oneBottomHangerWithShelves', name: 'Bottom Hang + Shelves', image: 'blob-truth/onebottomhangerwithshelvescontenttall.png', source: 'master/Parts/General/OneBottomHangerWithShelvesContentTall' },
+      { id: 'doubleHung', name: 'Double Hang', image: 'blob-truth/doublehungcontenttall.png', source: 'master/Parts/General/DoubleHungContentTall' },
+      { id: 'longHung', name: 'Long Hang', image: 'blob-truth/longhungcontenttall.png', source: 'master/Parts/General/LongHungContentTall' },
+      { id: 'fourDrawerShelves', name: '4 Drawer + Shelves', image: 'blob-truth/10-10-10-10dbshelvescontenttall.png', source: 'master/Parts/General/10-10-10-10DBShelvesContentTall' },
+      { id: 'threeDrawerShelves', name: '3 Drawer + Shelves', image: 'blob-truth/10-10-10dbshelvescontenttall.png', source: 'master/Parts/General/10-10-10DBShelvesContentTall' },
+      { id: 'shelvesStack', name: 'Shelves', image: 'blob-truth/shelvesstackcontenttall.png', source: 'master/Parts/General/ShelvesStackContentTall' },
       { id: 'contentUpperBase', name: 'Content Upper+Base', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsectioncontentbaseupper-content-upper-base.png', source: 'master/Parts/General/MultiClosetSectionContentBaseUpper' },
       { id: 'contentBase', name: 'Content Base', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsectioncontentbase-content-base.png', source: 'master/Parts/General/MultiClosetSectionContentBase' },
-      { id: 'section', name: 'Section', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsection-section.png', source: 'master/Parts/General/MultiClosetSection' }
+      { id: 'section', name: 'Section', image: 'blob-truth/multiclosetsection.png', source: 'master/Parts/General/MultiClosetSection' }
     ],
     // Structural closet parts - separators between sections (real images)
     // plus internal building-block parts (no thumbnails - shelves/rods/
     // drawers/toe-kicks that make up the content configs above).
     closetSeparators: [
       { id: 'separatorTall', name: 'Multi Closet Tall Separator', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatortall-multi-closet-tall-separator.png', source: 'master/Parts/General/MultiClosetSeparatorTall' },
-      { id: 'separatorBase', name: 'Multi Closet Base Separator', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatorbase-multi-closet-base-separator.png', source: 'master/Parts/General/MultiClosetSeparatorBase' },
+      { id: 'separatorBase', name: 'Multi Closet Base Separator', image: 'blob-truth/multiclosetseparatorbase.png', source: 'master/Parts/General/MultiClosetSeparatorBase' },
       { id: 'separatorUpper', name: 'Multi Closet Upper Separator', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatorupper-multi-closet-upper-separator.png', source: 'master/Parts/General/MultiClosetSeparatorUpper' },
       { id: 'separatorBaseUpper', name: 'Multi Closet Base+Upper Separator', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatorbaseupper-multi-closet-base-upper-separator.png', source: 'master/Parts/General/MultiClosetSeparatorBaseUpper' }
     ],
-    closetStructureParts: ['TK facia (toe-kick facia panel)', 'Multi Closet Shelf', 'Shelf Adjustable - Stack', 'Rod - Adjustable', 'Hanging - Stack', 'FS Bottom (fixed shelf)', 'Drawer - Stack', 'Multi Closet Drawer Part', 'Multi Closet Adjustable Shelf Part', 'Multi Closet Fixed Shelf Part', 'Multi Closet Toe Kick Part', 'FS Top (fixed shelf)'],
+    // A handful of these picked up real thumbnails from blob-truth/ even
+    // though private.json itself listed them with image: null - filled in
+    // below. The rest (facia, fixed-shelf variants, toe-kick) still have
+    // no real image anywhere, so stay name-only.
+    closetStructureParts: [
+      { id: 'tkFacia', name: 'TK facia (toe-kick facia panel)' },
+      { id: 'multiClosetShelfPart', name: 'Multi Closet Shelf' },
+      { id: 'multiClosetShelvesStack', name: 'Shelf Adjustable - Stack', image: 'blob-truth/multiclosetshelvesstack.png' },
+      { id: 'multiClosetHangerPart', name: 'Rod - Adjustable', image: 'blob-truth/multiclosethangerpart.png' },
+      { id: 'multiClosetHangersStack', name: 'Hanging - Stack', image: 'blob-truth/multiclosethangersstack.png' },
+      { id: 'defaultClosetBottomFixShelf', name: 'FS Bottom (fixed shelf)' },
+      { id: 'multiClosetDrawersStack', name: 'Drawer - Stack', image: 'blob-truth/multiclosetdrawersstack.png' },
+      { id: 'multiClosetDrawerPart', name: 'Multi Closet Drawer Part', image: 'blob-truth/defaultclosetdrawer.png' },
+      { id: 'multiClosetAdjustableShelfPart', name: 'Multi Closet Adjustable Shelf Part' },
+      { id: 'multiClosetFixedShelfPart', name: 'Multi Closet Fixed Shelf Part' },
+      { id: 'multiClosetSectionToeKickPart', name: 'Multi Closet Toe Kick Part' },
+      { id: 'defaultClosetTopFixShelf', name: 'FS Top (fixed shelf)' }
+    ],
     cabinets: [
       { id: 'reachInCloset1', name: 'Reach In Closet 1', source: 'master/Products/Cabinets/ReachInCloset1' },
-      { id: 'multiClosetTall', name: 'Multi Closet Tall Product', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosettallproduct-multi-closet-tall-product.png', source: 'master/Products/Cabinets/MultiClosetTallProduct' }
+      { id: 'multiClosetTall', name: 'Multi Closet Tall Product', image: 'blob-truth/multiclosettallproduct.png', source: 'master/Products/Cabinets/MultiClosetTallProduct' }
     ],
     // Real door/window/electrical catalog - this is the actual list a
     // designer picks from in the real app's Obstacles step (replaces any
     // earlier guessed door/window lists elsewhere in this app).
     doors: [
-      { id: 'doorDouble', name: 'Double Door', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doordouble-double-door.png' },
-      { id: 'casedWallOpening', name: 'Cased Wall Opening', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/casedwallopening-cased-wall-opening.png' },
-      { id: 'doorSlidingLeft', name: 'Door - Sliding Left', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorslidingleft-door-sliding-left.png' },
-      { id: 'doorSingle', name: 'Door', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorsingle-door.png' },
-      { id: 'doorDoubleSidePanels', name: 'Door - Double Side Panels', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doordoublesidepanels-door-double-side-panels.png' },
-      { id: 'doorSingleSidePanel', name: 'Door - Single Side Panel', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorsinglesidepanel-door-single-side-panel.png' },
-      { id: 'doorSlidingRight', name: 'Door - Sliding Right', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorslidingright-door-sliding-right.png' }
+      { id: 'doorDouble', name: 'Double Door', image: 'blob-truth/doordouble.png' },
+      { id: 'casedWallOpening', name: 'Cased Wall Opening', image: 'blob-truth/casedwallopening.png' },
+      { id: 'doorSlidingLeft', name: 'Door - Sliding Left', image: 'blob-truth/doorslidingleft.png' },
+      { id: 'doorSingle', name: 'Door', image: 'blob-truth/doorsingle.png' },
+      { id: 'doorDoubleSidePanels', name: 'Door - Double Side Panels', image: 'blob-truth/doordoublesidepanels.png' },
+      { id: 'doorSingleSidePanel', name: 'Door - Single Side Panel', image: 'blob-truth/doorsinglesidepanel.png' },
+      { id: 'doorSlidingRight', name: 'Door - Sliding Right', image: 'blob-truth/doorslidingright.png' }
     ],
     windows: [
-      { id: 'windowBay', name: 'Window - Bay', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowbay-window-bay.png' },
-      { id: 'windowSinglePane', name: 'Window - Single Pane', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowsinglepane-window-single-pane.png' },
-      { id: 'windowSliding', name: 'Window - Sliding', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowsliding-window-sliding.png' },
-      { id: 'windowDoubleHung', name: 'Window - Double-Hung', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowdoublehung-window-double-hung.png' }
+      { id: 'windowBay', name: 'Window - Bay', image: 'blob-truth/windowbay.png' },
+      { id: 'windowSinglePane', name: 'Window - Single Pane', image: 'blob-truth/windowsinglepane-window-single-pane.png' },
+      { id: 'windowSliding', name: 'Window - Sliding', image: 'blob-truth/windowsliding-window-sliding.png' },
+      { id: 'windowDoubleHung', name: 'Window - Double-Hung', image: 'blob-truth/windowdoublehung.png' }
     ],
     electrical: [
-      { id: 'lightSwitchToggleSingle', name: 'Light Switch Toggle - Single Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtogglesinglegang-light-switch-toggle-single-gang.png' },
-      { id: 'lightSwitchToggleDouble', name: 'Light Switch Toggle - Double Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtoggledoublegang-light-switch-toggle-double-gang.png' },
-      { id: 'lightSwitchToggleTriple', name: 'Light Switch Toggle - Triple Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtoggletriplegang-light-switch-toggle-triple-gang.png' },
-      { id: 'lightSwitchRockerSingle', name: 'Light Switch Rocker - Single Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchrockersinglegang-light-switch-rocker-single-gang.png' },
-      { id: 'lightSwitchRockerTriple', name: 'Light Switch Rocker - Triple Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchrockertriplegang-light-switch-rocker-triple-gang.png' },
-      { id: 'lightSwitchDoubleRockerSingle', name: 'Light Switch Double Rocker - Single Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchdoublerockersinglegang-light-switch-double-rocker-single-gang.png' },
-      { id: 'lightSwitchDoubleRockerDouble', name: 'Light Switch Double Rocker - Double Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchdoublerockerdoublegang-light-switch-double-rocker-double-gang.png' },
-      { id: 'lightSwitchTripleRockerSingle', name: 'Light Switch Triple Rocker - Single Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtriplerockersinglegang-light-switch-triple-rocker-single-gang.png' },
-      { id: 'wallOutletSingle', name: 'Wall Outlet - Single Gang', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/walloutletsinglegang-wall-outlet-single-gang.png' },
-      { id: 'ventRegisterLarge', name: 'Vent Register Large', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/ventregisterlarge-vent-register-large.png' },
-      { id: 'ventRegisterSmall', name: 'Vent Register Small', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/ventregistersmall-vent-register-small.png' },
-      { id: 'electricalPanel', name: 'Electrical Panel', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/electricalpanel-electrical-panel.png' },
-      { id: 'wallObstacle', name: 'Wall Obstacle', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/wallobstacle-wall-obstacle.png' },
-      { id: 'floorObstacle', name: 'Floor Obstacle', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/floorobstacle-floor-obstacle.png' }
+      { id: 'lightSwitchToggleSingle', name: 'Light Switch Toggle - Single Gang', image: 'blob-truth/lightswitchtogglesinglegang.png' },
+      { id: 'lightSwitchToggleDouble', name: 'Light Switch Toggle - Double Gang', image: 'blob-truth/lightswitchtoggledoublegang.png' },
+      { id: 'lightSwitchToggleTriple', name: 'Light Switch Toggle - Triple Gang', image: 'blob-truth/lightswitchtoggletriplegang.png' },
+      { id: 'lightSwitchRockerSingle', name: 'Light Switch Rocker - Single Gang', image: 'blob-truth/lightswitchrockersinglegang.png' },
+      { id: 'lightSwitchRockerTriple', name: 'Light Switch Rocker - Triple Gang', image: 'blob-truth/lightswitchrockertriplegang.png' },
+      { id: 'lightSwitchDoubleRockerSingle', name: 'Light Switch Double Rocker - Single Gang', image: 'blob-truth/lightswitchdoublerockersinglegang.png' },
+      { id: 'lightSwitchDoubleRockerDouble', name: 'Light Switch Double Rocker - Double Gang', image: 'blob-truth/lightswitchdoublerockerdoublegang.png' },
+      { id: 'lightSwitchTripleRockerSingle', name: 'Light Switch Triple Rocker - Single Gang', image: 'blob-truth/lightswitchtriplerockersinglegang.png' },
+      { id: 'wallOutletSingle', name: 'Wall Outlet - Single Gang', image: 'blob-truth/walloutletsinglegang.png' },
+      { id: 'ventRegisterLarge', name: 'Vent Register Large', image: 'blob-truth/ventregisterlarge.png' },
+      { id: 'ventRegisterSmall', name: 'Vent Register Small', image: 'blob-truth/ventregistersmall.png' },
+      { id: 'electricalPanel', name: 'Electrical Panel', image: 'blob-truth/electricalpanel.png' },
+      { id: 'wallObstacle', name: 'Wall Obstacle', image: 'blob-truth/wallobstacle.png' },
+      { id: 'floorObstacle', name: 'Floor Obstacle', image: 'blob-truth/floorobstacle.png' }
     ],
     // Lighting/appliance fixtures - real catalog items, but not part of the
     // Obstacles step's Doors/Windows/Electrical tabs. Kept for whichever
     // future challenge or Your Closet decor option needs them.
     fixtures: [
-      { id: 'ceilingFan', name: 'Ceiling Fan', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/ceilingfan-ceiling-fan.png' },
-      { id: 'tvWallMounted', name: 'TV Wall Mounted', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/tvwallmounted-tv-wall-mounted.png' },
-      { id: 'tableLamp', name: 'Table Lamp', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/tablelamp-table-lamp.png' },
-      { id: 'deskLampBlack', name: 'Desk Lamp Black', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/desklampblack-desk-lamp-black.png' },
-      { id: 'standardLight', name: 'Standard Light', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/standardlight-standard-light.png' },
-      { id: 'islandLightBlack3Bulb', name: 'Island Light - Black 3 Bulb', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/islandlightblackthreebulb-island-light-black-3-bulb.png' },
-      { id: 'wallSconceGold', name: 'Wall Sconce - Gold w Frosted Globe', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/wallsconcegoldwfrostedglobe-wall-sconce-gold-w-frosted-globe.png' },
-      { id: 'pendantFrostedCylinder', name: 'Pendant - Frosted Cylinder', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/pendantfrostedcylinder-pendant-frosted-cylinder.png' },
-      { id: 'chandelierBlack9Bulb', name: 'Chandelier - Black 9 Bulb', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/environment-objects/images-enhanced/chandelierblackninebulb-chandelier-black-9-bulb.png' },
-      { id: 'wineCooler', name: 'Wine Cooler', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/winecooler-wine-cooler.png' },
-      { id: 'laundryFrontLoadUpperWhite', name: 'Laundry Front Load Upper White', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/laundryfrontloadupperwhite-laundry-front-load-upper-white.png' },
-      { id: 'laundryTopLoadWhite', name: 'Laundry Top Load White', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/laundrytoploadwhite-laundry-top-load-white.png' }
+      { id: 'ceilingFan', name: 'Ceiling Fan', image: 'blob-truth/ceilingfan.png' },
+      { id: 'tvWallMounted', name: 'TV Wall Mounted', image: 'blob-truth/tvwallmounted.png' },
+      { id: 'tableLamp', name: 'Table Lamp', image: 'blob-truth/tablelamp.png' },
+      { id: 'deskLampBlack', name: 'Desk Lamp Black', image: 'blob-truth/desklampblack.png' },
+      { id: 'standardLight', name: 'Standard Light', image: 'blob-truth/standardlight.png' },
+      { id: 'islandLightBlack3Bulb', name: 'Island Light - Black 3 Bulb', image: 'blob-truth/islandlightblackthreebulb.png' },
+      { id: 'wallSconceGold', name: 'Wall Sconce - Gold w Frosted Globe', image: 'blob-truth/wallsconcegoldwfrostedglobe.png' },
+      { id: 'pendantFrostedCylinder', name: 'Pendant - Frosted Cylinder', image: 'blob-truth/pendantfrostedcylinder.png' },
+      { id: 'chandelierBlack9Bulb', name: 'Chandelier - Black 9 Bulb', image: 'blob-truth/chandelierblackninebulb.png' },
+      { id: 'wineCooler', name: 'Wine Cooler', image: 'blob-truth/winecooler-wine-cooler.png' },
+      { id: 'laundryFrontLoadUpperWhite', name: 'Laundry Front Load Upper White', image: 'blob-truth/laundryfrontloadupperwhite.png' },
+      { id: 'laundryTopLoadWhite', name: 'Laundry Top Load White', image: 'blob-truth/laundrytoploadwhite.png' }
     ]
   }
 };

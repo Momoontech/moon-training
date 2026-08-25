@@ -16,6 +16,9 @@ An internal training program for Moon's new closet-design app ("Sales Designer A
 ```
 index.html                         # dashboard hub (landing page) - gamification + nav to everything below
 moon-logo.png                      # circular Moon logo, also the "moon rock" currency icon
+blob-truth/                        # real Sales Designer App catalog item images (local copies, ~23MB) - the durable
+                                    # source for MOON_CATALOG.appCatalog `image` fields; falls back to the app's own
+                                    # (dev-environment) hosted blob URLs only for the few items with no local copy
 1 Decks/Day1_Deck.html             # Day 1 slide deck (approved, images embedded as base64)
 1 Decks/Day2_Deck.html             # Day 2 slide deck
 1 Decks/Day1_Presentation_Content.md  # slide-by-slide content for design (internal, NOT deployed)
