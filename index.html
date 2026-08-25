@@ -175,6 +175,18 @@
   .mdone{text-align:center;padding:8px 0;}
   .mdone .big{font-size:40px;} .mdone h3{font-size:19px;font-weight:800;margin-top:6px;}
 
+  /* ─── Prepare for Appointment checklist ─── */
+  .prep-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;max-height:360px;overflow-y:auto;}
+  .prep-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:inherit;}
+  .prep-item:not(.soon):hover{border-color:#c9c4db;background:#faf9fc;}
+  .prep-item.soon{opacity:.7;cursor:default;}
+  .prep-check{width:16px;height:16px;border-radius:50%;border:2px solid var(--primary);flex:0 0 auto;}
+  .prep-item.soon .prep-check{border-color:#c8c5d3;}
+  .prep-info{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .prep-info b{font-size:13px;font-weight:700;}
+  .prep-info span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-top:1px;}
+  .prep-go{font-size:11.5px;font-weight:700;color:var(--primary);white-space:nowrap;flex:0 0 auto;}
+
   /* ─── Reward popup ─── */
   .rsheet{background:#fff;border-radius:22px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.32);}
   .rtop{background:linear-gradient(135deg,#5a34b0,#7239EA);color:#fff;padding:22px 22px 20px;text-align:center;position:relative;overflow:hidden;}
@@ -325,12 +337,8 @@
     <h1 class="title">Welcome back, Designer</h1>
     <p class="lead">Every day you log in you earn a moon rock, and your dream closet gets a little nicer. Keep the streak going.</p>
 
-    <div class="sechead"><h2>Upcoming Appointments</h2><span class="cnt">(3)</span></div>
-    <div class="grid" style="margin-bottom:16px;">
-      <div class="acard"><div class="ah"><h4>The Coopers</h4><span class="pill2 live">Today · 2:00 PM</span></div><p>Walk-in closet consult</p><p style="font-weight:700;color:#7239EA;">🔥 On a roll this month - go get it!</p></div>
-      <div class="acard"><div class="ah"><h4>Sam Cole</h4><span class="pill2 review">Tomorrow · 10:30 AM</span></div><p>Reach-in makeover</p><p style="font-weight:700;color:#7239EA;">💪 First one back from a slow week - you've got this!</p></div>
-      <div class="acard"><div class="ah"><h4>The Ortegas</h4><span class="pill2 concept">Fri · 1:00 PM</span></div><p>Pantry system</p><p style="font-weight:700;color:#7239EA;">🎉 One more and you hit your monthly goal!</p></div>
-    </div>
+    <div class="sechead"><h2>Upcoming Appointments</h2><span class="cnt" id="apptCnt"></span></div>
+    <div class="grid" id="apptGrid" style="margin-bottom:16px;"></div>
 
     <!-- Hero: 2-column white card, absolute buttons -->
     <div class="closet">
@@ -493,6 +501,7 @@
 <div class="toast" id="toast"></div>
 <div class="modal" id="rewardModal"><div class="rsheet" id="rewardSheet"></div></div>
 <div class="modal" id="triviaModal"><div class="msheet" id="triviaSheet"></div></div>
+<div class="modal" id="prepModal"><div class="msheet" id="prepSheet"></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@auth0/auth0-spa-js@2/dist/auth0-spa-js.production.js"></script>
 <script>
@@ -867,7 +876,78 @@
     }catch(e){ console.error(e); toast('Purchase failed - check your connection.'); }
   }
 
-  function refreshAll(){ renderCloset(); renderShop(); renderRewardShop(); renderBrowse(); updateEarnBadges(); }
+  function refreshAll(){ renderCloset(); renderShop(); renderRewardShop(); renderBrowse(); renderAppointments(); updateEarnBadges(); }
+
+  /* ── upcoming appointments + prepare checklist ── */
+  // Mock appointments (no real scheduling data source yet) - each has a
+  // `type` that picks which checklist below applies. Guide/Quiz/Deck items
+  // link to real files already in this repo; Video and Sales Training items
+  // are marked "Coming soon" since that content doesn't exist yet - same
+  // honesty rule as the Videos tab.
+  var APPOINTMENTS=[
+    {client:'The Coopers',type:'Closet',project:'Walk-in closet consult',when:'Today · 2:00 PM',pill:'live',hype:'🔥 On a roll this month - go get it!'},
+    {client:'Sam Cole',type:'Garage',project:'Garage storage system',when:'Tomorrow · 10:30 AM',pill:'review',hype:'💪 First one back from a slow week - you\'ve got this!'},
+    {client:'The Ortegas',type:'Follow-up',project:'Pantry system follow-up',when:'Fri · 1:00 PM',pill:'concept',hype:'🎉 One more and you hit your monthly goal!'},
+    {client:'Priya N.',type:'Phone Call',project:'New lead intro call',when:'Fri · 4:30 PM',pill:'soon',hype:'📞 Quick call - keep it light and friendly!'}
+  ];
+  var PREP_CHECKLISTS={
+    'Closet':[
+      {label:'Interactive Navigation Guide',kind:'Guide',href:'./2%20Handouts%20%26%20Guide/Interactive_Designer_Guide.html'},
+      {label:'Quiz 1 · Setup & Measure (refresher)',kind:'Quiz',href:'./3%20Quizzes/Quiz_1_Setup_and_Measure.html'},
+      {label:'Measuring a room',kind:'Video'},
+      {label:'Placing obstacles',kind:'Video'},
+      {label:'Objection handling for closets',kind:'Sales Training'}
+    ],
+    'Garage':[
+      {label:'Interactive Navigation Guide',kind:'Guide',href:'./2%20Handouts%20%26%20Guide/Interactive_Designer_Guide.html'},
+      {label:'Quiz 2 · Design & Present (refresher)',kind:'Quiz',href:'./3%20Quizzes/Quiz_2_Design_and_Present.html'},
+      {label:'Building sections',kind:'Video'},
+      {label:'Garage systems overview',kind:'Video'},
+      {label:'Garage-specific pricing walkthrough',kind:'Sales Training'}
+    ],
+    'Follow-up':[
+      {label:'Day 2 Deck (execution & presenting)',kind:'Deck',href:'./1%20Decks/Day2_Deck.html'},
+      {label:'Presenting in 3D',kind:'Video'},
+      {label:'Closing techniques',kind:'Sales Training'},
+      {label:'Objection handling refresher',kind:'Sales Training'}
+    ],
+    'Phone Call':[
+      {label:'App Flow Quick Reference',kind:'Guide',href:'./2%20Handouts%20%26%20Guide/Handout_App_Flow_Quick_Reference.html'},
+      {label:'Phone script basics',kind:'Sales Training'},
+      {label:'Quick app-flow refresher',kind:'Video'}
+    ]
+  };
+  function renderAppointments(){
+    document.getElementById('apptCnt').textContent='('+APPOINTMENTS.length+')';
+    document.getElementById('apptGrid').innerHTML=APPOINTMENTS.map(function(a,i){
+      return '<div class="acard"><div class="ah"><h4>'+a.client+'</h4><span class="pill2 '+a.pill+'">'+a.when+'</span></div>'+
+        '<p>'+a.type+' · '+a.project+'</p>'+
+        '<p style="font-weight:700;color:#7239EA;">'+a.hype+'</p>'+
+        '<button class="cbtn" style="align-self:flex-start;" data-prep="'+i+'">Prepare for Appointment</button></div>';
+    }).join('');
+    [].slice.call(document.querySelectorAll('[data-prep]')).forEach(function(b){
+      b.addEventListener('click',function(){ openPrep(+b.dataset.prep); });
+    });
+  }
+  function prepItemHtml(item){
+    var inner='<span class="prep-check"></span><div class="prep-info"><b>'+item.label+'</b><span>'+item.kind+'</span></div>';
+    if(item.href) return '<a class="prep-item" href="'+item.href+'" target="_blank">'+inner+'<span class="prep-go">Open →</span></a>';
+    return '<div class="prep-item soon">'+inner+'<span class="pill2 soon">Coming soon</span></div>';
+  }
+  var prepModal=document.getElementById('prepModal'),prepSheet=document.getElementById('prepSheet');
+  function openPrep(i){
+    var a=APPOINTMENTS[i]; if(!a)return;
+    var items=PREP_CHECKLISTS[a.type]||[];
+    prepSheet.innerHTML='<div class="mh"><span class="k">Prepare for '+a.client+'</span><button class="x" id="prepX">✕</button></div>'+
+      '<p style="color:var(--muted);font-size:12.5px;margin-bottom:14px;">'+a.type+' · '+a.project+' · '+a.when+'</p>'+
+      '<div class="prep-list">'+items.map(prepItemHtml).join('')+'</div>'+
+      '<button class="mnext" id="prepDone" style="margin-top:16px;">Done</button>';
+    document.getElementById('prepX').onclick=closePrep;
+    document.getElementById('prepDone').onclick=closePrep;
+    prepModal.classList.add('open');
+  }
+  function closePrep(){ prepModal.classList.remove('open'); }
+  prepModal.addEventListener('click',function(e){if(e.target===prepModal)closePrep();});
 
   /* ── reward popup ── */
   var rewardModal=document.getElementById('rewardModal'),rewardSheet=document.getElementById('rewardSheet');
