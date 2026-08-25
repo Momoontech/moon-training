@@ -193,20 +193,39 @@
   function wrong(elm,msg){ if(solved)return; misses++; elm.classList.remove('shake');void elm.offsetWidth; elm.classList.add('shake','badflash'); setTimeout(function(){elm.classList.remove('badflash');},450); toast(msg||'Not quite - try again.'); }
 
   // shared chrome
+  // Clean monochrome line icons (stroke="currentColor" so they pick up each
+  // .rdot's state color - green done, purple active, gray upcoming - same
+  // way the old text glyphs did, but without emoji's fixed full-color look).
+  var RICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">';
+  var RAIL_ICONS=[
+    RICN+'<rect x="3" y="2.5" width="10" height="4" rx="1.2"/><path d="M8 6.5v4"/><rect x="6" y="10.5" width="4" height="3" rx="1"/></svg>',
+    RICN+'<path d="M10.5 2.5l3 3-7.5 7.5H3v-3z"/><path d="M9 4l3 3"/></svg>',
+    RICN+'<rect x="2.5" y="3" width="11" height="10" rx="1.2"/><path d="M6 3v10M10 3v10"/></svg>',
+    RICN+'<rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></svg>',
+    RICN+'<rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/></svg>'
+  ];
   function railHTML(active){
-    var icons=['🎙️','✎','◫','▦','❑'];
     var d='';
-    for(var s=0;s<5;s++){ var cls=s<active?'rdot done':(s===active?'rdot active':'rdot'); d+='<div class="'+cls+'" data-step="'+s+'">'+icons[s]+'<span class="num">'+(s+1)+'</span></div>'; }
+    for(var s=0;s<5;s++){ var cls=s<active?'rdot done':(s===active?'rdot active':'rdot'); d+='<div class="'+cls+'" data-step="'+s+'">'+RAIL_ICONS[s]+'<span class="num">'+(s+1)+'</span></div>'; }
     return '<div class="rail"><div class="cap">Room<br>Progress</div><div class="bar"><i></i></div>'+d+'</div>';
   }
+  var TICN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15">';
+  var TOOL_ICONS={
+    pencil: TICN+'<path d="M10.5 2.5l3 3-7.5 7.5H3v-3z"/><path d="M9 4l3 3"/></svg>',
+    ruler: TICN+'<rect x="2.5" y="7" width="11" height="6" rx="1" transform="rotate(-25 8 10)"/><path d="M6 8.5l.6 1.2M8 7.6l.6 1.2M10 6.7l.6 1.2" transform="rotate(-25 8 10)"/></svg>',
+    add: TICN+'<path d="M8 3v10M3 8h10"/></svg>',
+    undo: TICN+'<path d="M4 4v4h4"/><path d="M4.5 8a5.5 5.5 0 1 1 1.6 4"/></svg>',
+    redo: TICN+'<path d="M12 4v4H8"/><path d="M11.5 8a5.5 5.5 0 1 1-1.6 4"/></svg>',
+    panel: TICN+'<rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M6 2.5v11"/></svg>'
+  };
   function toggleHTML(mode,view){
     view=view||'Top';
     function b(n){return '<b class="'+(n===view?'on':'')+'" data-v="'+n+'">'+n+'</b>';}
-    var second = mode==='obstacles' ? '<div class="tool" data-t="add" style="background:#7239EA;color:#fff;">＋</div>' : '<div class="tool" data-t="ruler">📏</div>';
-    var panel = mode==='measure' ? '<div class="tool on" data-t="panel">▤</div>' : '<div class="tool" data-t="panel">▤</div>';
+    var second = mode==='obstacles' ? '<div class="tool" data-t="add" style="background:#7239EA;color:#fff;">'+TOOL_ICONS.add+'</div>' : '<div class="tool" data-t="ruler">'+TOOL_ICONS.ruler+'</div>';
+    var panel = mode==='measure' ? '<div class="tool on" data-t="panel">'+TOOL_ICONS.panel+'</div>' : '<div class="tool" data-t="panel">'+TOOL_ICONS.panel+'</div>';
     return '<div class="toggle"><div class="seg">'+b('Top')+b('Front')+b('3D')+'</div>'+
-      '<div class="sep"></div><div class="tool on" data-t="pencil">✎</div>'+second+
-      '<div class="tool" data-t="undo">↶</div><div class="tool" data-t="redo">↷</div>'+panel+'</div>';
+      '<div class="sep"></div><div class="tool on" data-t="pencil">'+TOOL_ICONS.pencil+'</div>'+second+
+      '<div class="tool" data-t="undo">'+TOOL_ICONS.undo+'</div><div class="tool" data-t="redo">'+TOOL_ICONS.redo+'</div>'+panel+'</div>';
   }
   function roomSVG(hatch,reachIn){
     var fill = hatch ? 'url(#hpat)' : 'rgba(140,140,156,.06)';
