@@ -127,6 +127,7 @@
     lvlEl.className='lvlpill '+c.lvl; lvlEl.textContent=c.lvlName;
     streakEl.textContent='🔥 '+streak;
     tp.textContent=c.prompt;
+    showTaskIntro(c.prompt,tp);
     hintBox.style.display='none'; hintBox.className='hintbox';
     hintBox.innerHTML='<div style="background:#fff8ee;border:1px solid #f4e4c6;border-radius:12px;padding:11px 14px;font-size:13px;color:#7a5a1e;margin-bottom:12px;">'+c.hint+'</div>';
   }

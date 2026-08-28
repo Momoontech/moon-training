@@ -33,6 +33,11 @@ body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ar
    bar rather than a separate page section. */
 .fullapp{display:flex;flex-direction:column;height:100vh;background:var(--bg);}
 .taskstrip{flex:0 0 auto;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--line);padding:11px 18px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(33,28,51,.05);z-index:10;}
+/* Task-intro banner: the prompt shows big & centered on load, then FLIPs
+   (animates) down into its real spot in the task strip - so it doesn't get
+   lost in the rest of the UI on first glance. See showTaskIntro() below. */
+.taskIntro{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:rgba(214,236,255,.95);transition:background .4s ease;}
+.taskIntro .tiCard{background:#eaf4ff;border:1px solid #cfe6fb;border-radius:16px;padding:22px 30px;max-width:520px;font-size:19px;font-weight:700;line-height:1.35;color:#0f3a5f;text-align:center;box-shadow:0 18px 46px rgba(15,58,95,.18);transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .4s ease;}
 .taskstrip .tnum{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;}
 .lvlpill{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:5px 11px;white-space:nowrap;}
 .lvlpill.easy{background:#e3f8f1;color:#0b6b52;} .lvlpill.med{background:#fdf0dd;color:#9a5b06;} .lvlpill.hard{background:#fbe4e0;color:#8f2a17;}

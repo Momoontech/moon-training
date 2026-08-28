@@ -166,3 +166,23 @@ function wireChromeControls(root,body,getSolved){
     elm.addEventListener('click',function(){ chromeWrong(body,elm,'That control isn’t part of this task - try again.',getSolved()); });
   });
 }
+// Shows the task prompt big & centered on a light-blue background, then
+// FLIPs (First-Last-Invert-Play) it down into `targetEl` - its real spot
+// in the task strip - so the most important info on the screen doesn't
+// get lost in the rest of the UI on first glance. Called fresh from
+// setTask() on every task, including the first.
+function showTaskIntro(promptText,targetEl){
+  var old=document.getElementById('taskIntroOverlay'); if(old)old.remove();
+  var overlay=elc('<div class="taskIntro" id="taskIntroOverlay"><div class="tiCard">'+promptText+'</div></div>');
+  document.body.appendChild(overlay);
+  var card=overlay.querySelector('.tiCard');
+  setTimeout(function(){
+    var from=card.getBoundingClientRect(), to=targetEl.getBoundingClientRect();
+    var sx=to.width/from.width, sy=to.height/from.height;
+    var dx=(to.left+to.width/2)-(from.left+from.width/2), dy=(to.top+to.height/2)-(from.top+from.height/2);
+    overlay.style.background='rgba(214,236,255,0)';
+    card.style.transform='translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')';
+    card.style.opacity='0';
+    setTimeout(function(){ overlay.remove(); },520);
+  },1300);
+}

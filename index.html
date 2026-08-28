@@ -721,15 +721,27 @@
     if(s>=5) p+=rodRow(226,306,92,118,['#9a9a6a','#3f4a63','#7a5b45','#c9bfa0'],'dress');
     if(s>=6) p+=rodRow(322,406,92,118,['#f2f0ea','#9fb4c9','#cbb48a','#e0ddd4'],'shirt');
     if(s<=1){
-      var piles=[[58,236],[118,244],[188,238],[250,246],[312,240],[372,244],[152,222],[300,224]];
-      var pc=[['#8b93d8','#f0a15b'],['#e0668a','#cfd0ea'],['#9a9a6a','#cbb48a'],['#7a5b45','#9fb4c9'],['#3f4a63','#e0ddd4'],['#8b93d8','#c9c0e0'],['#f0a15b','#e0668a'],['#9fb4c9','#cbb48a']];
-      var pcnt=s===0?piles.length:4;
-      for(var i=0;i<pcnt;i++) p+=crumple(piles[i][0],piles[i][1],pc[i][0],pc[i][1],i);
-      var sh=[[92,251],[210,253],[276,249],[344,252],[44,247]]; var scnt=s===0?sh.length:2;
-      var scol=['#7a5b45','#3a3a3a','#b09a7a','#4a4a4a','#8a8a8a'];
-      for(var j=0;j<scnt;j++) p+=shoe(sh[j][0],sh[j][1],scol[j]);
-      p+=monster(150,188,2,'#7b3fd6');
-      if(s===0) p+=monster(332,196,1.75,'#159f6e');
+      // Matches Mo's reference photo: a freestanding rack of hanging
+      // clothes, with one real heaped pile on the floor beside it (not
+      // clothes scattered evenly across the whole room) - closest to what
+      // "before the closet system goes in" actually looks like.
+      var rackX0=190, rackX1=410, rackTop=64, rackBot=246;
+      p+='<rect x="'+(rackX0-2.4)+'" y="'+rackTop+'" width="4.8" height="'+(rackBot-rackTop)+'" rx="2" fill="#2b2b33"/>';
+      p+='<rect x="'+(rackX1-2.4)+'" y="'+rackTop+'" width="4.8" height="'+(rackBot-rackTop)+'" rx="2" fill="#2b2b33"/>';
+      p+='<rect x="'+(rackX0-15)+'" y="'+(rackBot-5)+'" width="30" height="5.5" rx="2.6" fill="#2b2b33"/>';
+      p+='<rect x="'+(rackX1-15)+'" y="'+(rackBot-5)+'" width="30" height="5.5" rx="2.6" fill="#2b2b33"/>';
+      p+='<rect x="'+(rackX0-3)+'" y="'+(rackTop-3.5)+'" width="'+(rackX1-rackX0+6)+'" height="5.5" rx="2.6" fill="#2b2b33"/>';
+      p+=rodRow(rackX0+4,rackX1-4,rackTop+9,110,['#232323','#4a4a4a','#8a7c6a','#33415c','#6f7350','#c9b48c'],'shirt');
+
+      var mound=[[70,232],[100,238],[62,242],[95,222],[128,236]];
+      var mc=[['#3a3a3a','#5a5a5a'],['#7a5b45','#9a8368'],['#33415c','#4a5b7a'],['#8a7c6a','#a8987e'],['#4a4a4a','#6a6a6a']];
+      var mcnt=s===0?mound.length:3;
+      for(var i=0;i<mcnt;i++) p+=crumple(mound[i][0],mound[i][1],mc[i][0],mc[i][1],i);
+      p+=shoe(18,250,'#2f2a28');
+      if(s===0) p+=shoe(125,246,'#8a8a8a');
+
+      p+=monster(165,196,1.85,'#7b3fd6');
+      if(s===0) p+=monster(378,206,1.5,'#159f6e');
       p+='<rect width="440" height="300" fill="#241d33" opacity="'+(s===0?0.22:0.1)+'"/>';
     }
     if(s>=7) p+='<rect width="440" height="246" fill="#ffcf8a" opacity=".07"/>';
