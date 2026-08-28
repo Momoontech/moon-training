@@ -247,8 +247,13 @@
   };
 
   function buildObstacles(c){
+    // Doors/windows/electrical are the real app's "Systems" step (see
+    // Interactive_Designer_Guide.html - "you must plot at Systems before
+    // the Catalog opens"), not Floor Plan. measureViewTabs() defaults to
+    // Floor Plan, so this needs the explicit view name or the tab strip
+    // shows the wrong step as active.
     app.innerHTML=measureTopbar()+
-      '<div class="appbody">'+roomSVG(false,true)+measureViewTabs()+measureToolbar()+
+      '<div class="appbody">'+roomSVG(false,true)+measureViewTabs('Systems')+measureToolbar()+
         '<div class="panel obst" style="top:66px;">'+
           '<div class="ph"><div class="pt">All Obstacles</div><div class="lm">Learn More ⓘ</div></div>'+
           '<div class="searchrow" id="srow"><span class="mg">🔍</span><span class="chip" id="chip">Doors <span class="x">✕</span></span><input id="sin" placeholder="Search"></div>'+
@@ -354,7 +359,7 @@
           '<rect x="120" y="470" width="770" height="60" fill="#f2f0f7"/>'+
           '<line x1="120" y1="470" x2="890" y2="470" stroke="#cfcfda" stroke-width="4"/>'+
         '</svg>'+
-        measureViewTabs()+measureToolbar('Front')+
+        measureViewTabs('Architecture')+measureToolbar('Front')+
         '<div class="panel" style="top:66px;"><div class="ph"><div class="pt" id="ptitle">Add Section</div><div class="lm">Learn More ⓘ</div></div>'+
           '<div class="tabs" id="tabs"></div>'+
           '<div class="cards" id="cards"></div>'+
