@@ -264,43 +264,10 @@
 
     // drop slots (percent of appbody). Only the one in front of the reach-in closet is correct.
     var slots=[{x:44,y:79,o:'h',ok:true},{x:30,y:73,o:'v'},{x:41,y:59,o:'h'},{x:52,y:42,o:'v'}];
-    var token=null, glow=null, hint=null;
+    var token=null, glow=null;
     function nearest(x,y){var b=-1,bd=1e9;slots.forEach(function(s,k){var d=Math.hypot(s.x-x,s.y-y);if(d<bd){bd=d;b=k;}});return bd<16?b:-1;}
     function toPct(ev){var r=body.getBoundingClientRect();return {x:(ev.clientX-r.left)/r.width*100,y:(ev.clientY-r.top)/r.height*100};}
     function clearGlow(){ if(glow){glow.remove();glow=null;} }
-    function spawnToken(){
-      if(token){token.remove();} if(hint){hint.remove();hint=null;}
-      token=elc('<div class="dtoken" style="left:26%;top:30%;">'+doorAsset(selKind)+'<div class="dl">'+selName+'</div></div>');
-      hint=elc('<div class="draghint" style="left:26%;top:18%;">Drag to the reach-in</div>');
-      body.appendChild(token); body.appendChild(hint);
-      token.addEventListener('pointerdown',function(e){
-        if(solved)return; e.preventDefault();
-        try{token.setPointerCapture(e.pointerId);}catch(_){}
-        token.classList.add('drag'); if(hint)hint.style.display='none';
-        function mv(ev){
-          var p=toPct(ev);
-          token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
-          var n=nearest(p.x,p.y);
-          if(n>=0){ if(!glow){glow=elc('<div class="wallglow"></div>');body.appendChild(glow);}
-            glow.style.left=slots[n].x+'%'; glow.style.top=slots[n].y+'%';
-            glow.style.width=slots[n].o==='v'?'42px':'86px'; glow.style.height=slots[n].o==='v'?'86px':'42px'; }
-          else clearGlow();
-        }
-        function up(ev){
-          try{token.releasePointerCapture(e.pointerId);}catch(_){}
-          token.removeEventListener('pointermove',mv);token.removeEventListener('pointerup',up);token.removeEventListener('pointercancel',up);
-          token.classList.remove('drag');
-          var p=toPct(ev), n=nearest(p.x,p.y); clearGlow();
-          if(n<0){ token.style.left='26%';token.style.top='30%'; if(hint)hint.style.display=''; toast('Drop the door onto a wall.'); return; }
-          if(!slots[n].ok){ token.style.left='26%';token.style.top='30%'; if(hint)hint.style.display=''; wrong(token,'Put the door in front of the reach-in closet so the client can get in.'); return; }
-          token.remove(); token=null; if(hint){hint.remove();hint=null;}
-          var pl=elc('<div class="placed'+(slots[n].o==='v'?' v':'')+'" style="left:'+slots[n].x+'%;top:'+slots[n].y+'%;">'+doorAsset(selKind)+'</div>');
-          body.appendChild(pl);
-          win(c,pl);
-        }
-        token.addEventListener('pointermove',mv);token.addEventListener('pointerup',up);token.addEventListener('pointercancel',up);
-      });
-    }
 
     function renderCards(){
       var list=(OBST[cat]||[]).filter(function(o){return o[0].toLowerCase().indexOf(filter.toLowerCase())>-1;});
@@ -309,16 +276,43 @@
         var ic = cat==='Windows'?iconWin():cat==='Electrical'?iconElec():iconDoor(o[1]);
         return '<div class="pcard" data-name="'+o[0]+'" data-kind="'+(o[1]||'')+'">'+ic+'<div class="cl">'+o[0]+'</div></div>';
       }).join('');
+      // Drag straight off the catalog card - like the real app, not
+      // tap-to-arm-a-token-then-drag-it-separately. Picking up a card that
+      // isn't a door still gives instant feedback, it just never starts a
+      // drag (there's nothing valid to drop).
       [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
-        card.addEventListener('click',function(){
+        card.addEventListener('pointerdown',function(e){
           if(solved)return;
           if(cat!=='Doors'){ wrong(card,'A '+card.dataset.name.toLowerCase()+' will not open the closet - the reach-in needs a door.'); return; }
-          // pick / switch door type
-          cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');var cl=x.querySelector('.cl');if(cl&&cl.dataset.base)cl.textContent=cl.dataset.base;});
+          e.preventDefault();
           selKind=card.dataset.kind; selName=card.dataset.name;
+          cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
           card.classList.add('good');
-          var cl=card.querySelector('.cl'); cl.dataset.base=selName; cl.innerHTML=selName+'<div class="added">✓ Selected</div>';
-          spawnToken(); toast('Now drag the '+selName.toLowerCase()+' in front of the reach-in closet.');
+          var p=toPct(e);
+          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+doorAsset(selKind)+'<div class="dl">'+selName+'</div></div>');
+          body.appendChild(token);
+          try{token.setPointerCapture(e.pointerId);}catch(_){}
+          function mv(ev){
+            var p=toPct(ev);
+            token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+            var n=nearest(p.x,p.y);
+            if(n>=0){ if(!glow){glow=elc('<div class="wallglow"></div>');body.appendChild(glow);}
+              glow.style.left=slots[n].x+'%'; glow.style.top=slots[n].y+'%';
+              glow.style.width=slots[n].o==='v'?'42px':'86px'; glow.style.height=slots[n].o==='v'?'86px':'42px'; }
+            else clearGlow();
+          }
+          function up(ev){
+            try{token.releasePointerCapture(e.pointerId);}catch(_){}
+            token.removeEventListener('pointermove',mv);token.removeEventListener('pointerup',up);token.removeEventListener('pointercancel',up);
+            var p=toPct(ev), n=nearest(p.x,p.y); clearGlow();
+            if(n<0){ token.remove();token=null; toast('Drop the door onto a wall.'); return; }
+            if(!slots[n].ok){ token.remove();token=null; wrong(card,'Put the door in front of the reach-in closet so the client can get in.'); return; }
+            token.remove(); token=null;
+            var pl=elc('<div class="placed'+(slots[n].o==='v'?' v':'')+'" style="left:'+slots[n].x+'%;top:'+slots[n].y+'%;">'+doorAsset(selKind)+'</div>');
+            body.appendChild(pl);
+            win(c,pl);
+          }
+          token.addEventListener('pointermove',mv);token.addEventListener('pointerup',up);token.addEventListener('pointercancel',up);
         });
       });
     }
@@ -370,21 +364,21 @@
     var body=app.querySelector('.appbody'); wireChrome(body);
     wireNav(app,'Finish building the section first, then you would head back.','Add the section and a shelf first, then continue.');
     var cards=document.getElementById('cards'), tabs=document.getElementById('tabs'), ptitle=document.getElementById('ptitle');
-    var phase='section', token=null, hint=null, glow=null, sectionEl=null, emptyBay=null, selAcc=null;
+    var phase='section', token=null, glow=null, sectionEl=null, emptyBay=null, selAcc=null;
     var zone={x:44,y:52}; // floor drop target (percent)
 
     function toPct(ev){var r=body.getBoundingClientRect();return {x:(ev.clientX-r.left)/r.width*100,y:(ev.clientY-r.top)/r.height*100};}
-    function makeDrag(elm,onMove,onUp){
-      elm.addEventListener('pointerdown',function(e){
-        if(solved)return; e.preventDefault();
-        try{elm.setPointerCapture(e.pointerId);}catch(_){}
-        elm.classList.add('drag');
-        function mv(ev){onMove(toPct(ev),ev);}
-        function up(ev){try{elm.releasePointerCapture(e.pointerId);}catch(_){}
-          elm.removeEventListener('pointermove',mv);elm.removeEventListener('pointerup',up);elm.removeEventListener('pointercancel',up);
-          elm.classList.remove('drag');onUp(toPct(ev),ev);}
-        elm.addEventListener('pointermove',mv);elm.addEventListener('pointerup',up);elm.addEventListener('pointercancel',up);
-      });
+    // beginDrag wires an already-fired pointerdown to elm's move/up, so a
+    // drag can start on a token spawned at the pointer's own position -
+    // dragging straight off the catalog card, like the real app.
+    function beginDrag(e,elm,onMove,onUp){
+      try{elm.setPointerCapture(e.pointerId);}catch(_){}
+      elm.classList.add('drag');
+      function mv(ev){onMove(toPct(ev),ev);}
+      function up(ev){try{elm.releasePointerCapture(e.pointerId);}catch(_){}
+        elm.removeEventListener('pointermove',mv);elm.removeEventListener('pointerup',up);elm.removeEventListener('pointercancel',up);
+        elm.classList.remove('drag');onUp(toPct(ev),ev);}
+      elm.addEventListener('pointermove',mv);elm.addEventListener('pointerup',up);elm.addEventListener('pointercancel',up);
     }
 
     // ---- phase 1: section ----
@@ -394,33 +388,27 @@
       var SEC=[['Tower','tower'],['Hanging','hang'],['Drawer Stack','draw']];
       cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'">'+sectionGlyph()+'<div class="cl">'+s[0]+'</div></div>';}).join('');
       [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
-        card.addEventListener('click',function(){
-          if(solved||phase!=='section')return;
+        card.addEventListener('pointerdown',function(e){
+          if(solved||phase!=='section')return; e.preventDefault();
           cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
           card.classList.add('good');
-          spawnSectionToken(card.dataset.name);
-          toast('Now drag the '+card.dataset.name.toLowerCase()+' section onto the floor.');
+          var p=toPct(e);
+          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+sectionGlyph()+'<div class="dl">'+card.dataset.name+'</div></div>');
+          body.appendChild(token);
+          beginDrag(e,token,function(p){
+            token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+            var near=Math.hypot(zone.x-p.x,zone.y-p.y)<18;
+            if(near){ if(!glow){glow=elc('<div class="dropzone" style="width:150px;height:210px;">Drop here</div>');glow.style.left=zone.x+'%';glow.style.top=zone.y+'%';body.appendChild(glow);} glow.classList.add('hot'); }
+            else if(glow){ glow.remove(); glow=null; }
+          },function(p){
+            if(glow){glow.remove();glow=null;}
+            if(Math.hypot(zone.x-p.x,zone.y-p.y)>=18){ token.remove();token=null; toast('Drop the section onto the floor.'); return; }
+            token.remove(); token=null;
+            placeSection();
+          });
         });
       });
       [].slice.call(tabs.querySelectorAll('.tab')).forEach(function(t){ if(!t.classList.contains('on')) t.addEventListener('click',function(){toast('These are here to browse - the Sections tab has what you need.');}); });
-    }
-    function spawnSectionToken(name){
-      if(token)token.remove(); if(hint){hint.remove();hint=null;}
-      token=elc('<div class="dtoken" style="left:24%;top:30%;">'+sectionGlyph()+'<div class="dl">'+name+'</div></div>');
-      hint=elc('<div class="draghint" style="left:24%;top:16%;">Drag onto the floor</div>');
-      body.appendChild(token); body.appendChild(hint);
-      makeDrag(token,function(p){
-        token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
-        var near=Math.hypot(zone.x-p.x,zone.y-p.y)<18;
-        if(near){ if(!glow){glow=elc('<div class="dropzone" style="width:150px;height:210px;">Drop here</div>');glow.style.left=zone.x+'%';glow.style.top=zone.y+'%';body.appendChild(glow);} glow.classList.add('hot'); }
-        else if(glow){ glow.remove(); glow=null; }
-        if(hint)hint.style.display='none';
-      },function(p){
-        if(glow){glow.remove();glow=null;}
-        if(Math.hypot(zone.x-p.x,zone.y-p.y)>=18){ token.style.left='24%';token.style.top='30%'; if(hint)hint.style.display=''; toast('Drop the section onto the floor.'); return; }
-        token.remove(); token=null; if(hint){hint.remove();hint=null;}
-        placeSection();
-      });
     }
     function placeSection(){
       sectionEl=elc('<div class="section2" style="left:'+zone.x+'%;top:'+zone.y+'%;">'+
@@ -442,35 +430,29 @@
       var ACC=[['Shelf','shelf'],['Rod','rod'],['Drawer','drawer']];
       cards.innerHTML=ACC.map(function(a){return '<div class="pcard" data-kind="'+a[1]+'" data-name="'+a[0]+'">'+accGlyph(a[1])+'<div class="cl">'+a[0]+'</div></div>';}).join('');
       [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
-        card.addEventListener('click',function(){
-          if(solved||phase!=='shelf')return;
+        card.addEventListener('pointerdown',function(e){
+          if(solved||phase!=='shelf')return; e.preventDefault();
           cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
           card.classList.add('good');
           selAcc=card.dataset.kind;
-          spawnAccToken(card.dataset.name,card.dataset.kind);
-          toast('Drag the '+card.dataset.name.toLowerCase()+' into the empty bay.');
+          var p=toPct(e);
+          token=elc('<div class="acctoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+accGlyph(card.dataset.kind)+'<div class="dl">'+card.dataset.name+'</div></div>');
+          body.appendChild(token);
+          beginDrag(e,token,function(p,ev){
+            token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+            if(emptyBay)emptyBay.classList.toggle('arm',overEmpty(ev));
+          },function(p,ev){
+            var on=overEmpty(ev); if(emptyBay)emptyBay.classList.remove('arm');
+            if(!on){ token.remove();token=null; toast('Drop it into the empty bay of the section.'); return; }
+            if(selAcc!=='shelf'){ token.remove();token=null; wrong(card,'The client asked for a shelf, not a '+selAcc+'. Try the shelf.'); return; }
+            token.remove(); token=null;
+            emptyBay.classList.remove('empty'); emptyBay.innerHTML='<div class="shelf" style="top:50%;"></div>';
+            win(c,emptyBay);
+          });
         });
       });
     }
     function overEmpty(ev){ if(!emptyBay)return false; var r=emptyBay.getBoundingClientRect(); return ev.clientX>=r.left-16&&ev.clientX<=r.right+16&&ev.clientY>=r.top-16&&ev.clientY<=r.bottom+16; }
-    function spawnAccToken(name,kind){
-      if(token)token.remove(); if(hint){hint.remove();hint=null;}
-      token=elc('<div class="acctoken" style="left:24%;top:26%;">'+accGlyph(kind)+'<div class="dl">'+name+'</div></div>');
-      hint=elc('<div class="draghint" style="left:24%;top:14%;">Drag into the empty bay</div>');
-      body.appendChild(token); body.appendChild(hint);
-      makeDrag(token,function(p,ev){
-        token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
-        if(emptyBay)emptyBay.classList.toggle('arm',overEmpty(ev));
-        if(hint)hint.style.display='none';
-      },function(p,ev){
-        var on=overEmpty(ev); if(emptyBay)emptyBay.classList.remove('arm');
-        if(!on){ token.style.left='24%';token.style.top='26%'; if(hint)hint.style.display=''; toast('Drop it into the empty bay of the section.'); return; }
-        if(selAcc!=='shelf'){ token.style.left='24%';token.style.top='26%'; if(hint)hint.style.display=''; wrong(token,'The client asked for a shelf, not a '+selAcc+'. Try the shelf.'); return; }
-        token.remove(); token=null; if(hint){hint.remove();hint=null;}
-        emptyBay.classList.remove('empty'); emptyBay.innerHTML='<div class="shelf" style="top:50%;"></div>';
-        win(c,emptyBay);
-      });
-    }
 
     renderSectionCards();
   }
