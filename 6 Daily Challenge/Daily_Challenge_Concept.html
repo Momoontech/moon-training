@@ -82,6 +82,7 @@
     <div class="app" id="app"></div>
   </div>
 
+<script src="../catalog-data.js"></script>
 <script src="challenge-chrome.js"></script>
 <script>
 (function(){
@@ -116,7 +117,7 @@
     { screen:"obstacles", lvl:"med", lvlName:"Medium", step:"Obstacles",
       prompt:"This reach-in closet has no way in. Add a door and place it in front of the closet.",
       hint:"On the Doors tab, pick any door, then drag it onto the wall in front of the reach-in closet.",
-      exp:"Every closet system needs a way in. Placing a door in front of the reach-in gives the client access; without it the system is sealed off. Any door type works here, though sliding and bi-fold are common for shallow reach-ins." },
+      exp:"Every closet system needs a way in. Placing a door in front of the reach-in gives the client access; without it the system is sealed off. Any door type works here, though a sliding door or a cased wall opening are common for shallow reach-ins." },
     { screen:"section", lvl:"hard", lvlName:"Hard", step:"Design",
       prompt:"Build out the closet. Drag a section into the room, then add a shelf to its empty bay.",
       hint:"First drop a section onto the floor. Once it lands, drag a shelf from Accessories into the empty bay.",
@@ -242,10 +243,19 @@
   function iconWin(){ return '<svg viewBox="0 0 70 90"><rect x="10" y="18" width="50" height="54" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="18" x2="35" y2="72" stroke="#2b2b3a" stroke-width="2"/><line x1="10" y1="45" x2="60" y2="45" stroke="#2b2b3a" stroke-width="2"/></svg>'; }
   function iconElec(){ return '<svg viewBox="0 0 70 90"><rect x="18" y="22" width="34" height="46" rx="5" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><circle cx="35" cy="38" r="2.4" fill="#2b2b3a"/><circle cx="35" cy="52" r="2.4" fill="#2b2b3a"/></svg>'; }
 
+  // Pulled live from MOON_CATALOG.appCatalog (catalog-data.js) - the same
+  // source of truth Your Closet's shop reads from - instead of a
+  // hand-copied list that can drift out of sync with the real catalog.
+  function doorKindFor(id){
+    if(id==='doorDouble'||id==='doorDoubleSidePanels')return 'double';
+    if(id==='doorSlidingLeft'||id==='doorSlidingRight')return 'sliding';
+    if(id==='casedWallOpening')return 'pocket';
+    return 'single';
+  }
   var OBST={
-    Doors:[['Double Door','double'],['Single Door','single'],['Sliding Door','sliding'],['Pocket Door','pocket']],
-    Windows:[['Standard','win'],['Bay Window','win'],['Casement','win'],['Picture','win']],
-    Electrical:[['Outlet','elec'],['Light Switch','elec'],['Panel','elec'],['Vent','elec']]
+    Doors: MOON_CATALOG.appCatalog.doors.map(function(d){ return [d.name,doorKindFor(d.id)]; }),
+    Windows: MOON_CATALOG.appCatalog.windows.map(function(w){ return [w.name,'win']; }),
+    Electrical: MOON_CATALOG.appCatalog.electrical.filter(function(e){ return e.id!=='wallObstacle'&&e.id!=='floorObstacle'; }).map(function(e){ return [e.name,'elec']; })
   };
 
   function buildObstacles(c){
@@ -407,10 +417,13 @@
     function renderSectionCards(){
       ptitle.textContent='Add Section';
       tabs.innerHTML='<button class="tab on">Sections</button><button class="tab">Corner</button><button class="tab">Filler</button>';
-      // Real catalog layouts and their real moon-rock prices (see
-      // catalog-data.js / MOON_CATALOG.layouts, matches Your Closet's
-      // Customize > Layouts tab) instead of made-up placeholder names.
-      var SEC=[['Shelves','shelves',25],['Long Hang','longhang',30],['Double Hang','doublehang',35],['Bottom Hang + Shelves','bottomhang',40],['3 Drawer + Shelves','drawer3',50],['4 Drawer + Shelves','drawer4',65]];
+      // Pulled live from MOON_CATALOG.appCatalog.closetContent (same
+      // source Your Closet's Layouts shop tab reads from), in the same
+      // order the real app shows them - not a hand-copied snapshot.
+      var SECTION_ORDER=['shelvesStack','longHung','doubleHung','oneBottomHangerWithShelves','threeDrawerShelves','fourDrawerShelves'];
+      var SECTION_KIND={shelvesStack:'shelves',longHung:'longhang',doubleHung:'doublehang',oneBottomHangerWithShelves:'bottomhang',threeDrawerShelves:'drawer3',fourDrawerShelves:'drawer4'};
+      var contentById={}; MOON_CATALOG.appCatalog.closetContent.forEach(function(c){ contentById[c.id]=c; });
+      var SEC=SECTION_ORDER.map(function(id){ var c=contentById[id]; return [c.name,SECTION_KIND[id],c.rocks]; });
       cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'" data-kind="'+s[1]+'">'+sectionGlyph(s[1])+'<div class="cl">'+s[0]+'</div><div class="pchip">'+ROCK+' '+s[2]+'</div></div>';}).join('');
       [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
         card.addEventListener('pointerdown',function(e){

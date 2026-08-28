@@ -964,12 +964,9 @@
     // Real closet interior layouts, straight from the real app's own
     // catalog (private.json) - actual hosted product renders, not
     // placeholder icons. See MOON_CATALOG.appCatalog.closetContent.
-    (typeof MOON_CATALOG!=='undefined'?[
-      ['shelvesStack',25],['longHung',30],['doubleHung',35],
-      ['oneBottomHangerWithShelves',40],['threeDrawerShelves',50],['fourDrawerShelves',65]
-    ]:[]).map(function(pair){
-      var c=MOON_CATALOG.appCatalog.closetContent.filter(function(x){return x.id===pair[0];})[0];
-      return {id:'layout_'+c.id,image:c.image,n:c.name,d:'Real closet layout from the app catalog.',price:pair[1],type:'cosmetic',group:'Layouts'};
+    (typeof MOON_CATALOG!=='undefined'?['shelvesStack','longHung','doubleHung','oneBottomHangerWithShelves','threeDrawerShelves','fourDrawerShelves']:[]).map(function(id){
+      var c=MOON_CATALOG.appCatalog.closetContent.filter(function(x){return x.id===id;})[0];
+      return {id:'layout_'+c.id,image:c.image,n:c.name,d:'Real closet layout from the app catalog.',price:c.rocks,type:'cosmetic',group:'Layouts'};
     })
   );
   // Real-world perks, unrelated to the closet itself - live in the standalone Shop tab.

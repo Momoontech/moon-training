@@ -244,12 +244,12 @@ var MOON_CATALOG = {
     // Closet interior "content" configurations - what actually fills a
     // section (Your Closet uses these as real hang/shelf/drawer options).
     closetContent: [
-      { id: 'oneBottomHangerWithShelves', name: 'Bottom Hang + Shelves', image: 'blob-truth/onebottomhangerwithshelvescontenttall.png', source: 'master/Parts/General/OneBottomHangerWithShelvesContentTall' },
-      { id: 'doubleHung', name: 'Double Hang', image: 'blob-truth/doublehungcontenttall.png', source: 'master/Parts/General/DoubleHungContentTall' },
-      { id: 'longHung', name: 'Long Hang', image: 'blob-truth/longhungcontenttall.png', source: 'master/Parts/General/LongHungContentTall' },
-      { id: 'fourDrawerShelves', name: '4 Drawer + Shelves', image: 'blob-truth/10-10-10-10dbshelvescontenttall.png', source: 'master/Parts/General/10-10-10-10DBShelvesContentTall' },
-      { id: 'threeDrawerShelves', name: '3 Drawer + Shelves', image: 'blob-truth/10-10-10dbshelvescontenttall.png', source: 'master/Parts/General/10-10-10DBShelvesContentTall' },
-      { id: 'shelvesStack', name: 'Shelves', image: 'blob-truth/shelvesstackcontenttall.png', source: 'master/Parts/General/ShelvesStackContentTall' },
+      { id: 'oneBottomHangerWithShelves', name: 'Bottom Hang + Shelves', image: 'blob-truth/onebottomhangerwithshelvescontenttall.png', source: 'master/Parts/General/OneBottomHangerWithShelvesContentTall', rocks: 40 },
+      { id: 'doubleHung', name: 'Double Hang', image: 'blob-truth/doublehungcontenttall.png', source: 'master/Parts/General/DoubleHungContentTall', rocks: 35 },
+      { id: 'longHung', name: 'Long Hang', image: 'blob-truth/longhungcontenttall.png', source: 'master/Parts/General/LongHungContentTall', rocks: 30 },
+      { id: 'fourDrawerShelves', name: '4 Drawer + Shelves', image: 'blob-truth/10-10-10-10dbshelvescontenttall.png', source: 'master/Parts/General/10-10-10-10DBShelvesContentTall', rocks: 65 },
+      { id: 'threeDrawerShelves', name: '3 Drawer + Shelves', image: 'blob-truth/10-10-10dbshelvescontenttall.png', source: 'master/Parts/General/10-10-10DBShelvesContentTall', rocks: 50 },
+      { id: 'shelvesStack', name: 'Shelves', image: 'blob-truth/shelvesstackcontenttall.png', source: 'master/Parts/General/ShelvesStackContentTall', rocks: 25 },
       { id: 'contentUpperBase', name: 'Content Upper+Base', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsectioncontentbaseupper-content-upper-base.png', source: 'master/Parts/General/MultiClosetSectionContentBaseUpper' },
       { id: 'contentBase', name: 'Content Base', image: 'https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsectioncontentbase-content-base.png', source: 'master/Parts/General/MultiClosetSectionContentBase' },
       { id: 'section', name: 'Section', image: 'blob-truth/multiclosetsection.png', source: 'master/Parts/General/MultiClosetSection' }
