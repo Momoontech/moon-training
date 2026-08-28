@@ -28,6 +28,7 @@
   .pcard{border:1px solid #ececf2;border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;background:#fff;transition:.12s;}
   .pcard:hover{border-color:#c9bef2;}
   .pcard svg{width:52px;height:64px;}
+  .pcard img.pimg{width:52px;height:64px;object-fit:contain;}
   .pcard .cl{font-size:11.5px;font-weight:700;text-align:center;color:var(--ink);line-height:1.25;}
   .pcard.good{border-color:var(--primary);background:#f7f4ff;}
   .pcard .added{font-size:10px;font-weight:800;color:var(--primary);}
@@ -37,6 +38,7 @@
   .dtoken{position:absolute;transform:translate(-50%,-50%);z-index:14;background:#fff;border:1.8px solid var(--primary);border-radius:13px;padding:8px 10px 6px;box-shadow:0 12px 26px rgba(114,57,234,.32);cursor:grab;touch-action:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:94px;}
   .dtoken.drag{cursor:grabbing;box-shadow:0 18px 34px rgba(114,57,234,.42);}
   .dtoken svg{width:68px;height:50px;}
+  .dtoken img.pimg{width:68px;height:60px;object-fit:contain;}
   .dtoken .dl{font-size:9.5px;font-weight:800;color:var(--primary);letter-spacing:.02em;}
   .draghint{position:absolute;transform:translate(-50%,-50%);z-index:13;font-size:10.5px;font-weight:700;color:var(--primary);background:#fff;border:1px solid #ddd0fb;border-radius:999px;padding:4px 11px;pointer-events:none;box-shadow:0 4px 10px rgba(114,57,234,.16);}
   .wallglow{position:absolute;transform:translate(-50%,-50%);z-index:7;border-radius:9px;background:rgba(114,57,234,.16);border:1.8px dashed var(--primary);pointer-events:none;}
@@ -212,13 +214,10 @@
       '<path d="M30 59 h24 M48 55 l6 4 -6 4" fill="none" stroke="#9a9aae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
       '</svg>';
   }
-  function iconDoor(kind){
-    if(kind==='double') return '<svg viewBox="0 0 70 90"><rect x="8" y="7" width="27" height="76" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><rect x="35" y="7" width="27" height="76" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><circle cx="31" cy="46" r="2" fill="#2b2b3a"/><circle cx="39" cy="46" r="2" fill="#2b2b3a"/></svg>';
-    if(kind==='sliding') return '<svg viewBox="0 0 70 90"><rect x="10" y="14" width="50" height="62" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="14" x2="35" y2="76" stroke="#2b2b3a" stroke-width="2"/><path d="M20 45 h14 M28 40 l6 5 -6 5" fill="none" stroke="#2b2b3a" stroke-width="2"/></svg>';
-    if(kind==='pocket') return '<svg viewBox="0 0 70 90"><rect x="12" y="14" width="46" height="62" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="14" x2="35" y2="76" stroke="#2b2b3a" stroke-width="2" stroke-dasharray="4 4"/></svg>';
-    return '<svg viewBox="0 0 70 90"><rect x="14" y="10" width="42" height="70" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="46" y1="10" x2="46" y2="80" stroke="#2b2b3a" stroke-width="2"/><circle cx="42" cy="46" r="2.2" fill="#2b2b3a"/></svg>';
-  }
-  // nice purple draggable / placed door assets (one per type)
+  // nice purple placed-in-wall door assets (one per type) - the catalog
+  // card and the drag token use the real product thumbnail instead
+  // (see catImg()); this stays a simplified flat glyph because it's part
+  // of the room scene's own flat illustration, not a product photo.
   function doorAsset(kind){
     var P='#7239EA', L='#c2b8ef', F='#b7b7c6';
     if(kind==='sliding') return slidingGlyph();
@@ -240,8 +239,6 @@
       '<path d="M18 12 A42 42 0 0 1 60 54" fill="none" stroke="'+L+'" stroke-width="2.2" stroke-dasharray="4 4"/>'+
       '<circle cx="18" cy="54" r="3.6" fill="'+P+'"/></svg>';
   }
-  function iconWin(){ return '<svg viewBox="0 0 70 90"><rect x="10" y="18" width="50" height="54" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><line x1="35" y1="18" x2="35" y2="72" stroke="#2b2b3a" stroke-width="2"/><line x1="10" y1="45" x2="60" y2="45" stroke="#2b2b3a" stroke-width="2"/></svg>'; }
-  function iconElec(){ return '<svg viewBox="0 0 70 90"><rect x="18" y="22" width="34" height="46" rx="5" fill="none" stroke="#2b2b3a" stroke-width="2.4"/><circle cx="35" cy="38" r="2.4" fill="#2b2b3a"/><circle cx="35" cy="52" r="2.4" fill="#2b2b3a"/></svg>'; }
 
   // Pulled live from MOON_CATALOG.appCatalog (catalog-data.js) - the same
   // source of truth Your Closet's shop reads from - instead of a
@@ -253,10 +250,13 @@
     return 'single';
   }
   var OBST={
-    Doors: MOON_CATALOG.appCatalog.doors.map(function(d){ return [d.name,doorKindFor(d.id)]; }),
-    Windows: MOON_CATALOG.appCatalog.windows.map(function(w){ return [w.name,'win']; }),
-    Electrical: MOON_CATALOG.appCatalog.electrical.filter(function(e){ return e.id!=='wallObstacle'&&e.id!=='floorObstacle'; }).map(function(e){ return [e.name,'elec']; })
+    Doors: MOON_CATALOG.appCatalog.doors.map(function(d){ return [d.name,doorKindFor(d.id),d.image]; }),
+    Windows: MOON_CATALOG.appCatalog.windows.map(function(w){ return [w.name,'win',w.image]; }),
+    Electrical: MOON_CATALOG.appCatalog.electrical.filter(function(e){ return e.id!=='wallObstacle'&&e.id!=='floorObstacle'; }).map(function(e){ return [e.name,'elec',e.image]; })
   };
+  // catalog-data.js image paths are relative to the Training Materials
+  // root ("blob-truth/..."); this file lives one folder down.
+  function catImg(path){ return '<img class="pimg" src="../'+path+'" alt="">'; }
 
   function buildObstacles(c){
     // Doors/windows/electrical are the real app's "Systems" step (see
@@ -290,8 +290,7 @@
       var list=(OBST[cat]||[]).filter(function(o){return o[0].toLowerCase().indexOf(filter.toLowerCase())>-1;});
       if(!list.length){ cards.innerHTML='<div style="grid-column:1/3;text-align:center;color:#a0a0b0;font-size:12px;padding:20px 0;">No matches.</div>'; return; }
       cards.innerHTML=list.map(function(o){
-        var ic = cat==='Windows'?iconWin():cat==='Electrical'?iconElec():iconDoor(o[1]);
-        return '<div class="pcard" data-name="'+o[0]+'" data-kind="'+(o[1]||'')+'">'+ic+'<div class="cl">'+o[0]+'</div></div>';
+        return '<div class="pcard" data-name="'+o[0]+'" data-kind="'+(o[1]||'')+'" data-img="'+o[2]+'">'+catImg(o[2])+'<div class="cl">'+o[0]+'</div></div>';
       }).join('');
       // Drag straight off the catalog card - like the real app, not
       // tap-to-arm-a-token-then-drag-it-separately. Picking up a card that
@@ -306,7 +305,7 @@
           cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
           card.classList.add('good');
           var p=toPct(e);
-          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+doorAsset(selKind)+'<div class="dl">'+selName+'</div></div>');
+          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+catImg(card.dataset.img)+'<div class="dl">'+selName+'</div></div>');
           body.appendChild(token);
           try{token.setPointerCapture(e.pointerId);}catch(_){}
           function mv(ev){
@@ -350,29 +349,6 @@
   }
 
   // ===== DESIGN screen: 2-step section + shelf =====
-  // One glyph builder covering every real catalog layout (see
-  // catalog-data.js / MOON_CATALOG.layouts and Your Closet's Customize >
-  // Layouts tab) instead of a single generic icon for all of them, so each
-  // real option actually looks different in the picker.
-  var ROCK='<svg class="rockicn" viewBox="0 0 20 20" width="12" height="12"><circle cx="10" cy="10" r="9" fill="#e8e6f5"/><path d="M10 1a9 9 0 0 1 0 18z" fill="#7239EA"/></svg>';
-  function sectionGlyph(kind){
-    function shelfLine(y){ return '<line x1="6" y1="'+y+'" x2="54" y2="'+y+'" stroke="#ded8f2" stroke-width="1.6"/>'; }
-    function rod(y){ return '<line x1="14" y1="'+y+'" x2="46" y2="'+y+'" stroke="#7239EA" stroke-width="2"/><path d="M20 '+y+' v8 M30 '+y+' v8 M40 '+y+' v8" stroke="#b9a7ef" stroke-width="1.4"/>'; }
-    function hangBay(y,h){ return '<rect x="18" y="'+y+'" width="24" height="'+h+'" rx="2" fill="#efeafe" stroke="#c9bdf0" stroke-width="1.4"/>'; }
-    function drawer(y,h){ return '<rect x="12" y="'+y+'" width="36" height="'+h+'" rx="1.6" fill="#f4f2fb" stroke="#ded8f2" stroke-width="1.3"/><line x1="24" y1="'+(y+h/2)+'" x2="36" y2="'+(y+h/2)+'" stroke="#c9bdf0" stroke-width="1.6"/>'; }
-    var body='';
-    switch(kind){
-      case 'shelves': [20,36,52,68].forEach(function(y){ body+=shelfLine(y); }); break;
-      case 'longhang': body+=rod(15)+hangBay(25,50); break;
-      case 'doublehang': body+=rod(15)+hangBay(24,20)+rod(48)+hangBay(57,18); break;
-      case 'bottomhang': body+=shelfLine(20)+shelfLine(36)+rod(50)+hangBay(59,14); break;
-      case 'drawer3': body+=shelfLine(20)+drawer(38,11)+drawer(51,11)+drawer(64,11); break;
-      case 'drawer4': body+=shelfLine(16)+drawer(28,10)+drawer(40,10)+drawer(52,10)+drawer(64,10); break;
-      default: body+=shelfLine(30)+shelfLine(56)+rod(15)+drawer(63,12);
-    }
-    return '<svg viewBox="0 0 60 84" preserveAspectRatio="xMidYMid meet">'+
-      '<rect x="6" y="4" width="48" height="76" rx="3" fill="#fff" stroke="#8f86c9" stroke-width="2.4"/>'+body+'</svg>';
-  }
   function accGlyph(kind){
     if(kind==='rod') return '<svg viewBox="0 0 70 40"><line x1="10" y1="14" x2="60" y2="14" stroke="#7239EA" stroke-width="3" stroke-linecap="round"/><path d="M20 14 v10 M30 14 v10 M40 14 v10 M50 14 v10" stroke="#b9a7ef" stroke-width="1.8"/></svg>';
     if(kind==='drawer') return '<svg viewBox="0 0 70 40"><rect x="12" y="8" width="46" height="24" rx="3" fill="#f4f2fb" stroke="#7239EA" stroke-width="2.4"/><line x1="28" y1="20" x2="42" y2="20" stroke="#7239EA" stroke-width="2"/></svg>';
@@ -423,15 +399,15 @@
       var SECTION_ORDER=['shelvesStack','longHung','doubleHung','oneBottomHangerWithShelves','threeDrawerShelves','fourDrawerShelves'];
       var SECTION_KIND={shelvesStack:'shelves',longHung:'longhang',doubleHung:'doublehang',oneBottomHangerWithShelves:'bottomhang',threeDrawerShelves:'drawer3',fourDrawerShelves:'drawer4'};
       var contentById={}; MOON_CATALOG.appCatalog.closetContent.forEach(function(c){ contentById[c.id]=c; });
-      var SEC=SECTION_ORDER.map(function(id){ var c=contentById[id]; return [c.name,SECTION_KIND[id],c.rocks]; });
-      cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'" data-kind="'+s[1]+'">'+sectionGlyph(s[1])+'<div class="cl">'+s[0]+'</div><div class="pchip">'+ROCK+' '+s[2]+'</div></div>';}).join('');
+      var SEC=SECTION_ORDER.map(function(id){ var c=contentById[id]; return [c.name,SECTION_KIND[id],c.image]; });
+      cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'" data-kind="'+s[1]+'" data-img="'+s[2]+'">'+catImg(s[2])+'<div class="cl">'+s[0]+'</div></div>';}).join('');
       [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
         card.addEventListener('pointerdown',function(e){
           if(solved||phase!=='section')return; e.preventDefault();
           cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
           card.classList.add('good');
           var p=toPct(e);
-          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+sectionGlyph(card.dataset.kind)+'<div class="dl">'+card.dataset.name+'</div></div>');
+          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+catImg(card.dataset.img)+'<div class="dl">'+card.dataset.name+'</div></div>');
           body.appendChild(token);
           beginDrag(e,token,function(p){
             token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
