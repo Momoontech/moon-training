@@ -40,6 +40,9 @@
   .nl:hover{color:var(--ink);background:#f5f4f9;}
   .nl.on{background:#f3f1f8;color:var(--ink);font-weight:700;}
   .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;letter-spacing:.04em;}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .nav-rocks{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--ink);}
+  .nav-rocks .mr{width:17px;height:17px;}
 
   /* ─── Page wrap ─── */
   .wrap{max-width:1080px;margin:0 auto;padding:4px 26px 60px;}
@@ -351,7 +354,10 @@
     <button class="nl" data-sec="closet">Your Closet</button>
     <button class="nl" data-sec="shop">Shop</button>
   </div>
-  <div class="nav-avatar">JD</div>
+  <div class="nav-right">
+    <div class="nav-rocks"><span class="mricn"></span><b id="navTokBig">1</b></div>
+    <div class="nav-avatar">JD</div>
+  </div>
 </nav>
 
 <div class="wrap" style="display:none;">
@@ -382,7 +388,6 @@
           <div class="stats">
             <div><div class="statnum"><span class="mricn"></span><b id="tokBig">1</b></div><span>moon rocks</span></div>
             <div><div class="statnum"><span class="flameicn"></span><b id="strkBig">1</b></div><span>day streak</span></div>
-            <div><b id="stageBig">1/10</b><span>closet level</span></div>
           </div>
           <div class="actions">
             <span id="adminActions" style="display:none;">
@@ -522,7 +527,6 @@
     <div class="closet-stats-row">
       <div><div class="statnum"><span class="mricn"></span><b id="closetTokBig">1</b></div><span>moon rocks</span></div>
       <div><div class="statnum"><span class="flameicn"></span><b id="closetStrkBig">1</b></div><span>day streak</span></div>
-      <div><b id="closetStageBig">1/10</b><span>closet level</span></div>
     </div>
 
     <div class="sechead" style="margin-top:28px;"><h2>Community</h2></div>
@@ -815,11 +819,10 @@
     document.getElementById('closetProg').style.width=((s+1)/10*100)+'%';
     document.getElementById('tokBig').textContent=st.tokens;
     document.getElementById('strkBig').textContent=st.streak;
-    document.getElementById('stageBig').textContent=(s+1)+'/10';
     var s2=document.getElementById('strkBig2'); if(s2)s2.innerHTML=FLAME+' '+st.streak+' day'+(st.streak>1?'s':'');
     document.getElementById('closetTokBig').textContent=st.tokens;
     document.getElementById('closetStrkBig').textContent=st.streak;
-    document.getElementById('closetStageBig').textContent=(s+1)+'/10';
+    var navTok=document.getElementById('navTokBig'); if(navTok)navTok.textContent=st.tokens;
     renderClosetIllustration();
   }
 

@@ -31,6 +31,7 @@
   .pcard .cl{font-size:11.5px;font-weight:700;text-align:center;color:var(--ink);line-height:1.25;}
   .pcard.good{border-color:var(--primary);background:#f7f4ff;}
   .pcard .added{font-size:10px;font-weight:800;color:var(--primary);}
+  .pcard .pchip{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:#6b6478;background:#f4f2fb;border-radius:999px;padding:3px 9px;}
 
   /* draggable door asset */
   .dtoken{position:absolute;transform:translate(-50%,-50%);z-index:14;background:#fff;border:1.8px solid var(--primary);border-radius:13px;padding:8px 10px 6px;box-shadow:0 12px 26px rgba(114,57,234,.32);cursor:grab;touch-action:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:94px;}
@@ -127,7 +128,7 @@
     lvlEl.className='lvlpill '+c.lvl; lvlEl.textContent=c.lvlName;
     streakEl.textContent='🔥 '+streak;
     tp.textContent=c.prompt;
-    showTaskIntro(c.prompt,tp);
+    showTaskIntro(c.prompt);
     hintBox.style.display='none'; hintBox.className='hintbox';
     hintBox.innerHTML='<div style="background:#fff8ee;border:1px solid #f4e4c6;border-radius:12px;padding:11px 14px;font-size:13px;color:#7a5a1e;margin-bottom:12px;">'+c.hint+'</div>';
   }
@@ -339,13 +340,28 @@
   }
 
   // ===== DESIGN screen: 2-step section + shelf =====
-  function sectionGlyph(){
+  // One glyph builder covering every real catalog layout (see
+  // catalog-data.js / MOON_CATALOG.layouts and Your Closet's Customize >
+  // Layouts tab) instead of a single generic icon for all of them, so each
+  // real option actually looks different in the picker.
+  var ROCK='<svg class="rockicn" viewBox="0 0 20 20" width="12" height="12"><circle cx="10" cy="10" r="9" fill="#e8e6f5"/><path d="M10 1a9 9 0 0 1 0 18z" fill="#7239EA"/></svg>';
+  function sectionGlyph(kind){
+    function shelfLine(y){ return '<line x1="6" y1="'+y+'" x2="54" y2="'+y+'" stroke="#ded8f2" stroke-width="1.6"/>'; }
+    function rod(y){ return '<line x1="14" y1="'+y+'" x2="46" y2="'+y+'" stroke="#7239EA" stroke-width="2"/><path d="M20 '+y+' v8 M30 '+y+' v8 M40 '+y+' v8" stroke="#b9a7ef" stroke-width="1.4"/>'; }
+    function hangBay(y,h){ return '<rect x="18" y="'+y+'" width="24" height="'+h+'" rx="2" fill="#efeafe" stroke="#c9bdf0" stroke-width="1.4"/>'; }
+    function drawer(y,h){ return '<rect x="12" y="'+y+'" width="36" height="'+h+'" rx="1.6" fill="#f4f2fb" stroke="#ded8f2" stroke-width="1.3"/><line x1="24" y1="'+(y+h/2)+'" x2="36" y2="'+(y+h/2)+'" stroke="#c9bdf0" stroke-width="1.6"/>'; }
+    var body='';
+    switch(kind){
+      case 'shelves': [20,36,52,68].forEach(function(y){ body+=shelfLine(y); }); break;
+      case 'longhang': body+=rod(15)+hangBay(25,50); break;
+      case 'doublehang': body+=rod(15)+hangBay(24,20)+rod(48)+hangBay(57,18); break;
+      case 'bottomhang': body+=shelfLine(20)+shelfLine(36)+rod(50)+hangBay(59,14); break;
+      case 'drawer3': body+=shelfLine(20)+drawer(38,11)+drawer(51,11)+drawer(64,11); break;
+      case 'drawer4': body+=shelfLine(16)+drawer(28,10)+drawer(40,10)+drawer(52,10)+drawer(64,10); break;
+      default: body+=shelfLine(30)+shelfLine(56)+rod(15)+drawer(63,12);
+    }
     return '<svg viewBox="0 0 60 84" preserveAspectRatio="xMidYMid meet">'+
-      '<rect x="6" y="4" width="48" height="76" rx="3" fill="#fff" stroke="#8f86c9" stroke-width="2.4"/>'+
-      '<line x1="6" y1="30" x2="54" y2="30" stroke="#ded8f2" stroke-width="1.6"/><line x1="6" y1="56" x2="54" y2="56" stroke="#ded8f2" stroke-width="1.6"/>'+
-      '<line x1="14" y1="15" x2="46" y2="15" stroke="#7239EA" stroke-width="2"/>'+
-      '<path d="M20 15 v6 M30 15 v6 M40 15 v6" stroke="#b9a7ef" stroke-width="1.4"/>'+
-      '<rect x="14" y="63" width="32" height="12" rx="1.6" fill="#f4f2fb" stroke="#ded8f2" stroke-width="1.3"/></svg>';
+      '<rect x="6" y="4" width="48" height="76" rx="3" fill="#fff" stroke="#8f86c9" stroke-width="2.4"/>'+body+'</svg>';
   }
   function accGlyph(kind){
     if(kind==='rod') return '<svg viewBox="0 0 70 40"><line x1="10" y1="14" x2="60" y2="14" stroke="#7239EA" stroke-width="3" stroke-linecap="round"/><path d="M20 14 v10 M30 14 v10 M40 14 v10 M50 14 v10" stroke="#b9a7ef" stroke-width="1.8"/></svg>';
@@ -391,15 +407,18 @@
     function renderSectionCards(){
       ptitle.textContent='Add Section';
       tabs.innerHTML='<button class="tab on">Sections</button><button class="tab">Corner</button><button class="tab">Filler</button>';
-      var SEC=[['Tower','tower'],['Hanging','hang'],['Drawer Stack','draw']];
-      cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'">'+sectionGlyph()+'<div class="cl">'+s[0]+'</div></div>';}).join('');
+      // Real catalog layouts and their real moon-rock prices (see
+      // catalog-data.js / MOON_CATALOG.layouts, matches Your Closet's
+      // Customize > Layouts tab) instead of made-up placeholder names.
+      var SEC=[['Shelves','shelves',25],['Long Hang','longhang',30],['Double Hang','doublehang',35],['Bottom Hang + Shelves','bottomhang',40],['3 Drawer + Shelves','drawer3',50],['4 Drawer + Shelves','drawer4',65]];
+      cards.innerHTML=SEC.map(function(s){return '<div class="pcard" data-name="'+s[0]+'" data-kind="'+s[1]+'">'+sectionGlyph(s[1])+'<div class="cl">'+s[0]+'</div><div class="pchip">'+ROCK+' '+s[2]+'</div></div>';}).join('');
       [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
         card.addEventListener('pointerdown',function(e){
           if(solved||phase!=='section')return; e.preventDefault();
           cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
           card.classList.add('good');
           var p=toPct(e);
-          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+sectionGlyph()+'<div class="dl">'+card.dataset.name+'</div></div>');
+          token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+sectionGlyph(card.dataset.kind)+'<div class="dl">'+card.dataset.name+'</div></div>');
           body.appendChild(token);
           beginDrag(e,token,function(p){
             token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
