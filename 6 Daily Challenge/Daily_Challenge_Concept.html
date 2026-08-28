@@ -541,15 +541,24 @@
     // close menus on outside click
     document.addEventListener('click',function once(){},{once:true});
   }
+  // Stays here until the player explicitly taps Done - no auto-advance,
+  // no auto-close. Done is the primary action (closes back to the
+  // dashboard); Run again is secondary, for replaying the preview.
   function done(){
     tnum.textContent='Done for today'; lvlEl.style.display='none';
     tp.textContent='That’s today’s set - nice work.'; hintLink.style.display='none';
     app.innerHTML='<div class="appbody" style="display:flex;align-items:center;justify-content:center;">'+
       '<div style="text-align:center;padding:24px;"><div style="font-size:46px;">🎉</div>'+
       '<div style="font-size:19px;font-weight:800;margin-top:8px;">Streak complete.</div>'+
-      '<p style="color:#6B6B7E;font-size:13px;margin-top:8px;max-width:380px;">In the real thing you’d get one task a day. This preview runs all three so you can feel the format.</p>'+
-      '<button class="btn" id="again">Run again ↺</button></div></div>';
+      '<p style="color:#6B6B7E;font-size:13px;margin-top:8px;max-width:380px;">In the real thing you’d get one task a day. This preview runs all of them so you can feel the format.</p>'+
+      '<button class="btn" id="doneBtn" style="background:var(--green);box-shadow:0 6px 14px rgba(18,184,134,.3);">Done →</button>'+
+      '<div><button id="again" style="border:none;background:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:12px;">Run again ↺</button></div>'+
+      '</div></div>';
     document.getElementById('again').addEventListener('click',function(){i=0;streak=0;streakEl.textContent='🔥 0';lvlEl.style.display='';hintLink.style.display='';render();});
+    document.getElementById('doneBtn').addEventListener('click',function(){
+      if(window.parent&&window.parent!==window) window.parent.history.back();
+      else location.href='../index.html';
+    });
   }
   render();
 })();
