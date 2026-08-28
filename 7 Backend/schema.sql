@@ -74,12 +74,18 @@ create view user_balances as
 -- badges - it's deliberately separate from `tokens` (current spendable
 -- balance), since spending in the shop would otherwise make an "earned 100
 -- rocks" badge disappear again.
+--
+-- lifetime_spent (sum of negative events, as a positive number) is what the
+-- closet leaderboard actually ranks by - whoever has put the most rocks into
+-- their closet ranks first, not whoever is sitting on the biggest unspent
+-- balance.
 create or replace view leaderboard as
   select u.id as user_id, u.name, u.email,
          coalesce(b.tokens, 0) as tokens,
          coalesce(c.streak, 0) as streak,
          coalesce(c.visits, 1) as visits,
-         coalesce(e.lifetime_earned, 0) as lifetime_earned
+         coalesce(e.lifetime_earned, 0) as lifetime_earned,
+         coalesce(s.lifetime_spent, 0) as lifetime_spent
   from users u
   left join user_balances b on b.user_id = u.id
   left join closet_state c on c.user_id = u.id
@@ -88,4 +94,36 @@ create or replace view leaderboard as
     from moon_rock_events
     where amount > 0
     group by user_id
-  ) e on e.user_id = u.id;
+  ) e on e.user_id = u.id
+  left join (
+    select user_id, -sum(amount) as lifetime_spent
+    from moon_rock_events
+    where amount < 0
+    group by user_id
+  ) s on s.user_id = u.id;
+
+-- Monthly raffle (Phase 3): real, backend-persisted entries shared across
+-- every pilot user - replaces the old cosmetic "Shop" tab. `month` is a
+-- 'YYYY-MM' period key. Enrolling spends a fixed cost (see
+-- api/_lib/raffle.js) via a normal moon_rock_events row
+-- (reason 'raffle_enroll:<month>') and inserts one row here - deliberately
+-- no unique constraint on (user_id, month), since multiple paid entries per
+-- person per month are allowed (each one is one more chance to win).
+create table raffle_entries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users(id) on delete cascade,
+  month text not null,
+  created_at timestamptz not null default now()
+);
+create index raffle_entries_month_idx on raffle_entries(month);
+
+-- One winner per month, drawn once by an admin (see
+-- api/admin/raffle-draw.js) from that month's raffle_entries - recorded
+-- permanently here rather than re-rolled live every time someone asks who
+-- won.
+create table raffle_winners (
+  month text primary key,
+  entry_id uuid not null references raffle_entries(id),
+  user_id uuid not null references users(id),
+  drawn_at timestamptz not null default now()
+);

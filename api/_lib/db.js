@@ -14,6 +14,10 @@ function db() {
 // bumps the daily streak/visit counters exactly once per calendar day - the
 // server-side equivalent of the old loadS()/saveS() localStorage logic in
 // index.html.
+// Logging in no longer grants a moon rock (per Mo's call - rocks come from
+// actually doing something: the Daily Challenge, quizzes, trivia, etc. via
+// /api/earn) - this only tracks streak/visits now, it does not touch
+// moon_rock_events.
 async function getOrCreateUser({ sub, email, name }) {
   const supabase = db();
   let { data: user } = await supabase.from('users').select('*').eq('auth0_sub', sub).maybeSingle();
@@ -27,7 +31,6 @@ async function getOrCreateUser({ sub, email, name }) {
     if (error) throw error;
     user = created;
     await supabase.from('closet_state').insert({ user_id: user.id });
-    await supabase.from('moon_rock_events').insert({ user_id: user.id, amount: 1, reason: 'daily_login' });
     return user;
   }
 
@@ -39,7 +42,6 @@ async function getOrCreateUser({ sub, email, name }) {
     await supabase.from('closet_state')
       .update({ streak, visits: closet.visits + 1, last_visit: today })
       .eq('user_id', user.id);
-    await supabase.from('moon_rock_events').insert({ user_id: user.id, amount: 1, reason: 'daily_login' });
   }
   return user;
 }

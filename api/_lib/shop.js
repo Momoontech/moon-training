@@ -8,15 +8,13 @@
 // category, computed in state.js) for the 3D closet view.
 const { MOON_CATALOG } = require('../../catalog-data.js');
 
+// Real-world perks (coffee/lunch/tee/giftcard/mini figurine) were retired
+// along with the old Shop tab in favor of the monthly raffle (see
+// api/_lib/raffle.js) - only closet cosmetics remain purchasable here.
 const SHOP_ITEMS = {
   levelup: { price: 15 },
   accessory: { price: 25 },
-  coffee: { price: 35 },
   walkin: { price: 40 },
-  lunch: { price: 50 },
-  tee: { price: 60 },
-  giftcard: { price: 90 },
-  mini: { price: 120 },
   wallSage: { price: 20, category: 'wall', hex: 'c9d9c4' },
   wallBlush: { price: 20, category: 'wall', hex: 'f3dede' },
   floorOak: { price: 20, category: 'floor', hex: 'e0c9a0' },

@@ -28,6 +28,9 @@ function badgesFor(row) {
 // hardcoded PEOPLE[] mock array (and the retired "Everyone's work" table -
 // this is now the single ranking). Any logged-in designer can see everyone's
 // rocks, but you must be logged in to ask.
+// Ranked by lifetime_spent (rocks actually put into the closet), not the
+// current balance - someone sitting on unspent rocks shouldn't outrank
+// someone who's spent more building their closet out.
 // Reads from the flat `leaderboard` view (see schema.sql) rather than
 // joining through user_balances directly, since PostgREST can't embed
 // relationships through a view that has no foreign-key metadata.
@@ -37,8 +40,8 @@ module.exports = async (req, res) => {
     const supabase = db();
     const { data, error } = await supabase
       .from('leaderboard')
-      .select('name, email, tokens, streak, visits, lifetime_earned')
-      .order('tokens', { ascending: false })
+      .select('name, email, tokens, streak, visits, lifetime_earned, lifetime_spent')
+      .order('lifetime_spent', { ascending: false })
       .limit(50);
     if (error) throw error;
 
@@ -48,6 +51,7 @@ module.exports = async (req, res) => {
       name: r.name || r.email,
       email: r.email,
       tokens: r.tokens,
+      lifetimeSpent: r.lifetime_spent,
       stage: Math.min(9, (r.visits || 1) - 1),
       badges: badgesFor(r),
     })));

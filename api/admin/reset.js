@@ -20,7 +20,6 @@ module.exports = async (req, res) => {
     ]);
     const today = new Date().toISOString().slice(0, 10);
     await supabase.from('closet_state').update({ streak: 1, visits: 1, last_visit: today }).eq('user_id', user.id);
-    await supabase.from('moon_rock_events').insert({ user_id: user.id, amount: 1, reason: 'daily_login' });
 
     res.status(200).json({ ok: true });
   } catch (e) {
