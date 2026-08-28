@@ -10,14 +10,11 @@ function db() {
   return client;
 }
 
-// Ensures a users row + closet_state row exist for this Auth0 identity, and
-// bumps the daily streak/visit counters exactly once per calendar day - the
-// server-side equivalent of the old loadS()/saveS() localStorage logic in
-// index.html.
-// Logging in no longer grants a moon rock (per Mo's call - rocks come from
-// actually doing something: the Daily Challenge, quizzes, trivia, etc. via
-// /api/earn) - this only tracks streak/visits now, it does not touch
-// moon_rock_events.
+// Ensures a users row + closet_state row exist for this Auth0 identity.
+// Deliberately does NOT bump streak/visits or grant anything - just logging
+// in doesn't advance the closet anymore. That only happens by actually
+// finishing the Daily Challenge (see api/daily-challenge-complete.js),
+// per Mo's call: the day doesn't count until you've done the work.
 async function getOrCreateUser({ sub, email, name }) {
   const supabase = db();
   let { data: user } = await supabase.from('users').select('*').eq('auth0_sub', sub).maybeSingle();
@@ -32,16 +29,6 @@ async function getOrCreateUser({ sub, email, name }) {
     user = created;
     await supabase.from('closet_state').insert({ user_id: user.id });
     return user;
-  }
-
-  const today = new Date().toISOString().slice(0, 10);
-  const { data: closet } = await supabase.from('closet_state').select('*').eq('user_id', user.id).single();
-  if (closet.last_visit !== today) {
-    const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
-    const streak = closet.last_visit === yesterday ? closet.streak + 1 : 1;
-    await supabase.from('closet_state')
-      .update({ streak, visits: closet.visits + 1, last_visit: today })
-      .eq('user_id', user.id);
   }
   return user;
 }

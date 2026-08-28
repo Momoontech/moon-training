@@ -545,6 +545,10 @@
   // no auto-close. Done is the primary action (closes back to the
   // dashboard); Run again is secondary, for replaying the preview.
   function done(){
+    // Tells the dashboard (if we're inside its overlay iframe) that today's
+    // challenge is actually finished - that's what unlocks claiming the
+    // day's reward and advances the closet, not just opening this page.
+    try{ if(window.parent&&window.parent!==window) window.parent.postMessage({type:'moon-daily-challenge-done'},'*'); }catch(_){}
     tnum.textContent='Done for today'; lvlEl.style.display='none';
     tp.textContent='That’s today’s set - nice work.'; hintLink.style.display='none';
     app.innerHTML='<div class="appbody" style="display:flex;align-items:center;justify-content:center;">'+
