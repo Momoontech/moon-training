@@ -45,6 +45,7 @@
   .placed{position:absolute;transform:translate(-50%,-50%);z-index:9;background:#fff;border:2px solid var(--primary);border-radius:10px;padding:5px 7px 3px;box-shadow:0 8px 18px rgba(114,57,234,.36);}
   .placed.v{transform:translate(-50%,-50%) rotate(90deg);}
   .placed svg{width:60px;height:44px;display:block;}
+  .placed img.pimg{width:64px;height:64px;object-fit:contain;display:block;}
 
   /* section (2-step design puzzle) */
   .dropzone{position:absolute;transform:translate(-50%,-50%);border:2px dashed #c7bdee;border-radius:14px;background:rgba(114,57,234,.05);display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:700;color:#a99ee0;z-index:5;padding:6px;}
@@ -123,7 +124,11 @@
     { screen:"section", lvl:"hard", lvlName:"Hard", step:"Design",
       prompt:"Build out the closet. Drag a section into the room, then add a shelf to its empty bay.",
       hint:"First drop a section onto the floor. Once it lands, drag a shelf from Accessories into the empty bay.",
-      exp:"A closet is built section by section, then filled with shelves, rods and drawers. Drop the unit first, then accessorize the empty bays. Match the accessory to what the client asked for, a shelf here, not a rod or drawer." }
+      exp:"A closet is built section by section, then filled with shelves, rods and drawers. Drop the unit first, then accessorize the empty bays. Match the accessory to what the client asked for, a shelf here, not a rod or drawer." },
+    { screen:"laundry", lvl:"med", lvlName:"Medium", step:"Obstacles",
+      prompt:"The client wants a laundry appliance set up in the marked alcove. Drag one into place.",
+      hint:"On the Laundry tab, pick either washer, then drag it into the dashed alcove on the floor.",
+      exp:"Laundry Front Load Upper White and Laundry Top Load White are both real catalog appliances - either works here since the client only asked for laundry nearby, not a specific style." }
   ];
 
   function setTask(c){
@@ -471,11 +476,68 @@
     renderSectionCards();
   }
 
+  // ===== LAUNDRY screen: same Obstacles-style panel/search/tabs/drag chrome,
+  // scoped to one category (Laundry, real appliances from
+  // MOON_CATALOG.appCatalog.fixtures) and a floor alcove instead of a
+  // wall slot, since a laundry appliance is floor-standing. =====
+  function buildLaundry(c){
+    app.innerHTML=measureTopbar()+
+      '<div class="appbody">'+roomSVG(false,true)+measureViewTabs('Systems')+measureToolbar()+
+        '<div class="panel obst" style="top:66px;">'+
+          '<div class="ph"><div class="pt">All Obstacles</div><div class="lm">Learn More ⓘ</div></div>'+
+          '<div class="searchrow" id="srow"><span class="mg">🔍</span><span class="chip" id="chip">Laundry <span class="x">✕</span></span><input id="sin" placeholder="Search"></div>'+
+          '<div class="tabs" id="tabs"><button class="tab on" data-c="Laundry">Laundry</button></div>'+
+          '<div class="cards" id="cards"></div>'+
+        '</div>'+
+      '</div>'+
+      bottombar('Previous','Add the laundry appliance the client asked for','Continue');
+    var body=app.querySelector('.appbody'); wireChrome(body);
+    wireNav(app,'Add the laundry appliance first, then you would head back to Obstacles.','Place the laundry appliance in the alcove first, then you can continue.');
+    var cards=document.getElementById('cards');
+    var LAUNDRY=MOON_CATALOG.appCatalog.fixtures.filter(function(f){ return f.id==='laundryFrontLoadUpperWhite'||f.id==='laundryTopLoadWhite'; });
+    var zone={x:78,y:58}; // floor alcove drop target (percent)
+    var token=null;
+    function toPct(ev){var r=body.getBoundingClientRect();return {x:(ev.clientX-r.left)/r.width*100,y:(ev.clientY-r.top)/r.height*100};}
+
+    var alcove=elc('<div class="dropzone" style="left:'+zone.x+'%;top:'+zone.y+'%;width:110px;height:140px;">Laundry alcove</div>');
+    body.appendChild(alcove);
+
+    cards.innerHTML=LAUNDRY.map(function(f){return '<div class="pcard" data-name="'+f.name+'" data-img="'+f.image+'">'+catImg(f.image)+'<div class="cl">'+f.name+'</div></div>';}).join('');
+    [].slice.call(cards.querySelectorAll('.pcard')).forEach(function(card){
+      card.addEventListener('pointerdown',function(e){
+        if(solved)return; e.preventDefault();
+        cards.querySelectorAll('.pcard').forEach(function(x){x.classList.remove('good');});
+        card.classList.add('good');
+        var p=toPct(e);
+        token=elc('<div class="dtoken drag" style="left:'+p.x+'%;top:'+p.y+'%;">'+catImg(card.dataset.img)+'<div class="dl">'+card.dataset.name+'</div></div>');
+        body.appendChild(token);
+        try{token.setPointerCapture(e.pointerId);}catch(_){}
+        function mv(ev){
+          var p=toPct(ev);
+          token.style.left=Math.max(5,Math.min(95,p.x))+'%'; token.style.top=Math.max(6,Math.min(94,p.y))+'%';
+          alcove.classList.toggle('hot',Math.hypot(zone.x-p.x,zone.y-p.y)<16);
+        }
+        function up(ev){
+          try{token.releasePointerCapture(e.pointerId);}catch(_){}
+          token.removeEventListener('pointermove',mv);token.removeEventListener('pointerup',up);token.removeEventListener('pointercancel',up);
+          var p=toPct(ev), near=Math.hypot(zone.x-p.x,zone.y-p.y)<16;
+          alcove.classList.remove('hot');
+          if(!near){ token.remove();token=null; toast('Drop the laundry appliance into the marked alcove.'); return; }
+          token.remove(); token=null; alcove.remove();
+          var pl=elc('<div class="placed" style="left:'+zone.x+'%;top:'+zone.y+'%;">'+catImg(card.dataset.img)+'</div>');
+          body.appendChild(pl);
+          win(c,pl);
+        }
+        token.addEventListener('pointermove',mv);token.addEventListener('pointerup',up);token.addEventListener('pointercancel',up);
+      });
+    });
+  }
+
   function render(){
     solved=false;
     if(i>=P.length){done();return;}
     var c=P[i]; setTask(c);
-    if(c.screen==='measure')buildMeasure(c); else if(c.screen==='section')buildSection(c); else buildObstacles(c);
+    if(c.screen==='measure')buildMeasure(c); else if(c.screen==='section')buildSection(c); else if(c.screen==='laundry')buildLaundry(c); else buildObstacles(c);
     // close menus on outside click
     document.addEventListener('click',function once(){},{once:true});
   }
