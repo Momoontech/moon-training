@@ -101,6 +101,7 @@ Standalone worksheet-style tools (DM Sans, `#6C5CE7`/`#1A1A2E` palette - not the
 - **Hub look:** glassy - frosted translucent panels (`backdrop-filter: blur`), soft colored gradient background.
 - **Currency:** "moon rocks" (never "tokens" in UI text, though the internal localStorage field is still named `tokens`). Icon = `moon-logo.png`. Shop items must NOT be Moon-branded.
 - **Everything is self-contained single-file HTML.** Folders with spaces work on Vercel via `%20` URL encoding.
+- **Vercel Hobby plan caps a deployment at 12 serverless functions.** Every `.js` file under `api/` (except inside `api/_lib/`, which Vercel excludes by convention) counts as one. Adding `api/daily-challenge-complete.js` pushed the count to 13 and silently failed every deployment for days ("Build Failed: No more than 12 Serverless Functions...") before anyone noticed, because the error only shows up in that deployment's own log, not anywhere obvious. Fixed by merging the four admin-only endpoints (never called from the UI) into one dispatched `api/admin/actions.js`. Before adding a new `api/*.js` file, check the current count (`find api -name "*.js" -not -path "*/_lib/*" | wc -l`) and merge into an existing dispatched endpoint rather than adding a 13th file.
 
 ## Tickets
 
