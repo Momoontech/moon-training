@@ -67,7 +67,7 @@ var MOON_CATALOG = {
     { id: 'okanoganCherry', name: 'Okanogan Cherry', hex: '8e4d30', image: 'blob-truth/materialfinish-okanogancherry.jpg', tier: 5, rocks: 80 },
     { id: 'chocolatePear', name: 'Chocolate Pear', hex: '443734', image: 'blob-truth/materialfinish-chocolatepear.jpg', tier: 5, rocks: 85 }
   ],
-  materialRule: 'White is the baseline (no charge). Antique White/Grey/Black/Almond run about +8%. Wood-grain melamine (Fusion Maple, Hard Rock Maple, Sherwood Oak) and Signia textured finishes run about +25%. Real wood veneers run from +80% (Red Oak) up to +170% (Walnut) - solid hardwood is never available, only veneer.',
+  materialRule: 'White is the baseline (no charge). Antique White/Grey/Black/Almond run about +8%. Wood-grain melamine (Fusion Maple, Hard Rock Maple, Honey Maple, Candlelight) run about +25%. Real wood veneers run from +55% (African Walnut) up to +85% (Chocolate Pear) - solid hardwood is never available, only veneer.',
 
   panels: {
     types: ['Wall Panel (WP)', 'End Panel (EP)', 'Center Panel (CP)', 'Dividing Panel (DP)', 'L-Shaped 90° Panel (LSP)', 'L-Shaped Curved Panel (CSP)', 'Tapered Panel (TP)'],
@@ -233,7 +233,7 @@ var MOON_CATALOG = {
     'Panels over 96" tall are white-only unless you add a seamed 1/4" panel plus a top storage shelf to cover the seam.',
     'Glass doors must be touch-latch and cannot have a handle; Lucite doors are the opposite - they must have a handle and cannot be touch-latch.',
     'Deco 500 and Shaker 600 door styles cost about 80% more than Deco 100-400.',
-    'Solid hardwood is never available - "wood" finishes are always veneer, and pricing runs from +80% (Red Oak) to +170% (Walnut).',
+    'Solid hardwood is never available - "wood" finishes are always veneer, and pricing runs from +55% (African Walnut) to +85% (Chocolate Pear).',
     'Doors over 84" tall are built as two doors stacked and joined on the back, opening as one unit.',
     'Closet World does not remove existing built-in cabinetry - the customer must remove, patch, and paint before installation.',
     'No counter tops are made for curved walls.'
