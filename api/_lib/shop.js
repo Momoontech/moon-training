@@ -24,7 +24,7 @@ const SHOP_ITEMS = {
 // Real Closet World finishes/rod finishes (see catalog-data.js) - mirrors the
 // curated subset added to CLOSET_ITEMS in index.html. Kept in sync by
 // deriving from the same MOON_CATALOG data rather than hand-copying prices.
-['white', 'antiqueWhite', 'darkGrey', 'fusionMaple', 'signiaEspresso', 'walnut'].forEach(function (mid) {
+['white', 'antiqueWhite', 'darkGrey', 'fusionMaple', 'espresso', 'africanWalnut'].forEach(function (mid) {
   var m = MOON_CATALOG.materials.filter(function (x) { return x.id === mid; })[0];
   SHOP_ITEMS['wall_' + m.id] = { price: Math.max(10, m.rocks), category: 'wall', hex: m.hex };
 });

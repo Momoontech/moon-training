@@ -43,23 +43,29 @@ var MOON_CATALOG = {
   // Real finish/material names, grouped the way the price sheet groups them,
   // each carrying the rock tier that preserves its real relative cost.
   materials: [
-    { id: 'white', name: 'White', hex: 'fbfaf9', tier: 0, rocks: 0 },
-    { id: 'antiqueWhite', name: 'Antique White', hex: 'f0ead6', tier: 1, rocks: 15 },
-    { id: 'lightGrey', name: 'Light Grey', hex: 'c9c9c9', tier: 1, rocks: 15 },
-    { id: 'darkGrey', name: 'Dark Grey', hex: '5c5c5c', tier: 1, rocks: 15 },
-    { id: 'almond', name: 'Almond', hex: 'e8d9b5', tier: 1, rocks: 15 },
-    { id: 'black', name: 'Black', hex: '1c1c1c', tier: 1, rocks: 15 },
-    { id: 'fusionMaple', name: 'Fusion Maple', hex: 'c98a4b', tier: 2, rocks: 30 },
-    { id: 'hardRockMaple', name: 'Hard Rock Maple', hex: 'd9a25c', tier: 2, rocks: 30 },
-    { id: 'sherwoodOak', name: 'Sherwood Oak', hex: '8a5a34', tier: 2, rocks: 30 },
-    { id: 'candlelight', name: 'Candlelight', hex: 'caa96a', tier: 2, rocks: 30 },
-    { id: 'signiaEspresso', name: 'Espresso (Signia)', hex: '3b2b22', tier: 3, rocks: 35 },
-    { id: 'signiaSandstone', name: 'Sandstone (Signia)', hex: 'c9b79c', tier: 3, rocks: 35 },
-    { id: 'signiaGreystone', name: 'Greystone (Signia)', hex: '767a78', tier: 3, rocks: 35 },
-    { id: 'redOak', name: 'Red Oak (real wood veneer)', hex: 'a6672c', tier: 4, rocks: 55 },
-    { id: 'cherry', name: 'Cherry (real wood veneer)', hex: '6b2e21', tier: 5, rocks: 80 },
-    { id: 'whiteOak', name: 'White Oak (real wood veneer)', hex: 'b58a55', tier: 5, rocks: 80 },
-    { id: 'walnut', name: 'Walnut (real wood veneer)', hex: '3e2417', tier: 5, rocks: 85 }
+    // Real finish names + real hex (sampled directly from the real product
+    // photos below), from moon-designer's own looks.json - replaces the
+    // earlier SoCal-PDF-guessed list, which had names that don't exist in
+    // the real system ("Sherwood Oak") and fake tier suffixes ("Espresso
+    // (Signia)" - the real name is just "Espresso"). Tiers/rocks are still
+    // our own gamification layer; the real data has no price field.
+    { id: 'white', name: 'White', hex: 'ffffff', image: 'blob-truth/materialfinish-white.jpg', tier: 0, rocks: 0 },
+    { id: 'antiqueWhite', name: 'Antique White', hex: 'fffcf3', image: 'blob-truth/materialfinish-antiquewhite.jpg', tier: 1, rocks: 15 },
+    { id: 'lightGrey', name: 'Light Grey', hex: 'cdcec8', image: 'blob-truth/materialfinish-lightgrey.jpg', tier: 1, rocks: 15 },
+    { id: 'darkGrey', name: 'Dark Grey', hex: 'a2a2a0', image: 'blob-truth/materialfinish-darkgrey.jpg', tier: 1, rocks: 15 },
+    { id: 'almond', name: 'Almond', hex: 'efe2bf', image: 'blob-truth/materialfinish-almond2.jpg', tier: 1, rocks: 15 },
+    { id: 'black', name: 'Black', hex: '000000', image: 'blob-truth/materialfinish-black.jpg', tier: 1, rocks: 15 },
+    { id: 'fusionMaple', name: 'Fusion Maple', hex: 'cbab7e', image: 'blob-truth/materialfinish-fusionmaple.jpg', tier: 2, rocks: 30 },
+    { id: 'hardRockMaple', name: 'Hard Rock Maple', hex: 'c9a97c', image: 'blob-truth/materialfinish-hardrockmaple.jpg', tier: 2, rocks: 30 },
+    { id: 'honeyMaple', name: 'Honey Maple', hex: 'b07442', image: 'blob-truth/materialfinish-honeymaple.jpg', tier: 2, rocks: 30 },
+    { id: 'candlelight', name: 'Candlelight', hex: 'b47e52', image: 'blob-truth/materialfinish-candlelight.jpg', tier: 2, rocks: 30 },
+    { id: 'espresso', name: 'Espresso', hex: '101212', image: 'blob-truth/materialfinish-espresso.jpg', tier: 3, rocks: 35 },
+    { id: 'sandstone', name: 'Sandstone', hex: 'd2cbc1', image: 'blob-truth/materialfinish-sandstone.jpg', tier: 3, rocks: 35 },
+    { id: 'greystone', name: 'Greystone', hex: 'c4c2bd', image: 'blob-truth/materialfinish-greystone.jpg', tier: 3, rocks: 35 },
+    { id: 'africanWalnut', name: 'African Walnut', hex: '463130', image: 'blob-truth/materialfinish-africanwalnut.jpg', tier: 4, rocks: 55 },
+    { id: 'wildCherry', name: 'Wild Cherry', hex: '7d402f', image: 'blob-truth/materialfinish-wildcherry.jpg', tier: 5, rocks: 80 },
+    { id: 'okanoganCherry', name: 'Okanogan Cherry', hex: '8e4d30', image: 'blob-truth/materialfinish-okanogancherry.jpg', tier: 5, rocks: 80 },
+    { id: 'chocolatePear', name: 'Chocolate Pear', hex: '443734', image: 'blob-truth/materialfinish-chocolatepear.jpg', tier: 5, rocks: 85 }
   ],
   materialRule: 'White is the baseline (no charge). Antique White/Grey/Black/Almond run about +8%. Wood-grain melamine (Fusion Maple, Hard Rock Maple, Sherwood Oak) and Signia textured finishes run about +25%. Real wood veneers run from +80% (Red Oak) up to +170% (Walnut) - solid hardwood is never available, only veneer.',
 
