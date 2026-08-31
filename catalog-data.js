@@ -43,29 +43,57 @@ var MOON_CATALOG = {
   // Real finish/material names, grouped the way the price sheet groups them,
   // each carrying the rock tier that preserves its real relative cost.
   materials: [
-    // Real finish names + real hex (sampled directly from the real product
-    // photos below), from moon-designer's own looks.json - replaces the
-    // earlier SoCal-PDF-guessed list, which had names that don't exist in
-    // the real system ("Sherwood Oak") and fake tier suffixes ("Espresso
-    // (Signia)" - the real name is just "Espresso"). Tiers/rocks are still
-    // our own gamification layer; the real data has no price field.
+    // Every real finish in moon-designer's own looks.json - all 42, none
+    // added, none dropped, per Mo's call. Real hex sampled directly from
+    // the real product photos below (blob-truth/materialfinish-*).
+    // Two real names (Light Teak, Glass Transparent) have no real photo in
+    // the source system itself - Vesta360 serves a generic "no image"
+    // placeholder icon for those two specifically - so they have no
+    // `image` field and an estimated hex instead of a sampled one; every
+    // other entry's hex came straight off its real photo. Tiers/rocks are
+    // still our own gamification layer; the real data has no price field.
     { id: 'white', name: 'White', hex: 'ffffff', image: 'blob-truth/materialfinish-white.jpg', tier: 0, rocks: 0 },
+    { id: 'classicWhiteBlanc', name: '300 Classic White Blanc', hex: 'f2fafc', image: 'blob-truth/materialfinish-classicwhiteblanc.jpg', tier: 0, rocks: 0 },
+    { id: 'tafClassicWhite', name: 'TAF Classic White', hex: 'dee0da', image: 'blob-truth/materialfinish-tafclassicwhite.jpg', tier: 1, rocks: 15 },
+    { id: 'agtSnowWhite', name: 'AGT Snow White', hex: 'eef0ef', image: 'blob-truth/materialfinish-agtsnowwhite.jpg', tier: 1, rocks: 15 },
     { id: 'antiqueWhite', name: 'Antique White', hex: 'fffcf3', image: 'blob-truth/materialfinish-antiquewhite.jpg', tier: 1, rocks: 15 },
+    { id: 'pearl', name: 'Pearl', hex: 'e1e2dc', image: 'blob-truth/materialfinish-pearl.jpg', tier: 1, rocks: 15 },
+    { id: 'antiquePearl', name: 'Antique Pearl', hex: 'e1ddd1', image: 'blob-truth/materialfinish-antiquepearl.jpg', tier: 1, rocks: 15 },
     { id: 'lightGrey', name: 'Light Grey', hex: 'cdcec8', image: 'blob-truth/materialfinish-lightgrey.jpg', tier: 1, rocks: 15 },
     { id: 'darkGrey', name: 'Dark Grey', hex: 'a2a2a0', image: 'blob-truth/materialfinish-darkgrey.jpg', tier: 1, rocks: 15 },
+    { id: 'latitudeGrey', name: 'Latitude Grey', hex: '9e9788', image: 'blob-truth/materialfinish-latitudegrey.jpg', tier: 1, rocks: 15 },
     { id: 'almond', name: 'Almond', hex: 'efe2bf', image: 'blob-truth/materialfinish-almond2.jpg', tier: 1, rocks: 15 },
     { id: 'black', name: 'Black', hex: '000000', image: 'blob-truth/materialfinish-black.jpg', tier: 1, rocks: 15 },
+    { id: 'onyx', name: 'Onyx', hex: '282725', image: 'blob-truth/materialfinish-onyx.jpg', tier: 1, rocks: 15 },
+    { id: 'charcoalCharbon', name: 'Charcoal Charbon', hex: '3b3d3a', image: 'blob-truth/materialfinish-charcoalcharbon.jpg', tier: 1, rocks: 15 },
+    { id: 'riverRock', name: 'River Rock', hex: 'b2aea5', image: 'blob-truth/materialfinish-riverrock.jpg', tier: 1, rocks: 15 },
+    { id: 'mocha', name: 'Mocha', hex: '69605a', image: 'blob-truth/materialfinish-mocha.jpg', tier: 2, rocks: 30 },
     { id: 'fusionMaple', name: 'Fusion Maple', hex: 'cbab7e', image: 'blob-truth/materialfinish-fusionmaple.jpg', tier: 2, rocks: 30 },
     { id: 'hardRockMaple', name: 'Hard Rock Maple', hex: 'c9a97c', image: 'blob-truth/materialfinish-hardrockmaple.jpg', tier: 2, rocks: 30 },
     { id: 'honeyMaple', name: 'Honey Maple', hex: 'b07442', image: 'blob-truth/materialfinish-honeymaple.jpg', tier: 2, rocks: 30 },
     { id: 'candlelight', name: 'Candlelight', hex: 'b47e52', image: 'blob-truth/materialfinish-candlelight.jpg', tier: 2, rocks: 30 },
+    { id: 'oysterPine', name: 'Oyster Pine', hex: '585753', image: 'blob-truth/materialfinish-oysterpine.jpg', tier: 2, rocks: 30 },
+    { id: 'sandPine', name: 'Sand Pine', hex: '9c8a74', image: 'blob-truth/materialfinish-sandpine.jpg', tier: 2, rocks: 30 },
+    { id: 'autumnLeaves', name: 'Autumn Leaves', hex: '502512', image: 'blob-truth/materialfinish-autumnleaves.jpg', tier: 2, rocks: 30 },
+    { id: 'springBlossom', name: 'Spring Blossom', hex: '413a34', image: 'blob-truth/materialfinish-springblossom.jpg', tier: 2, rocks: 30 },
+    { id: 'summerBreeze', name: 'Summer Breeze', hex: 'ccbda2', image: 'blob-truth/materialfinish-summerbreeze.jpg', tier: 2, rocks: 30 },
+    { id: 'cherryBlossom', name: 'Cherry Blossom', hex: '623d31', image: 'blob-truth/materialfinish-cherryblossom.jpg', tier: 2, rocks: 30 },
+    { id: 'tafApresSki', name: 'TAF Apres Ski', hex: 'a4866a', image: 'blob-truth/materialfinish-tafapreski.jpg', tier: 3, rocks: 35 },
+    { id: 'tafEucalyptus', name: 'TAF Eucalyptus', hex: '304b46', image: 'blob-truth/materialfinish-tafeucalyptus.jpg', tier: 3, rocks: 35 },
+    { id: 'tafWinterCherry', name: 'TAF Winter Cherry', hex: 'a16535', image: 'blob-truth/materialfinish-tafwintercherry.jpg', tier: 3, rocks: 35 },
     { id: 'espresso', name: 'Espresso', hex: '101212', image: 'blob-truth/materialfinish-espresso.jpg', tier: 3, rocks: 35 },
     { id: 'sandstone', name: 'Sandstone', hex: 'd2cbc1', image: 'blob-truth/materialfinish-sandstone.jpg', tier: 3, rocks: 35 },
     { id: 'greystone', name: 'Greystone', hex: 'c4c2bd', image: 'blob-truth/materialfinish-greystone.jpg', tier: 3, rocks: 35 },
+    { id: 'summerFlame', name: 'Summer Flame', hex: '874d35', image: 'blob-truth/materialfinish-summerflame.jpg', tier: 3, rocks: 35 },
+    { id: 'pearwood', name: 'Pearwood', hex: 'b06b40', image: 'blob-truth/materialfinish-pearwood.jpg', tier: 3, rocks: 35 },
+    { id: 'darkTeak', name: 'Dark Teak', hex: '726157', image: 'blob-truth/materialfinish-darkteak.jpg', tier: 4, rocks: 55 },
+    { id: 'lightTeak', name: 'Light Teak', hex: 'b89878', tier: 4, rocks: 55 },
     { id: 'africanWalnut', name: 'African Walnut', hex: '463130', image: 'blob-truth/materialfinish-africanwalnut.jpg', tier: 4, rocks: 55 },
     { id: 'wildCherry', name: 'Wild Cherry', hex: '7d402f', image: 'blob-truth/materialfinish-wildcherry.jpg', tier: 5, rocks: 80 },
     { id: 'okanoganCherry', name: 'Okanogan Cherry', hex: '8e4d30', image: 'blob-truth/materialfinish-okanogancherry.jpg', tier: 5, rocks: 80 },
-    { id: 'chocolatePear', name: 'Chocolate Pear', hex: '443734', image: 'blob-truth/materialfinish-chocolatepear.jpg', tier: 5, rocks: 85 }
+    { id: 'chocolatePear', name: 'Chocolate Pear', hex: '443734', image: 'blob-truth/materialfinish-chocolatepear.jpg', tier: 5, rocks: 85 },
+    { id: 'mirror', name: 'Mirror', hex: 'dddbda', image: 'blob-truth/materialfinish-mirror.png', tier: 6, rocks: 90 },
+    { id: 'glassTransparent', name: 'Glass Transparent', hex: 'eef2f2', tier: 6, rocks: 90 }
   ],
   materialRule: 'White is the baseline (no charge). Antique White/Grey/Black/Almond run about +8%. Wood-grain melamine (Fusion Maple, Hard Rock Maple, Honey Maple, Candlelight) run about +25%. Real wood veneers run from +55% (African Walnut) up to +85% (Chocolate Pear) - solid hardwood is never available, only veneer.',
 

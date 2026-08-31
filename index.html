@@ -1083,11 +1083,9 @@
     {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Colors & Textures'},
     {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Colors & Textures'}
   ].concat(
-    // Real Closet World panel finishes (see catalog-data.js) - a curated
-    // spread across the real material tiers, so "wall color" in the app
-    // matches actual finish names/pricing order a designer would see.
-    (typeof MOON_CATALOG!=='undefined'?['white','antiqueWhite','darkGrey','fusionMaple','espresso','africanWalnut']:[]).map(function(mid){
-      var m=MOON_CATALOG.materials.filter(function(x){return x.id===mid;})[0];
+    // Every real Closet World panel finish (see catalog-data.js) - all 42,
+    // none added or dropped, per Mo's call - not a curated subset anymore.
+    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.materials:[]).map(function(m){
       return {id:'wall_'+m.id,i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: '+m.name,d:'Real Closet World panel finish.',price:Math.max(10,m.rocks),type:'cosmetic',category:'wall',hex:m.hex,image:m.image,group:'Colors & Textures'};
     }),
     (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.rods:[]).map(function(r){

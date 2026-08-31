@@ -21,11 +21,10 @@ const SHOP_ITEMS = {
   floorWalnut: { price: 20, category: 'floor', hex: '5a3d28' },
 };
 
-// Real Closet World finishes/rod finishes (see catalog-data.js) - mirrors the
-// curated subset added to CLOSET_ITEMS in index.html. Kept in sync by
-// deriving from the same MOON_CATALOG data rather than hand-copying prices.
-['white', 'antiqueWhite', 'darkGrey', 'fusionMaple', 'espresso', 'africanWalnut'].forEach(function (mid) {
-  var m = MOON_CATALOG.materials.filter(function (x) { return x.id === mid; })[0];
+// Every real Closet World finish (see catalog-data.js) - all 42, mirrors
+// CLOSET_ITEMS in index.html. Kept in sync by deriving from the same
+// MOON_CATALOG data rather than hand-copying prices.
+MOON_CATALOG.materials.forEach(function (m) {
   SHOP_ITEMS['wall_' + m.id] = { price: Math.max(10, m.rocks), category: 'wall', hex: m.hex };
 });
 MOON_CATALOG.rods.forEach(function (r) {
