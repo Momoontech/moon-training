@@ -1078,15 +1078,25 @@
     {id:'levelup',i:SHOPICN+'<circle cx="12" cy="12" r="9"/><path d="M12 16V8M8 12l4-4 4 4"/></svg>',n:'Instant closet level',d:'Skip ahead one day.',price:15,type:'action',group:'Boosts'},
     {id:'accessory',i:SHOPICN+'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>',n:'New closet accessory',d:'Unlock a new accessory.',price:25,type:'cosmetic',group:'Accessories'},
     {id:'walkin',i:SHOPICN+'<rect x="5" y="3" width="12" height="18" rx="1"/><circle cx="13.5" cy="12" r="1"/></svg>',n:'Walk-in upgrade',d:'Reach-in to walk-in.',price:40,type:'cosmetic',group:'Boosts'},
-    {id:'wallSage',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: Sage',d:'Sage green closet finish.',price:20,type:'cosmetic',category:'wall',hex:'c9d9c4',group:'Colors & Textures'},
-    {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: Blush',d:'Blush pink closet finish.',price:20,type:'cosmetic',category:'wall',hex:'f3dede',group:'Colors & Textures'},
-    {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Colors & Textures'},
-    {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Colors & Textures'}
+    // "Closet Finish" = the cabinet's own material (what closetScene()
+    // calls `panelHex`). "Room" = the floor around it - a completely
+    // different, unrelated part of the illustration. These used to share
+    // one "Colors & Textures" tab with no visual distinction between the
+    // two, which read as confusing - split into two tabs so it's obvious
+    // which one you're changing.
+    {id:'wallSage',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: Sage',d:'Sage green closet finish.',price:20,type:'cosmetic',category:'wall',hex:'c9d9c4',group:'Closet Finish',section:'Other'},
+    {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: Blush',d:'Blush pink closet finish.',price:20,type:'cosmetic',category:'wall',hex:'f3dede',group:'Closet Finish',section:'Other'},
+    {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Room'},
+    {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Room'}
   ].concat(
     // Every real Closet World panel finish (see catalog-data.js) - all 42,
     // none added or dropped, per Mo's call - not a curated subset anymore.
+    // `section` is the real Solids/Woodgrains/Signia collection each one
+    // actually belongs to (confirmed against moon-designer's own
+    // materials.json), so the filter chips below split on a real
+    // distinction instead of an arbitrary one.
     (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.materials:[]).map(function(m){
-      return {id:'wall_'+m.id,i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: '+m.name,d:'Real Closet World panel finish.',price:Math.max(10,m.rocks),type:'cosmetic',category:'wall',hex:m.hex,image:m.image,group:'Colors & Textures'};
+      return {id:'wall_'+m.id,i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: '+m.name,d:'Real Closet World panel finish.',price:Math.max(10,m.rocks),type:'cosmetic',category:'wall',hex:m.hex,image:m.image,group:'Closet Finish',section:m.collection||'Other'};
     }),
     (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.rods:[]).map(function(r){
       return {id:'rod_'+r.id,i:SHOPICN+'<path d="M4 7h16"/><circle cx="6" cy="7" r="1.6"/><circle cx="18" cy="7" r="1.6"/><path d="M8 7v3M12 7v5M16 7v3"/></svg>',n:'Rod: '+r.name,d:'Real Closet World rod finish.',price:r.rocks,type:'cosmetic',group:'Accessories',section:'Rods'};
@@ -1110,7 +1120,7 @@
   // with the standalone Shop tab in favor of the monthly raffle - see
   // renderRaffle() below. ALL_SHOP_ITEMS now only needs closet cosmetics.
   var ALL_SHOP_ITEMS=CLOSET_ITEMS;
-  var SHOP_GROUPS=['Boosts','Accessories','Colors & Textures','Layouts'];
+  var SHOP_GROUPS=['Boosts','Accessories','Closet Finish','Room','Layouts'];
   var shopCat=SHOP_GROUPS[0];
   var shopSection='All'; // secondary filter within a tab, e.g. Rods vs Hardware inside Accessories
   function swatchCardHtml(it){
