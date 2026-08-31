@@ -157,6 +157,7 @@
   /* ─── Layout rows ─── */
   .drow2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
   .drow{display:grid;grid-template-columns:1.5fr 1fr;gap:12px;margin-top:14px;}
+  .drow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px;}
 
   /* ─── Table ─── */
   .table{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(26,21,35,.06);}
@@ -368,7 +369,7 @@
 
   @media(max-width:860px){
     .nav-pill{overflow-x:auto;border-radius:14px;}
-    .drow,.drow2{grid-template-columns:1fr;}
+    .drow,.drow2,.drow3{grid-template-columns:1fr;}
     .closet .cw{grid-template-columns:1fr;}
     .closet-left{border-radius:0;min-height:200px;}
     .closet svg.cl{width:200px;}
@@ -455,8 +456,7 @@
   <section data-sec="quizzes">
     <h1 class="title">Challenges</h1>
     <p class="lead">Today's challenge, the weekly trivia set, and every quiz - all in one place.</p>
-    <div class="sechead"><h2>Daily &amp; weekly</h2></div>
-    <div class="drow2">
+    <div class="drow3">
       <a class="ecard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
         <div class="tag">Today · <span class="earn soft daily-badge">+5 <img class="mr" src="moon-logo.png"> on completion</span></div>
         <h3>Daily Challenge</h3>
@@ -469,10 +469,10 @@
         <p>5 quick questions about the app. New set every week.</p>
         <button class="go" id="triviaOpen2">Play trivia →</button>
       </div>
-    </div>
-    <div class="drow" style="margin-top:16px;">
       <a class="ecard" href="./3%20Quizzes/index.html" target="_blank">
-        <div class="tag">All quizzes</div><h3>Quiz landing page</h3><p>All three quizzes in one place, with QR codes on the decks.</p>
+        <div class="tag">All quizzes</div>
+        <h3>Quiz landing page</h3>
+        <p>All three quizzes in one place, with QR codes on the decks.</p>
         <span class="go">Open →</span>
       </a>
     </div>
