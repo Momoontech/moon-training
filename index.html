@@ -9,26 +9,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --color-button-primary:#38215f;
-    --color-background-accent-purple-primary-8:#734e94;
-    --purple-2:#f1ecfd;
-    --gray-2:#f2f1f5;
-    --blue-1:#e7edff;
-    --blue-6:#1a4db3;
-    --ink:#1a1523;
-    --muted:#6b6b7e;
-    --line:#e8e7ef;
-    --primary:#7239EA;
-    --primary-soft:#F1ECFD;
-    --green:#12B886;
-    --lav:#e7edff;
-    --lavtx:#4a5bb5;
+    /* Real Moon Design System tokens (pulled from Figma via get_variable_defs,
+       file YN5M1f6VqNYqdY2ytsgttW) - names kept as-is to minimize edit
+       surface, values corrected to match the real palette. */
+    --color-button-primary:#42275a; /* real Primary-10, the actual "Primary Button" token */
+    --color-background-accent-purple-primary-8:#734e94; /* already exact real Primary-8 */
+    --purple-2:#f1e2ff; /* real Primary-2 */
+    --gray-2:#f5f4f6; /* real Gray Accent-2 */
+    --blue-1:#ecf4ff; /* real Blue Accent-1 */
+    --blue-6:#1c67c5; /* real Blue Accent-7 */
+    --ink:#1a181b; /* real Gray Accent-10 */
+    --muted:#76717a; /* real Gray Accent-6 */
+    --line:#e7e5e9; /* real Gray Accent-3 */
+    --primary:#734e94; /* real Primary-8 - accent/link/icon tier, distinct from the darker CTA-fill tier above */
+    --primary-soft:#f1e2ff; /* real Primary-2 */
+    --primary-tint-on-dark:#e7cdff; /* real Primary-3 - text on a dark Primary-10 card */
+    --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+    --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px;
+    --fs-h5:24px; --lh-h5:30px;
+    --fs-body2:16px; --lh-body2:24px;
+    --fs-label2:14px; --lh-label2:16px;
+    --fs-label3:12px; --lh-label3:14px;
+    --fs-cap1:10px; --lh-cap1:12px;
+    --fs-cap2:9px; --lh-cap2:10px;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
   body{font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);line-height:1.5;background:#fff;min-height:100vh;}
 
   /* ─── Moon rock decorative background ─── */
-  .rock-bg{position:fixed;width:600px;max-width:70vw;pointer-events:none;user-select:none;z-index:-1;bottom:-60px;left:-80px;opacity:.72;}
+  .rock-bg{position:fixed;width:600px;max-width:70vw;pointer-events:none;user-select:none;z-index:-1;bottom:0;left:0;opacity:.3;}
   .wrap{position:relative;isolation:isolate;}
   a{color:inherit;text-decoration:none;}
 
@@ -39,12 +49,22 @@
   .nl{border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:7px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.12s;}
   .nl:hover{color:var(--ink);background:#f5f4f9;}
   .nl.on{background:#f3f1f8;color:var(--ink);font-weight:700;}
-  .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;letter-spacing:.04em;}
+  .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;letter-spacing:.04em;}
   .nav-right{display:flex;align-items:center;gap:14px;}
-  .raffleGlow{width:34px;height:34px;border-radius:50%;border:none;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;animation:rafflePulse 2.4s ease-in-out infinite;}
-  .raffleGlow svg{width:16px;height:16px;}
-  @keyframes rafflePulse{0%,100%{box-shadow:0 0 0 0 rgba(114,57,234,.5);}50%{box-shadow:0 0 0 7px rgba(114,57,234,0);}}
-  .nav-rocks{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--ink);}
+  /* Was an icon-only circle with no visible text (just a title= tooltip) -
+     Heather's review flagged that the pulse draws more attention than the
+     primary CTA while giving no clue what it opens. Now a labeled pill.
+     Animation notes: currently pulses continuously regardless of state.
+     Candidate refinement (not wired yet - needs an eager /api/raffle
+     fetch on load to know entry status before first paint, a real new
+     network call to confirm with Mo first): pulse only while
+     myEntries===0 for the current month, stop once the user has entered
+     at least once this cycle. */
+  .raffleGlow{height:34px;padding:0 14px 0 10px;border-radius:999px;border:none;background:var(--primary);color:#fff;display:flex;align-items:center;gap:6px;cursor:pointer;flex:0 0 auto;animation:rafflePulse 2.4s ease-in-out infinite;}
+  .raffleGlow svg{width:16px;height:16px;flex:0 0 auto;}
+  .raffleGlow span{font-size:12px;font-weight:700;white-space:nowrap;}
+  @keyframes rafflePulse{0%,100%{box-shadow:0 0 0 0 rgba(115,78,148,.5);}50%{box-shadow:0 0 0 7px rgba(115,78,148,0);}}
+  .nav-rocks{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--ink);}
   .nav-rocks .mr{width:17px;height:17px;}
 
   /* ─── Page wrap ─── */
@@ -62,6 +82,12 @@
   .sechead .srch{margin-left:auto;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:200px;box-shadow:0 1px 4px rgba(26,21,35,.05);}
   .sechead .srch input{border:none;outline:none;font-family:inherit;font-size:12.5px;flex:1;background:transparent;color:var(--ink);}
   .sechead .srch svg{width:14px;height:14px;stroke:#a0a0b2;fill:none;stroke-width:2;}
+  /* Trainings jump-nav - reuses the .sechead flex row + the .srch box
+     above it, both already built for this, just never wired to markup
+     until now. */
+  .jumpnav{display:flex;gap:16px;flex-wrap:wrap;}
+  .jumpnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;}
+  .jumpnav a:hover{color:var(--primary);}
 
   section[data-sec]{display:none;} section[data-sec].show{display:block;}
 
@@ -83,13 +109,6 @@
   /* Day heading — H4 scale 32px/700 */
   .closet h3{font-size:32px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-top:4px;}
   .closet .mood{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.45;}
-  .daily-gate{display:inline-block;margin-top:10px;background:var(--purple-2);color:var(--primary);font-size:12.5px;font-weight:700;border-radius:10px;padding:9px 13px;text-decoration:none;}
-  .daily-gate:hover{background:#e6ddfc;}
-  .daily-gate.done{background:#e6f7f0;color:#0f7a63;}
-
-  /* Progress bar — #734e94 fill */
-  .prog{height:4px;background:#ebe9f0;border-radius:999px;margin-top:16px;overflow:hidden;}
-  .prog i{display:block;height:100%;background:var(--color-background-accent-purple-primary-8);border-radius:999px;transition:width .4s;}
 
   .closet .stats{display:flex;gap:22px;margin-top:14px;}
   .closet .stats div b{font-size:18px;font-weight:700;color:var(--ink);}
@@ -97,16 +116,11 @@
   .statnum{display:flex;align-items:center;gap:5px;}
   .statnum .mr{width:16px;height:16px;}
 
-  /* Absolutely-positioned button group */
-  .closet .actions{position:absolute;bottom:20px;left:24px;right:24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .cbtn{background:#fff;border:1px solid #dddae8;color:var(--ink);border-radius:999px;padding:8px 15px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:.12s;white-space:nowrap;}
   .cbtn:hover{background:#f7f6fb;border-color:#c9c4db;}
   /* Simulate = CTA — dark purple */
   .cbtn.solid{background:var(--color-button-primary);color:#fff;border-color:var(--color-button-primary);box-shadow:0 3px 10px rgba(56,33,95,.28);}
-  .cbtn.solid:hover{background:#2e1a55;}
-  /* Compare Collections — soft purple accent */
-  .cbtn.compare{background:var(--purple-2);color:#5a34b0;border-color:#ddd0fb;}
-  .cbtn.compare:hover{background:#eae2fc;}
+  .cbtn.solid:hover{background:#351f48;}
 
   /* ─── Featured cards (Daily Puzzle & Trivia) — white, not gradient ─── */
   .ecard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px;box-shadow:0 2px 8px rgba(26,21,35,.06);transition:.12s;}
@@ -117,7 +131,20 @@
   .ecard p{font-size:12.5px;color:var(--muted);line-height:1.45;}
   /* CTA on white card — dark purple pill */
   .ecard .go{align-self:flex-start;margin-top:6px;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(56,33,95,.26);display:inline-flex;gap:6px;align-items:center;transition:.12s;}
-  .ecard .go:hover{background:#2e1a55;}
+  .ecard .go:hover{background:#351f48;}
+  /* Primary/secondary card hierarchy - real Primary/Secondary Button
+     tokens, so exactly one card per row reads as THE action (dashboard's
+     Daily Challenge + Challenges tab), everything beside it stays a
+     lighter secondary. */
+  .ecard.primary{background:var(--color-button-primary);border-color:var(--color-button-primary);}
+  .ecard.primary .tag{color:var(--primary-tint-on-dark);}
+  .ecard.primary h3{color:#fff;}
+  .ecard.primary p{color:var(--primary-tint-on-dark);}
+  .ecard.primary .go{background:#fff;color:var(--color-button-primary);box-shadow:0 20px 25px rgba(0,0,0,.10),5px 5px 20px rgba(115,78,148,.6);}
+  .ecard.primary .go:hover{background:var(--primary-soft);}
+  .ecard.secondary{box-shadow:0 20px 25px rgba(0,0,0,.05),5px 5px 20px rgba(0,0,0,.05);}
+  .ecard.secondary .go{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none;}
+  .ecard.secondary .go:hover{background:#faf9fc;}
 
   /* ─── Grid + acard ─── */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:12px;}
@@ -131,16 +158,16 @@
   .acard p{font-size:12px;color:var(--muted);line-height:1.45;}
   /* CTA buttons in grid cards — dark purple only */
   .pbtn{align-self:flex-start;margin-top:6px;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(56,33,95,.24);display:inline-flex;gap:6px;align-items:center;transition:.12s;}
-  .pbtn:hover{background:#2e1a55;}
+  .pbtn:hover{background:#351f48;}
   .open{font-size:12px;font-weight:700;color:var(--primary);display:inline-flex;gap:5px;align-items:center;margin-top:2px;}
   a.acard:hover .arw{transform:translateX(3px);} .arw{transition:transform .12s;}
   .locked{opacity:.55;}
   .icn{width:40px;height:40px;border-radius:10px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
-  .icn svg{width:20px;height:20px;stroke:#7239EA;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .icn svg{width:20px;height:20px;stroke:var(--primary);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
 
   /* ─── Status pills ─── */
   .pill2{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:4px 9px;white-space:nowrap;}
-  .ready{background:#e3f8f1;color:#0b6b52;} .live{background:var(--lav);color:var(--lavtx);}
+  .ready{background:#e3f8f1;color:#0b6b52;}
   .review{background:#fdf0dd;color:#9a5b06;} .concept{background:#eef0f4;color:#5c5c70;} .soon{background:#f0eefc;color:#6b46d6;}
 
   /* ─── Earn badges ─── */
@@ -159,17 +186,6 @@
   .drow{display:grid;grid-template-columns:1.5fr 1fr;gap:12px;margin-top:14px;}
   .drow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px;}
 
-  /* ─── Table ─── */
-  .table{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(26,21,35,.06);}
-  .thead,.trow{display:grid;grid-template-columns:1.4fr 1.6fr .8fr .8fr .9fr;gap:12px;padding:12px 18px;align-items:center;}
-  .thead{font-size:11.5px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--line);background:#faf9fc;}
-  .trow{border-bottom:1px solid #f4f3f8;font-size:13px;}
-  .trow:last-child{border-bottom:none;}
-  .trow .nm{font-weight:700;} .trow .sub{font-size:11px;color:var(--muted);}
-  .trow.me{background:#faf8ff;}
-  .stpill{justify-self:start;font-size:10.5px;font-weight:700;border-radius:999px;padding:4px 10px;}
-  .st-rev{background:#e3f8f1;color:#0b6b52;} .st-prog{background:var(--lav);color:var(--lavtx);}
-
   /* ─── Trivia modal ─── */
   .modal{position:fixed;inset:0;background:rgba(20,16,32,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;}
   .modal.open{display:flex;}
@@ -185,17 +201,19 @@
   .pageOverlay iframe{flex:1 1 auto;width:100%;height:100%;border:none;}
   .msheet{background:#fff;border-radius:20px;max-width:460px;width:100%;padding:22px;box-shadow:0 30px 70px rgba(0,0,0,.28);}
   .msheet .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-  .msheet .mh .k{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#0f7a63;}
+  /* Was green - decorative modal-header kicker, not a status, hits every
+     bottom sheet (Help/Raffle/Trivia) regardless of content. */
+  .msheet .mh .k{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
   .msheet .x{border:none;background:#f1f1f6;border-radius:8px;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--muted);}
   .msheet .prog2{font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:10px;}
-  .msheet .q{font-size:17px;font-weight:800;margin-bottom:14px;line-height:1.35;}
+  .msheet .q{font-size:17px;font-weight:700;margin-bottom:14px;line-height:1.35;}
   .opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 15px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:9px;transition:.1s;}
   .opt:hover{border-color:var(--primary);}
-  .opt.ok{background:#e6f8f2;border-color:#12B886;color:#0b6b52;font-weight:800;}
-  .opt.no{background:#fbe4e0;border-color:#e0553d;color:#a3341f;font-weight:800;}
-  .mnext{margin-top:6px;width:100%;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:12px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
+  .opt.ok{background:#e6f8f2;border-color:#12B886;color:#0b6b52;font-weight:700;}
+  .opt.no{background:#fbe4e0;border-color:#e0553d;color:#a3341f;font-weight:700;}
+  .mnext{margin-top:6px;width:100%;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:12px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
   .mdone{text-align:center;padding:8px 0;}
-  .mdone .big{font-size:40px;} .mdone h3{font-size:19px;font-weight:800;margin-top:6px;}
+  .mdone .big{font-size:40px;} .mdone h3{font-size:19px;font-weight:700;margin-top:6px;}
 
   /* ─── Prepare for Appointment checklist ─── */
   .prep-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;max-height:360px;overflow-y:auto;}
@@ -215,25 +233,25 @@
   .rtop .conf{position:absolute;font-size:14px;animation:fall 2.4s linear infinite;opacity:.9;}
   @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:0;}15%{opacity:1;}100%{transform:translateY(120px) rotate(240deg);opacity:0;}}
   .rtop .x{position:absolute;right:14px;top:14px;border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:8px;width:30px;height:30px;font-size:15px;cursor:pointer;z-index:3;}
-  .rtop .k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;opacity:.9;position:relative;}
+  .rtop .k{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.9;position:relative;}
   .rtop .rico{font-size:52px;margin:6px 0 2px;position:relative;color:#fff;}
   .rtop .rico svg,.rtop .rico img{width:46px;height:46px;vertical-align:middle;display:inline-block;}
   .rtop .rico img{border-radius:50%;object-fit:cover;}
-  .rtop .rn{font-size:21px;font-weight:800;position:relative;}
+  .rtop .rn{font-size:21px;font-weight:700;position:relative;}
   .rbody{padding:18px 22px 22px;}
   .rbody .rd{font-size:13px;color:#4a4a5c;text-align:center;line-height:1.5;}
-  .rtokline{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 6px;font-size:13px;font-weight:800;color:#8a6a15;background:linear-gradient(135deg,#fff7e6,#fdeecb);border:1px solid #f4e2b0;border-radius:12px;padding:10px;}
-  .rweeklbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:16px 0 9px;}
+  .rtokline{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 6px;font-size:13px;font-weight:700;color:#8a6a15;background:linear-gradient(135deg,#fff7e6,#fdeecb);border:1px solid #f4e2b0;border-radius:12px;padding:10px;}
+  .rweeklbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:16px 0 9px;}
   .rweek{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
   .rchip{border:1.5px solid var(--line);border-radius:12px;padding:8px 3px 7px;text-align:center;background:#fafafd;}
   .rchip .ci{font-size:18px;filter:grayscale(.7);opacity:.5;color:var(--primary);}
   .rchip .ci svg,.rchip .ci img{width:18px;height:18px;vertical-align:middle;display:inline-block;}
   .rchip .ci img{border-radius:50%;object-fit:cover;}
-  .rchip .cd{font-size:9px;font-weight:800;color:var(--muted);margin-top:2px;}
+  .rchip .cd{font-size:9px;font-weight:700;color:var(--muted);margin-top:2px;}
   .rchip .cs{font-size:8.5px;font-weight:700;color:#b3b3c2;margin-top:1px;}
   .rchip.unlocked{background:#f4f0ff;border-color:#ddd0fb;} .rchip.unlocked .ci{filter:none;opacity:1;} .rchip.unlocked .cs{color:var(--primary);}
   .rchip.today{background:#efe7ff;border-color:var(--primary);box-shadow:0 0 0 3px rgba(114,57,234,.14);} .rchip.today .ci{filter:none;opacity:1;} .rchip.today .cs{color:var(--primary);}
-  .rcollect{margin-top:18px;width:100%;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:13px;font-family:inherit;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(56,33,95,.28);}
+  .rcollect{margin-top:18px;width:100%;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:13px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(56,33,95,.28);}
 
   /* ─── Leaderboard ─── */
   /* ─── Your Closet (3D) ─── */
@@ -245,18 +263,18 @@
   .closet-viewing-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--purple-2);border:1px solid #ddd0fb;border-radius:12px;padding:10px 14px;margin-top:14px;font-size:13px;font-weight:700;color:var(--color-button-primary);}
   .browse-card{cursor:pointer;}
   .browse-card:hover{border-color:#c9c4db;box-shadow:0 4px 14px rgba(26,21,35,.1);}
-  .browse-card .lvl{font-size:11px;font-weight:800;color:var(--primary);}
+  .browse-card .lvl{font-size:11px;font-weight:700;color:var(--primary);}
   .closet-stats-row{display:flex;gap:28px;margin-top:18px;flex-wrap:wrap;}
   .raffle-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:16px;box-shadow:0 1px 4px rgba(26,21,35,.05);display:flex;flex-direction:column;gap:16px;max-width:420px;}
-  .raffle-prize .rp-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
-  .raffle-prize .rp-value{font-size:19px;font-weight:800;color:var(--ink);margin-top:3px;}
+  .raffle-prize .rp-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .raffle-prize .rp-value{font-size:19px;font-weight:700;color:var(--ink);margin-top:3px;}
   .raffle-stats{display:flex;gap:24px;}
-  .raffle-stats div b{font-size:20px;font-weight:800;color:var(--ink);display:block;}
+  .raffle-stats div b{font-size:20px;font-weight:700;color:var(--ink);display:block;}
   .raffle-stats div span{font-size:11px;color:var(--muted);}
   .raffle-balance{font-size:12px;color:var(--muted);}
   .raffle-how{display:flex;flex-direction:column;gap:12px;max-width:560px;}
   .how-step{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
-  .how-step b{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--purple-2);color:var(--primary);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .how-step b{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--purple-2);color:var(--primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
   .faq-chat{background:#fff;display:flex;flex-direction:column;height:420px;}
   .help-tabs{display:flex;gap:2px;padding:12px 18px 0;border-bottom:1px solid var(--line);}
   .help-tab{border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--muted);padding:8px 10px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
@@ -369,49 +387,55 @@
   .cust-price-card .val{font-size:18px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:6px;}
   .cust-price-card .val img.mr{width:16px;height:16px;}
   .side-lb-row.me{background:#faf8ff;}
-  .side-lb-row .rank{width:16px;font-size:11px;font-weight:800;color:var(--muted);text-align:center;flex:0 0 auto;}
+  .side-lb-row .rank{width:16px;font-size:11px;font-weight:700;color:var(--muted);text-align:center;flex:0 0 auto;}
   .side-lb-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .side-lb-row .val{font-size:11px;font-weight:800;flex:0 0 auto;display:flex;align-items:center;gap:4px;}
-  .side-subhead{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:16px 0 6px;}
+  .side-lb-row .val{font-size:11px;font-weight:700;flex:0 0 auto;display:flex;align-items:center;gap:4px;}
+  .side-subhead{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:16px 0 6px;}
   .browse-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-radius:8px;cursor:pointer;}
-  .browse-row .rank{width:16px;font-size:11px;font-weight:800;color:var(--muted);flex:0 0 auto;text-align:center;}
+  .browse-row .rank{width:16px;font-size:11px;font-weight:700;color:var(--muted);flex:0 0 auto;text-align:center;}
   .browse-row:hover{background:#faf9fc;}
-  .browse-row .av{width:24px;height:24px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;letter-spacing:.02em;}
+  .browse-row .av{width:24px;height:24px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;letter-spacing:.02em;}
   .browse-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .browse-row .lvl2{font-size:10px;color:var(--muted);flex:0 0 auto;}
   .browse-badges{display:flex;gap:3px;flex:0 0 auto;}
 
   /* ─── Badge icon UI (hover on desktop, tap on touch) ─── */
-  .badge-ic{position:relative;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#fff7e6,#fdeecb);border:1px solid #f4e2b0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;}
-  .badge-ic svg{width:11px;height:11px;stroke:#8a6a15;fill:none;stroke-width:2;}
+  /* Was gold/amber - these are achievement badges (streak, rocks club),
+     a genuine completed/checked-off moment, so real success-green now
+     rather than an off-system "trophy gold" accent. Same green/border
+     pairing as the Customize panel's "Included" badge for consistency. */
+  .badge-ic{position:relative;width:20px;height:20px;border-radius:50%;background:#f8fff4;border:1px solid #ccebdb;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;}
+  .badge-ic svg{width:11px;height:11px;stroke:#006b39;fill:none;stroke-width:2;}
   .badge-ic .tip{position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:#211C33;color:#fff;font-size:10.5px;font-weight:600;padding:6px 10px;border-radius:8px;white-space:nowrap;opacity:0;visibility:hidden;transition:.12s;z-index:5;}
   .badge-ic .tip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#211C33;}
   .badge-ic:hover .tip,.badge-ic.show .tip{opacity:1;visibility:visible;}
-  .closet-stats-row div b{font-size:22px;font-weight:800;color:var(--ink);display:block;}
+  .closet-stats-row div b{font-size:22px;font-weight:700;color:var(--ink);display:block;}
   .closet-stats-row div span{font-size:11.5px;color:var(--muted);}
   .lb-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;}
   @media (max-width:760px){.lb-cols{grid-template-columns:1fr;}}
   .lb{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
   .lbrow{display:grid;grid-template-columns:44px 1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 18px;box-shadow:0 2px 8px rgba(26,21,35,.05);}
   .lbrow.me{background:#faf8ff;border-color:#ddd0fb;}
-  .lbrow .rank{font-size:17px;font-weight:800;text-align:center;color:var(--muted);}
+  .lbrow .rank{font-size:17px;font-weight:700;text-align:center;color:var(--muted);}
   .lbrow.top .rank{font-size:22px;}
   .lbrow .who .n{font-size:14px;font-weight:700;} .lbrow .who .p{font-size:11.5px;color:var(--muted);}
-  .lbrow .rocks{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;}
+  .lbrow .rocks{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;}
   .lbrow .badges{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:220px;}
-  .badge{font-size:10px;font-weight:800;color:#8a6a15;background:linear-gradient(135deg,#fff7e6,#fdeecb);border:1px solid #f4e2b0;border-radius:999px;padding:4px 9px;white-space:nowrap;}
 
   /* ─── Shop ─── */
   .shopcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px;display:flex;flex-direction:column;gap:9px;box-shadow:0 2px 8px rgba(26,21,35,.05);}
   .shopcard .si{width:46px;height:46px;border-radius:12px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:23px;}
   .shopcard h4{font-size:14.5px;font-weight:700;} .shopcard p{font-size:12px;color:var(--muted);flex:1;line-height:1.4;}
-  .shopcard .price{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;}
+  .shopcard .price{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;}
   .buybtn{border:none;border-radius:999px;padding:10px 16px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;background:var(--color-button-primary);color:#fff;box-shadow:0 4px 12px rgba(56,33,95,.22);}
   .buybtn:disabled{background:#eef0f4;color:#a0a0b0;box-shadow:none;cursor:default;}
   .buybtn.owned{background:#e3f8f1;color:#0b6b52;}
 
   /* ─── Toast ─── */
-  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:700;padding:12px 18px;border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.22);z-index:60;opacity:0;transition:.2s;display:flex;align-items:center;gap:8px;pointer-events:none;}
+  /* Real toasts are white, top layer - per Heather's rule (real-time
+     pop-up notifications, not embedded in a card, not the dark ink pill
+     this used to be). */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#fff;color:var(--ink);border:1px solid var(--line);font-size:13px;font-weight:700;padding:12px 18px;border-radius:999px;box-shadow:0 12px 30px rgba(26,21,35,.16);z-index:60;opacity:0;transition:.2s;display:flex;align-items:center;gap:8px;pointer-events:none;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .foot{border-top:1px solid var(--line);margin-top:44px;padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--muted);}
 
@@ -446,7 +470,7 @@
     <button class="nl" data-sec="closet">Your Closet</button>
   </div>
   <div class="nav-right">
-    <button class="raffleGlow" id="raffleGlowBtn" title="Monthly Raffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a1.5 1.5 0 0 0 0 3V14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a1.5 1.5 0 0 0 0-3V8z"/><path d="M9 6.5v11" stroke-dasharray="2.2 3"/></svg></button>
+    <button class="raffleGlow" id="raffleGlowBtn" title="Monthly Raffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a1.5 1.5 0 0 0 0 3V14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a1.5 1.5 0 0 0 0-3V8z"/><path d="M9 6.5v11" stroke-dasharray="2.2 3"/></svg><span>Raffle</span></button>
     <div class="nav-rocks"><span class="mricn"></span><b id="navTokBig">1</b></div>
     <div class="nav-avatar">JD</div>
   </div>
@@ -458,7 +482,7 @@
   <!-- ═══ DASHBOARD ═══ -->
   <section data-sec="dashboard" class="show">
     <h1 class="title">Welcome back, Designer</h1>
-    <p class="lead">Complete the Daily Challenge, quizzes, and trivia to earn moon rocks and make your dream closet a little nicer.</p>
+    <p class="lead">Earn moon rocks by finishing the Daily Challenge and Weekly Trivia, then spend them entering the monthly raffle, climbing the leaderboard, and styling your dream closet.</p>
 
     <!-- Hero: 2-column white card, absolute buttons -->
     <div class="closet">
@@ -471,27 +495,30 @@
         <!-- Right: info + absolute button group -->
         <div class="info">
           <div class="k">Your Closet</div>
-          <div class="prog"><i id="closetProg" style="width:10%"></i></div>
           <h3 id="closetDay">Day 1</h3>
           <div class="mood" id="closetMood">Filthy. A pile of dirty laundry and closet monsters live here. Log in to clean me up.</div>
-          <a class="daily-gate" id="dailyGate" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank" style="display:none;">🔒 Finish today's Daily Challenge to claim today's reward</a>
           <div class="stats">
-            <div><div class="statnum"><span class="mricn"></span><b id="tokBig">1</b></div><span>moon rocks</span></div>
             <div><div class="statnum"><span class="flameicn"></span><b id="strkBig">1</b></div><span>day streak</span></div>
-          </div>
-          <div class="actions">
-            <button class="cbtn compare" id="compareBtn">Compare Collections</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Weekly Trivia — Daily Challenge lives in Trainings now, not the
-         dashboard, so it's clear the dashboard itself doesn't hand out
-         rocks. -->
+    <!-- Daily Challenge is the primary CTA here (purple, wide column) -
+         Weekly Trivia is the smaller secondary card beside it (narrow
+         column). Both also live on the Challenges tab; no dashboard-only
+         JS wiring needed - the generic overlay-intercept listener and
+         updateEarnBadges() both already work off any matching element,
+         not a fixed count. -->
     <div class="drow">
-      <div class="ecard">
-        <div class="tag">Weekly · resets Monday · <span class="earn soft">up to +15 <img class="mr" src="moon-logo.png"></span></div>
+      <a class="ecard primary" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
+        <div class="tag">Today, <span class="dailyDateLabel"></span> · <span class="earn soft daily-badge">Earn +5 <img class="mr" src="moon-logo.png"></span></div>
+        <h3>Daily Challenge</h3>
+        <p>A quick hands-on task inside a mock of the designer.</p>
+        <span class="go">Play now →</span>
+      </a>
+      <div class="ecard secondary">
+        <div class="tag">Weekly · resets Monday · <span class="earn soft">Earn up to +15 <img class="mr" src="moon-logo.png"></span></div>
         <h3>Weekly Trivia</h3>
         <p>5 quick questions about the app. New set every week.</p>
         <button class="go" id="triviaOpen">Play trivia →</button>
@@ -505,22 +532,22 @@
     <h1 class="title">Challenges</h1>
     <p class="lead">Today's challenge, the weekly trivia set, and every quiz - all in one place.</p>
     <div class="drow3">
-      <a class="ecard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
-        <div class="tag">Today · <span class="earn soft daily-badge">+5 <img class="mr" src="moon-logo.png"> on completion</span></div>
+      <a class="ecard primary" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
+        <div class="tag">Today, <span class="dailyDateLabel"></span> · <span class="earn soft daily-badge">Earn +5 <img class="mr" src="moon-logo.png"></span></div>
         <h3>Daily Challenge</h3>
         <p>A quick hands-on task inside a mock of the designer.</p>
         <span class="go">Play now →</span>
       </a>
-      <div class="ecard">
-        <div class="tag">Weekly · resets Monday · <span class="earn soft">up to +15 <img class="mr" src="moon-logo.png"></span></div>
+      <div class="ecard secondary">
+        <div class="tag">Weekly · resets Monday · <span class="earn soft">Earn up to +15 <img class="mr" src="moon-logo.png"></span></div>
         <h3>Weekly Trivia</h3>
         <p>5 quick questions about the app. New set every week.</p>
         <button class="go" id="triviaOpen2">Play trivia →</button>
       </div>
-      <a class="ecard" href="./3%20Quizzes/index.html" target="_blank">
-        <div class="tag">All quizzes</div>
-        <h3>Quiz landing page</h3>
-        <p>All three quizzes in one place, with QR codes on the decks.</p>
+      <a class="ecard secondary" href="./3%20Quizzes/index.html" target="_blank">
+        <div class="tag">Practice only · no moon rocks</div>
+        <h3>Quizzes</h3>
+        <p>Every quiz in one place, with QR codes on the decks.</p>
         <span class="go">Open →</span>
       </a>
     </div>
@@ -530,22 +557,25 @@
   <section data-sec="trainings">
     <h1 class="title">Trainings</h1>
     <p class="lead">Review past training presentations, live-session activities, guides and videos any time.</p>
-    <div class="sechead"><h2>Previous Training Materials</h2></div>
+    <div class="sechead" style="margin-top:14px;">
+      <nav class="jumpnav"><a href="#tr-prev">Previous Materials</a><a href="#tr-day2">Day 2 Activities</a><a href="#tr-guides">Guides</a><a href="#tr-videos">Videos</a></nav>
+      <div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="trainingsSearch" placeholder="Search trainings"></div>
+    </div>
+    <div class="sechead" id="tr-prev"><h2>Previous Training Materials</h2></div>
     <div class="grid">
       <a class="acard" href="./1%20Decks/Day1_Deck.html" target="_blank" data-eid="day1" data-earn="8"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><span class="pill2 ready">Day 1</span></div><h4>Day 1 Deck</h4><p>Full appointment flow, room shape to estimate.</p><span class="earn" data-eb="day1">Earn +8 <img class="mr" src="moon-logo.png"></span><span class="open">Review <span class="arw">→</span></span></a>
       <a class="acard" href="./1%20Decks/Day2_Deck.html" target="_blank" data-eid="day2" data-earn="8"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9l3 3 4-5"/></svg></div><span class="pill2 ready">Day 2</span></div><h4>Day 2 Deck</h4><p>Execution day: practice appointments and the tournament.</p><span class="earn" data-eb="day2">Earn +8 <img class="mr" src="moon-logo.png"></span><span class="open">Review <span class="arw">→</span></span></a>
     </div>
-    <div class="sechead"><h2>Training Day 2 Activities</h2></div>
+    <div class="sechead" id="tr-day2"><h2>Training Day 2 Activities</h2></div>
     <div class="grid">
-      <a class="acard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank"><div class="ah"><h4>Daily Challenge</h4><span class="earn daily-badge">+5 <img class="mr" src="moon-logo.png"></span></div><p>A quick hands-on task inside a mock of the designer - finish it to earn moon rocks and claim today's reward.</p><span class="pbtn">Start puzzle →</span></a>
       <a class="acard" href="./4%20Day%202%20Activities/Client_Cards_Checklist.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="10" rx="2"/><path d="M7 19h14V9"/></svg></div><span class="pill2 ready">Activity</span></div><h4>Celebrity Client Cards</h4><p>Roleplay profiles with a guided checklist.</p><span class="open">Open <span class="arw">→</span></span></a>
       <a class="acard" href="./4%20Day%202%20Activities/Tournament_Voting.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><path d="M6 4h12v3a6 6 0 0 1-12 0V4zM9 20h6M10 20v-3M14 20v-3"/></svg></div><span class="pill2 ready">Activity</span></div><h4>Dream Closet Tournament</h4><p>Live voting console for the Day 2 showdown.</p><span class="open">Open <span class="arw">→</span></span></a>
     </div>
-    <div class="sechead"><h2>Guides &amp; handouts</h2></div>
+    <div class="sechead" id="tr-guides"><h2>Guides &amp; handouts</h2></div>
     <div class="grid">
       <a class="acard" href="./2%20Handouts%20%26%20Guide/Interactive_Designer_Guide.html" target="_blank"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></div><span class="pill2 review">Ready</span></div><h4>Interactive Navigation Guide</h4><p>Step-by-step walkthrough with gestures and a built-in assistant.</p><span class="open">Open <span class="arw">→</span></span></a>
     </div>
-    <div class="sechead"><h2>Videos</h2></div>
+    <div class="sechead" id="tr-videos"><h2>Videos</h2></div>
     <div class="grid">
       <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Measuring a room</h4><p>Setting the room shape and editing wall measurements.</p></div>
       <div class="acard locked"><div class="ah"><div class="icn"><svg viewBox="0 0 24 24" stroke="#9a9aae"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><span class="pill2 soon">Soon</span></div><h4>Placing obstacles</h4><p>Adding doors, windows and outlets from the panel.</p></div>
@@ -557,7 +587,7 @@
   <!-- ═══ YOUR CLOSET ═══ -->
   <section data-sec="closet">
     <h1 class="title">Your Closet</h1>
-    <p class="lead">Tap Customize to change colors and textures.</p>
+    <p class="lead">Make it yours. Every moon rock you earn goes straight into your closet's finishes, layout, and hardware, and the closet you build here is what shows up on the leaderboard. Tap Customize to change colors and textures.</p>
     <div class="closet-view-wrap" id="closetView">
       <div id="closetIllustration"></div>
       <div class="closet-3d-wrap" id="closet3dWrap" style="display:none;">
@@ -595,7 +625,7 @@
     </div>
 
     <div class="sechead" style="margin-top:28px;"><h2>Leaderboard</h2></div>
-    <p class="lead" style="margin-top:-6px;">Ranked by moon rocks put into the closet - tap a designer to view their closet in 3D above.</p>
+    <p class="lead" style="margin-top:-6px;">Ranked by moon rocks put into the closet - tap a designer to view their closet in 3D above. Top designers each quarter win a prize (details coming soon), so the more you build here, the higher you climb.</p>
     <div id="browseList" style="margin-top:12px;max-width:520px;"></div>
   </section>
 
@@ -745,7 +775,7 @@
     var ph=panelHex?'#'+panelHex:null;
     var boxFill=ph||'#f1ece0', trimFill=ph?shade(ph,0.15):'#fbf9f4', toeFill=ph?shade(ph,-0.12):'#efe7d6',
       sideFill=ph?shade(ph,0.08):'#f6f1e6', drawerFill=ph?shade(ph,0.2):'#f7f3ec';
-    function accIcon(key){ var c='#7239EA'; switch(key){
+    function accIcon(key){ var c='#734e94'; switch(key){
       case 'hook': return '<path d="M-3 -5v6a3 3 0 0 0 6 0v-3" stroke="'+c+'" stroke-width="1.6" fill="none"/><circle cx="3" cy="-2" r="1" fill="'+c+'"/>';
       case 'bracket': return '<path d="M-4 6V-4h8" stroke="'+c+'" stroke-width="1.6" fill="none"/>';
       case 'rod': return '<path d="M-6 0h12" stroke="'+c+'" stroke-width="1.6"/><circle cx="-6" cy="0" r="1.2" fill="'+c+'"/><circle cx="6" cy="0" r="1.2" fill="'+c+'"/>';
@@ -904,12 +934,6 @@
     document.getElementById('closetCaption').textContent=STAGES[s].cap;
     document.getElementById('closetDay').textContent='Day '+(st.visits||1);
     document.getElementById('closetMood').textContent=STAGES[s].mood;
-    document.getElementById('closetProg').style.width=((s+1)/10*100)+'%';
-    var gate=document.getElementById('dailyGate');
-    var doneToday=!!(st.claimed&&st.claimed['puzzle-'+new Date().toISOString().slice(0,10)]);
-    gate.style.display=''; gate.classList.toggle('done',doneToday);
-    gate.textContent=doneToday?'✅ Today\'s reward claimed - nice work!':'🔒 Finish today\'s Daily Challenge to claim today\'s reward';
-    document.getElementById('tokBig').textContent=st.tokens;
     document.getElementById('strkBig').textContent=st.streak;
     var s2=document.getElementById('strkBig2'); if(s2)s2.innerHTML=FLAME+' '+st.streak+' day'+(st.streak>1?'s':'');
     document.getElementById('closetTokBig').textContent=st.tokens;
@@ -948,8 +972,6 @@
     document.getElementById('closetViewingBar').style.display='none';
     renderClosetIllustration();
   });
-
-  document.getElementById('compareBtn').addEventListener('click',function(){ toast('Compare Collections — coming soon!'); });
 
   /* ── FAQ chat: client-side keyword match against a curated Q&A set, no
      real AI backend - a canned-answer "assistant" feel rather than a
@@ -1035,7 +1057,7 @@
     if(!text){ toast('Add a quick description first.'); return; }
     document.getElementById('helpViewSupport').innerHTML=
       '<div style="text-align:center;padding:30px 18px;"><div style="font-size:36px;">✅</div>'+
-      '<div style="font-size:15px;font-weight:800;margin-top:8px;">Ticket submitted</div>'+
+      '<div style="font-size:15px;font-weight:700;margin-top:8px;">Ticket submitted</div>'+
       '<p style="color:var(--muted);font-size:12.5px;margin-top:6px;">Our team will get back to you. (This is a preview - tickets aren\'t sent anywhere yet.)</p></div>';
   });
 
@@ -1043,11 +1065,40 @@
   var toastEl=document.getElementById('toast'),toastT;
   function toast(html){ toastEl.innerHTML=html; toastEl.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){toastEl.classList.remove('show');},2200); }
   var MR='<img class="mr" src="moon-logo.png">';
-  var FLAME='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;"><path d="M12 2c1.2 3.2-2.6 4.6-2.6 8.4a2.6 2.6 0 0 0 5.2 0c0-1-.8-1.8-.8-2.8 1.8 1 3.2 3 3.2 5.6a5 5 0 0 1-10 0C7 8.6 10 6.4 12 2z"/></svg>';
+  var FLAME='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#734e94" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;"><path d="M12 2c1.2 3.2-2.6 4.6-2.6 8.4a2.6 2.6 0 0 0 5.2 0c0-1-.8-1.8-.8-2.8 1.8 1 3.2 3 3.2 5.6a5 5 0 0 1-10 0C7 8.6 10 6.4 12 2z"/></svg>';
   // Moon-rock/streak icons next to the stat numbers (dashboard hero card +
   // full Your Closet page) - static, so just fill them in once.
   [].slice.call(document.querySelectorAll('.mricn')).forEach(function(el){ el.innerHTML=MR; });
   [].slice.call(document.querySelectorAll('.flameicn')).forEach(function(el){ el.innerHTML=FLAME; });
+  // Today's actual date on every Daily Challenge card, instead of just
+  // "Today" - static per page load, same fill-in-once idiom as above.
+  [].slice.call(document.querySelectorAll('.dailyDateLabel')).forEach(function(el){
+    el.textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  });
+
+  /* ── Trainings search: same substring-match idiom as faqBestMatch()
+     below, applied to each .grid's cards instead of the FAQ list. Hides
+     a whole group (heading + grid) when nothing in it matches. ── */
+  var trainingsSearchInput=document.getElementById('trainingsSearch');
+  if(trainingsSearchInput){
+    trainingsSearchInput.addEventListener('input',function(){
+      var q=this.value.trim().toLowerCase();
+      var groups=[].slice.call(document.querySelectorAll('section[data-sec="trainings"] .grid'));
+      groups.forEach(function(grid){
+        var anyVisible=false;
+        [].slice.call(grid.children).forEach(function(card){
+          var h4=card.querySelector('h4'),p=card.querySelector('p');
+          var text=((h4?h4.textContent:'')+' '+(p?p.textContent:'')).toLowerCase();
+          var match=!q||text.indexOf(q)>-1;
+          card.style.display=match?'':'none';
+          if(match)anyVisible=true;
+        });
+        grid.style.display=anyVisible?'':'none';
+        var sechead=grid.previousElementSibling;
+        if(sechead&&sechead.classList.contains('sechead'))sechead.style.display=anyVisible?'':'none';
+      });
+    });
+  }
 
   /* ── badge icons (small icon UI, hover on desktop / tap on touch shows what it is) ── */
   var BADGE_ICON_SVGS={
@@ -1122,7 +1173,7 @@
   /* ── leaderboard ── */
   /* ── closet customize panel (overlaid on the 3D view - stuff that changes
      how your closet looks) ── */
-  var SHOPICN='<svg viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">';
+  var SHOPICN='<svg viewBox="0 0 24 24" fill="none" stroke="#734e94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">';
   // Placeholder shapes for real accessories that don't have dedicated
   // illustrations yet (see MOON_CATALOG.accessoryCatalog `icon` field).
   // `default` covers small hardware (grommets, clips, the CAC door system)
@@ -1363,7 +1414,7 @@
   raffleModal.addEventListener('click',function(e){ if(e.target===raffleModal)closeRaffle(); });
   async function buy(id){
     var it=ALL_SHOP_ITEMS.filter(function(x){return x.id===id;})[0]; if(!it)return;
-    if(!st.owned[it.id]&&st.tokens<it.price)return;
+    if(!st.owned[it.id]&&st.tokens<it.price){ toast('Not enough moon rocks for '+it.n+' - you have '+st.tokens+', need '+(it.price-st.tokens)+' more.'); return; }
     if(it.type==='cosmetic'&&st.owned[it.id]&&!it.category)return;
     try{
       if(!st.owned[it.id]){
@@ -1438,7 +1489,7 @@
         }catch(e){ console.error(e); }
       }
       sheet.innerHTML='<div class="mh"><span class="k">Weekly Trivia</span><button class="x" id="tx">✕</button></div>'+
-        '<div class="mdone"><div class="big">'+(tScore>=4?'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#c6952c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M8 5H5a3 3 0 0 0 3 5M16 5h3a3 3 0 0 1-3 5"/><path d="M12 12v3M9 19h6M9 19c0-1.5.5-2.5 1.5-3h3c1 .5 1.5 1.5 1.5 3"/></svg>':'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>')+'</div><h3>'+tScore+' / '+tSet.length+' correct</h3>'+
+        '<div class="mdone"><div class="big">'+(tScore>=4?'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#006b39" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M8 5H5a3 3 0 0 0 3 5M16 5h3a3 3 0 0 1-3 5"/><path d="M12 12v3M9 19h6M9 19c0-1.5.5-2.5 1.5-3h3c1 .5 1.5 1.5 1.5 3"/></svg>':'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#734e94" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>')+'</div><h3>'+tScore+' / '+tSet.length+' correct</h3>'+
         (earned>0?'<div class="rtokline" style="margin:12px 0 4px;">'+MR+' +'+earned+' moon rocks earned!</div>':'<p style="color:var(--muted);font-size:12.5px;margin-top:6px;">'+(alreadyClaimed?'Already claimed this week\'s rocks.':'Get at least one right to earn rocks.')+'</p>')+
         '<p style="color:var(--muted);font-size:13px;margin-top:6px;">New trivia every Monday.</p>'+
         '<button class="mnext" id="tdone" style="margin-top:14px;">Done</button></div>';
