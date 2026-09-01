@@ -327,9 +327,9 @@
   /* Swatch card grid - mirrors the real app's material/color swatch tiles:
      white rounded chip, circular info dot, Included/Equipped badge, purple
      selection ring, name + price below. */
-  .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px 8px;padding-bottom:12px;}
+  .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);align-items:start;gap:11px 8px;padding-bottom:12px;}
   .cust-card-group{display:flex;flex-direction:column;gap:4px;cursor:pointer;}
-  .cust-card{border:1px solid var(--line);border-radius:8px;position:relative;aspect-ratio:1;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .cust-card{border:1px solid var(--line);border-radius:8px;position:relative;width:100%;aspect-ratio:1;flex:none;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;}
   .cust-card img{width:100%;height:100%;object-fit:cover;}
   .cust-card svg.itemicon{width:22px;height:22px;}
   .cust-card.equipped{border:2px solid var(--primary);}
@@ -1126,10 +1126,10 @@
     // one "Colors & Textures" tab with no visual distinction between the
     // two, which read as confusing - split into two tabs so it's obvious
     // which one you're changing.
-    {id:'wallSage',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: Sage',d:'Sage green closet finish.',price:20,type:'cosmetic',category:'wall',hex:'c9d9c4',group:'Closet Finish',section:'Other'},
-    {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: Blush',d:'Blush pink closet finish.',price:20,type:'cosmetic',category:'wall',hex:'f3dede',group:'Closet Finish',section:'Other'},
-    {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Room'},
-    {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Floor: Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Room'}
+    {id:'wallSage',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Sage',d:'Sage green closet finish.',price:20,type:'cosmetic',category:'wall',hex:'c9d9c4',group:'Closet Finish',section:'Other'},
+    {id:'wallBlush',i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Blush',d:'Blush pink closet finish.',price:20,type:'cosmetic',category:'wall',hex:'f3dede',group:'Closet Finish',section:'Other'},
+    {id:'floorOak',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Light Oak',d:'Lighter oak floor.',price:20,type:'cosmetic',category:'floor',hex:'e0c9a0',group:'Room'},
+    {id:'floorWalnut',i:SHOPICN+'<path d="M3 20h18M3 20V9l9-6 9 6v11"/></svg>',n:'Dark Walnut',d:'Richer walnut floor.',price:20,type:'cosmetic',category:'floor',hex:'5a3d28',group:'Room'}
   ].concat(
     // Every real Closet World panel finish (see catalog-data.js) - all 42,
     // none added or dropped, per Mo's call - not a curated subset anymore.
@@ -1138,7 +1138,7 @@
     // materials.json), so the filter chips below split on a real
     // distinction instead of an arbitrary one.
     (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.materials:[]).map(function(m){
-      return {id:'wall_'+m.id,i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:'Closet: '+m.name,d:'Real Closet World panel finish.',price:Math.max(10,m.rocks),type:'cosmetic',category:'wall',hex:m.hex,image:m.image,group:'Closet Finish',section:m.collection||'Other'};
+      return {id:'wall_'+m.id,i:SHOPICN+'<rect x="4" y="4" width="16" height="16" rx="2"/></svg>',n:m.name,d:'Real Closet World panel finish.',price:Math.max(10,m.rocks),type:'cosmetic',category:'wall',hex:m.hex,image:m.image,group:'Closet Finish',section:m.collection||'Other'};
     }),
     (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.rods:[]).map(function(r){
       return {id:'rod_'+r.id,i:SHOPICN+'<path d="M4 7h16"/><circle cx="6" cy="7" r="1.6"/><circle cx="18" cy="7" r="1.6"/><path d="M8 7v3M12 7v5M16 7v3"/></svg>',n:'Rod: '+r.name,d:'Real Closet World rod finish.',price:r.rocks,type:'cosmetic',group:'Accessories',section:'Rods'};
