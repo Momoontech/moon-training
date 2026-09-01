@@ -91,18 +91,19 @@
 
   section[data-sec]{display:none;} section[data-sec].show{display:block;}
 
-  /* ─── Hero closet card — 2-column ─── */
+  /* ─── Hero closet card — 2-column, plus a challenge row inside the
+     same card underneath (see .challenge-row below) ─── */
   .closet{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(26,21,35,.07);}
-  .closet .cw{display:grid;grid-template-columns:320px 1fr;min-height:280px;}
+  .closet .cw{display:grid;grid-template-columns:420px 1fr;min-height:320px;}
 
-  /* Left: illustration panel */
+  /* Left: illustration panel - bigger per Mo's call */
   .closet-left{background:#f2eef9;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px 20px;gap:12px;}
   #closetArt{display:flex;align-items:center;justify-content:center;}
-  .closet svg.cl{width:260px;height:auto;display:block;}
+  .closet svg.cl{width:340px;height:auto;display:block;}
   .closet-caption{font-size:12px;color:#8a82a0;font-weight:500;text-align:center;max-width:200px;line-height:1.4;}
 
   /* Right: info panel */
-  .closet .info{padding:24px 24px 90px;position:relative;display:flex;flex-direction:column;}
+  .closet .info{padding:24px;position:relative;display:flex;flex-direction:column;}
 
   /* "YOUR CLOSET" — 12px/600/uppercase/0.96px tracking */
   .closet .k{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.96px;color:var(--muted);}
@@ -110,11 +111,25 @@
   .closet h3{font-size:32px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-top:4px;}
   .closet .mood{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.45;}
 
-  .closet .stats{display:flex;gap:22px;margin-top:14px;}
-  .closet .stats div b{font-size:18px;font-weight:700;color:var(--ink);}
-  .closet .stats div span{font-size:11px;color:var(--muted);display:block;margin-top:1px;}
   .statnum{display:flex;align-items:center;gap:5px;}
   .statnum .mr{width:16px;height:16px;}
+
+  /* Daily Challenge + Weekly Trivia, split inside the hero card instead
+     of as separate cards below it. Reuses .ecard's .tag/.go patterns but
+     scoped to its own selector so it doesn't inherit .closet h3's 32px
+     Day-heading size. */
+  .challenge-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);}
+  .challenge-cell{padding:20px 24px;display:flex;flex-direction:column;gap:8px;transition:.12s;}
+  .challenge-cell:first-child{border-right:1px solid var(--line);}
+  a.challenge-cell:hover{background:#faf9fc;}
+  .challenge-cell .tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .challenge-cell h3{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:normal;margin-top:0;}
+  .challenge-cell p{font-size:12.5px;color:var(--muted);line-height:1.45;}
+  .challenge-cell .go{align-self:flex-start;margin-top:4px;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(56,33,95,.26);display:inline-flex;gap:6px;align-items:center;transition:.12s;}
+  .challenge-cell .go:hover{background:#351f48;}
+  .challenge-cell.secondary .go{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none;}
+  .challenge-cell.secondary .go:hover{background:#f5f4f6;}
+  @media (max-width:640px){.challenge-row{grid-template-columns:1fr;}.challenge-cell:first-child{border-right:none;border-bottom:1px solid var(--line);}}
 
   .cbtn{background:#fff;border:1px solid #dddae8;color:var(--ink);border-radius:999px;padding:8px 15px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:.12s;white-space:nowrap;}
   .cbtn:hover{background:#f7f6fb;border-color:#c9c4db;}
@@ -132,17 +147,11 @@
   /* CTA on white card — dark purple pill */
   .ecard .go{align-self:flex-start;margin-top:6px;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(56,33,95,.26);display:inline-flex;gap:6px;align-items:center;transition:.12s;}
   .ecard .go:hover{background:#351f48;}
-  /* Primary/secondary card hierarchy - real Primary/Secondary Button
-     tokens, so exactly one card per row reads as THE action (dashboard's
-     Daily Challenge + Challenges tab), everything beside it stays a
-     lighter secondary. */
-  .ecard.primary{background:var(--color-button-primary);border-color:var(--color-button-primary);}
-  .ecard.primary .tag{color:var(--primary-tint-on-dark);}
-  .ecard.primary h3{color:#fff;}
-  .ecard.primary p{color:var(--primary-tint-on-dark);}
-  .ecard.primary .go{background:#fff;color:var(--color-button-primary);box-shadow:0 20px 25px rgba(0,0,0,.10),5px 5px 20px rgba(115,78,148,.6);}
-  .ecard.primary .go:hover{background:var(--primary-soft);}
-  .ecard.secondary{box-shadow:0 20px 25px rgba(0,0,0,.05),5px 5px 20px rgba(0,0,0,.05);}
+  /* Purple is the CTA button, not the card - a plain .ecard's default
+     .go above is already the solid-purple Primary Button treatment, so
+     the ONE actual action per row (Daily Challenge) just uses a bare
+     .ecard. .secondary only lightens the BUTTON (real Secondary Button
+     token: white/bordered) for the supporting card(s) beside it. */
   .ecard.secondary .go{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none;}
   .ecard.secondary .go:hover{background:#faf9fc;}
 
@@ -484,7 +493,14 @@
     <h1 class="title">Welcome back, Designer</h1>
     <p class="lead">Earn moon rocks by finishing the Daily Challenge and Weekly Trivia, then spend them entering the monthly raffle, climbing the leaderboard, and styling your dream closet.</p>
 
-    <!-- Hero: 2-column white card, absolute buttons -->
+    <!-- Hero: one card - illustration + info on top, Daily Challenge and
+         Weekly Trivia split inside the same box underneath rather than
+         as separate cards below it. Purple stays on the CTA buttons only
+         (a plain .ecard's default .go is already the solid-purple
+         Primary Button treatment) - not the whole card. No dashboard-only
+         JS wiring needed for the challenge cells - the generic overlay-
+         intercept listener and updateEarnBadges() both already work off
+         any matching element, not a fixed count. -->
     <div class="closet">
       <div class="cw">
         <!-- Left: illustration + caption -->
@@ -492,36 +508,26 @@
           <div id="closetArt"></div>
           <div class="closet-caption" id="closetCaption">Your closet monsters live here</div>
         </div>
-        <!-- Right: info + absolute button group -->
+        <!-- Right: info -->
         <div class="info">
           <div class="k">Your Closet</div>
           <h3 id="closetDay">Day 1</h3>
           <div class="mood" id="closetMood">Filthy. A pile of dirty laundry and closet monsters live here. Log in to clean me up.</div>
-          <div class="stats">
-            <div><div class="statnum"><span class="flameicn"></span><b id="strkBig">1</b></div><span>day streak</span></div>
-          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Daily Challenge is the primary CTA here (purple, wide column) -
-         Weekly Trivia is the smaller secondary card beside it (narrow
-         column). Both also live on the Challenges tab; no dashboard-only
-         JS wiring needed - the generic overlay-intercept listener and
-         updateEarnBadges() both already work off any matching element,
-         not a fixed count. -->
-    <div class="drow">
-      <a class="ecard primary" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
-        <div class="tag">Today, <span class="dailyDateLabel"></span> · <span class="earn soft daily-badge">Earn +5 <img class="mr" src="moon-logo.png"></span></div>
-        <h3>Daily Challenge</h3>
-        <p>A quick hands-on task inside a mock of the designer.</p>
-        <span class="go">Play now →</span>
-      </a>
-      <div class="ecard secondary">
-        <div class="tag">Weekly · resets Monday · <span class="earn soft">Earn up to +15 <img class="mr" src="moon-logo.png"></span></div>
-        <h3>Weekly Trivia</h3>
-        <p>5 quick questions about the app. New set every week.</p>
-        <button class="go" id="triviaOpen">Play trivia →</button>
+      <div class="challenge-row">
+        <a class="challenge-cell" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
+          <div class="tag">Today, <span class="dailyDateLabel"></span> · <span class="earn soft daily-badge">Earn +5 <img class="mr" src="moon-logo.png"></span></div>
+          <h3>Daily Challenge</h3>
+          <p>A quick hands-on task inside a mock of the designer.</p>
+          <span class="go">Play now →</span>
+        </a>
+        <div class="challenge-cell secondary">
+          <div class="tag">Weekly · resets Monday · <span class="earn soft">Earn up to +15 <img class="mr" src="moon-logo.png"></span></div>
+          <h3>Weekly Trivia</h3>
+          <p>5 quick questions about the app. New set every week.</p>
+          <button class="go" id="triviaOpen">Play trivia →</button>
+        </div>
       </div>
     </div>
 
@@ -532,7 +538,7 @@
     <h1 class="title">Challenges</h1>
     <p class="lead">Today's challenge, the weekly trivia set, and every quiz - all in one place.</p>
     <div class="drow3">
-      <a class="ecard primary" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
+      <a class="ecard" href="./6%20Daily%20Challenge/Daily_Challenge_Concept.html" target="_blank">
         <div class="tag">Today, <span class="dailyDateLabel"></span> · <span class="earn soft daily-badge">Earn +5 <img class="mr" src="moon-logo.png"></span></div>
         <h3>Daily Challenge</h3>
         <p>A quick hands-on task inside a mock of the designer.</p>
@@ -934,7 +940,6 @@
     document.getElementById('closetCaption').textContent=STAGES[s].cap;
     document.getElementById('closetDay').textContent='Day '+(st.visits||1);
     document.getElementById('closetMood').textContent=STAGES[s].mood;
-    document.getElementById('strkBig').textContent=st.streak;
     var s2=document.getElementById('strkBig2'); if(s2)s2.innerHTML=FLAME+' '+st.streak+' day'+(st.streak>1?'s':'');
     document.getElementById('closetTokBig').textContent=st.tokens;
     document.getElementById('closetStrkBig').textContent=st.streak;
