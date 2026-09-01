@@ -291,7 +291,7 @@
   /* Mirrors the real app's "Customize Panel V3": a floating card docked to
      the viewport edge, not a full sidebar - see the Figma handoff
      (node 23719:18941) Mo asked this to match "just like this". */
-  .closet-customize{position:absolute;top:14px;right:14px;bottom:14px;width:308px;background:#fbfafb;border-radius:16px;padding:16px;overflow-y:auto;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;display:flex;flex-direction:column;}
+  .closet-customize{position:absolute;top:14px;right:14px;bottom:14px;width:308px;background:#fbfafb;border-radius:16px;padding:16px;overflow-y:auto;overflow-x:hidden;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;display:flex;flex-direction:column;}
   @media (max-width:640px){.closet-customize{left:14px;width:auto;}}
 
   /* "Options" header + Clear / Clear All - real panel's top row. */
@@ -327,8 +327,14 @@
   /* Swatch card grid - mirrors the real app's material/color swatch tiles:
      white rounded chip, circular info dot, Included/Equipped badge, purple
      selection ring, name + price below. */
-  .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);align-items:start;gap:11px 8px;padding-bottom:12px;}
-  .cust-card-group{display:flex;flex-direction:column;gap:4px;cursor:pointer;}
+  /* minmax(0,1fr), not bare 1fr - a grid track's automatic minimum is the
+     size of its content, so a long unwrapped name (e.g. "300 Classic White
+     Blanc") was forcing that ONE column wider than its neighbors, breaking
+     the square and pushing the whole grid into horizontal overflow. 0 as
+     the floor forces all 3 columns truly equal; the name still truncates
+     via the existing ellipsis rule instead of stretching its column. */
+  .cust-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:11px 8px;padding-bottom:12px;}
+  .cust-card-group{display:flex;flex-direction:column;gap:4px;min-width:0;cursor:pointer;}
   /* Height-via-padding, not aspect-ratio/flex sizing - immune to grid/flex
      stretch quirks so every tile is a true 1:1 square no matter what's next
      to it (icon-only Hardware tiles, flat-hex tiles, real photo tiles). */
