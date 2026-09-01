@@ -288,38 +288,71 @@
   /* Floats ON TOP of the illustration itself (matches the real app's
      in-viewport Options panel), not beside it as a separate section. */
   .closet-customize-btn{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.94);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 2px 10px rgba(26,21,35,.14);}
-  .closet-customize{position:absolute;top:14px;right:14px;bottom:14px;width:260px;background:rgba(255,255,255,.97);border-radius:14px;padding:14px;overflow-y:auto;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;}
+  /* Mirrors the real app's "Customize Panel V3": a floating card docked to
+     the viewport edge, not a full sidebar - see the Figma handoff
+     (node 23719:18941) Mo asked this to match "just like this". */
+  .closet-customize{position:absolute;top:14px;right:14px;bottom:14px;width:308px;background:#fbfafb;border-radius:16px;padding:16px;overflow-y:auto;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;display:flex;flex-direction:column;}
   @media (max-width:640px){.closet-customize{left:14px;width:auto;}}
-  .side-bal{font-size:12px;color:var(--muted);margin-bottom:10px;}
-  .side-bal b{color:var(--ink);font-weight:800;}
 
-  /* Pill category tabs (Boosts / Accessories / Colors & Textures) - matches
-     the real app's Customize panel sub-tab row (Rods / Door Hinges / ...):
-     fully-rounded pills, purple underline on the active one. */
-  .side-subtabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--line);}
-  .side-subtabs button{flex:1;border:none;background:none;border-radius:999px 999px 0 0;padding:9px 4px;font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;}
-  .side-subtabs button.on{color:var(--primary);font-weight:700;border-bottom-color:var(--primary);}
+  /* "Options" header + Clear / Clear All - real panel's top row. */
+  .cust-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;}
+  .cust-head b.cust-title{font-size:16px;font-weight:700;}
+  .cust-head-actions{display:flex;align-items:center;gap:14px;}
+  .cust-clear{border:none;background:none;padding:0;font-family:inherit;font-size:11px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:4px;cursor:pointer;}
+  .cust-clear svg{width:13px;height:13px;flex:0 0 auto;}
+  .cust-clear:disabled{color:#c7c4cb;cursor:default;}
+  .cust-clear:disabled svg{opacity:.4;}
 
-  /* Secondary filter chips (mirrors the real app's Catalog panel section
-     filters - All/Shelves/Drawers/Rods/... - see catalog-data.js `sections`)
-     shown inside a tab when its items span more than one real section. */
-  .filter-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-  .filter-chips button{border:1px solid var(--line);background:#f5f4f6;border-radius:10px;padding:6px 10px;font-family:inherit;font-size:11px;font-weight:600;color:#433f46;cursor:pointer;}
-  .filter-chips button.on{background:var(--primary);border-color:var(--primary);color:#fff;}
+  /* Finishes / Hardware pill toggle. */
+  .cust-pill-row{display:flex;gap:8px;margin-bottom:12px;}
+  .cust-pill-row button{flex:1;border:1px solid var(--line);background:#f5f4f6;color:#433f46;font-family:inherit;font-size:13px;font-weight:600;padding:8px 6px;border-radius:10px;cursor:pointer;}
+  .cust-pill-row button.on{background:var(--primary);border-color:#ddb8ff;color:#fff;}
+
+  /* Sub-tabs (Main Finish / Countertop / Edgebanding equivalent) - underline
+     style with a full-width baseline, matches the real panel exactly. */
+  .cust-subtabs{display:flex;position:relative;border-bottom:1px solid var(--line);margin-bottom:14px;}
+  .cust-subtabs button{flex:1;border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--ink);padding:9px 4px 11px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .cust-subtabs button.on{font-weight:700;color:var(--ink);border-bottom-color:var(--primary);}
+
+  /* Collapsible collection sections (Solid / Woodgrain / Signia). */
+  .cust-sec{margin-bottom:4px;}
+  .cust-sec-head{display:flex;align-items:center;justify-content:space-between;padding:8px 0;cursor:pointer;}
+  .cust-sec-head .t{font-size:12px;font-weight:500;}
+  .cust-sec-head .n{display:flex;align-items:center;gap:8px;}
+  .cust-sec-head .n span{font-size:12px;color:#a6a1aa;font-weight:500;}
+  .cust-sec-head .n svg{width:18px;height:18px;stroke:#1a181b;transition:transform .15s;}
+  .cust-sec.closed .n svg{transform:rotate(-90deg);}
+  .cust-sec.closed .cust-grid{display:none;}
 
   /* Swatch card grid - mirrors the real app's material/color swatch tiles:
-     square card, gradient/icon preview, a green "equipped" badge and purple
-     selection border when active, label + price below. */
-  .swatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .swatch-card{border:1px solid var(--line);border-radius:8px;position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#f8f8f8;overflow:hidden;}
-  .swatch-card img{width:100%;height:100%;object-fit:contain;}
-  .swatch-card.equipped{border:2px solid #aa81cf;}
-  .swatch-card svg{width:22px;height:22px;}
-  .swatch-badge{position:absolute;top:-2px;right:-2px;background:#f8fff4;border:1px solid #ccebdb;color:#006b39;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:2px 6px;border-radius:6px;}
-  .swatch-label{margin-top:7px;}
-  .swatch-label b{font-size:10px;font-weight:600;display:block;}
-  .swatch-label .price{font-size:9px;color:#8e66b1;font-weight:500;display:flex;align-items:center;gap:3px;margin-top:2px;}
-  .swatch-label .buybtn.sm{margin-top:5px;width:100%;}
+     white rounded chip, circular info dot, Included/Equipped badge, purple
+     selection ring, name + price below. */
+  .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px 8px;padding-bottom:12px;}
+  .cust-card-group{display:flex;flex-direction:column;gap:4px;cursor:pointer;}
+  .cust-card{border:1px solid var(--line);border-radius:8px;position:relative;aspect-ratio:1;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .cust-card img{width:100%;height:100%;object-fit:cover;}
+  .cust-card svg.itemicon{width:22px;height:22px;}
+  .cust-card.equipped{border:2px solid var(--primary);}
+  .cust-card.unaffordable{opacity:.55;}
+  .cust-card .cust-badge{position:absolute;top:6px;left:0;right:0;display:flex;justify-content:center;}
+  .cust-card .cust-badge span{font-size:9px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;}
+  .cust-card .cust-badge.included span{background:#f8fff4;border:1px solid #ccebdb;color:#006b39;}
+  .cust-card .cust-badge.equipped span{background:var(--primary-soft);border:1px solid #ddb8ff;color:var(--primary);}
+  .cust-info-ic{position:absolute;right:6px;bottom:6px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(26,21,35,.25);display:flex;align-items:center;justify-content:center;}
+  .cust-info-ic svg{width:13px;height:13px;stroke:#8e66b1;}
+  .cust-card-text b{font-size:9.5px;font-weight:600;display:block;color:#1a181b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .cust-card-text .price{font-size:9px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:2px;}
+  .cust-card-text .price.included{color:#006b39;}
+  .cust-card-text .price.equipped{color:var(--primary);font-weight:700;}
+  .cust-card-text .price img.mr{width:9px;height:9px;}
+
+  /* Sticky balance bar - the real panel's price summary, adapted to what
+     this app actually tracks (moon rocks, not a dollar estimate). */
+  .cust-price-bar{position:sticky;bottom:0;background:#fbfafb;padding-top:10px;margin-top:auto;}
+  .cust-price-card{background:#fff;border:1.5px solid #d4d1d6;border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+  .cust-price-card .lbl{font-size:14px;color:var(--ink);}
+  .cust-price-card .val{font-size:18px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:6px;}
+  .cust-price-card .val img.mr{width:16px;height:16px;}
   .side-lb-row.me{background:#faf8ff;}
   .side-lb-row .rank{width:16px;font-size:11px;font-weight:800;color:var(--muted);text-align:center;flex:0 0 auto;}
   .side-lb-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -514,14 +547,23 @@
       <div id="closetIllustration"></div>
       <button class="closet-customize-btn" id="customizeBtn">Customize</button>
       <div class="closet-customize" id="customizePanel" style="display:none;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-          <b style="font-size:13px;">Customize</b>
-          <button id="customizeClose" style="border:none;background:#f1f1f6;border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--muted);font-size:13px;">✕</button>
+        <div class="cust-head">
+          <b class="cust-title">Options</b>
+          <button id="customizeClose" style="border:none;background:#f1f1f6;border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--muted);font-size:13px;flex:0 0 auto;">✕</button>
         </div>
-        <div class="side-bal">You have <b id="shopBal"></b></div>
-        <div class="side-subtabs" id="shopTabs"></div>
-        <div class="filter-chips" id="shopFilters" style="display:none;"></div>
+        <div class="cust-head-actions" style="margin-bottom:12px;">
+          <button class="cust-clear" id="custClearTab"><span>Clear <span id="custClearTabLabel"></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg></button>
+          <button class="cust-clear" id="custClearAll"><span>Clear All</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg></button>
+        </div>
+        <div class="cust-pill-row" id="custPillRow"></div>
+        <div class="cust-subtabs" id="shopTabs"></div>
         <div id="shopGroups"></div>
+        <div class="cust-price-bar">
+          <div class="cust-price-card">
+            <span class="lbl">Your moon rocks</span>
+            <span class="val" id="shopBal"></span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="closet-viewing-bar" id="closetViewingBar" style="display:none;">
@@ -1120,53 +1162,87 @@
   // with the standalone Shop tab in favor of the monthly raffle - see
   // renderRaffle() below. ALL_SHOP_ITEMS now only needs closet cosmetics.
   var ALL_SHOP_ITEMS=CLOSET_ITEMS;
-  var SHOP_GROUPS=['Boosts','Accessories','Closet Finish','Room','Layouts'];
-  var shopCat=SHOP_GROUPS[0];
-  var shopSection='All'; // secondary filter within a tab, e.g. Rods vs Hardware inside Accessories
+  // Two top-level pills (mirrors the real panel's Finishes/Hardware toggle)
+  // grouping the 5 SHOP_GROUPS - Finishes is the only side with an
+  // "equipped" concept (a single wall/floor color slot), Hardware is
+  // one-time-owned stuff, which is why Clear only ever touches Finishes.
+  var CUST_TOPS={Finishes:['Closet Finish','Room'],Hardware:['Accessories','Layouts','Boosts']};
+  var custTop='Finishes';
+  var shopCat=CUST_TOPS[custTop][0];
+  var custClosedSections={}; // group name -> array of section names currently collapsed
+  var SECTION_ORDER=['Solids','Woodgrains','Signia','Rods','Hardware','Other'];
+  function itemInfoIconHtml(it){
+    return '<span class="cust-info-ic" title="'+(it.d||it.n)+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>';
+  }
   function swatchCardHtml(it){
     var owned=st.owned[it.id],afford=st.tokens>=it.price;
     var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
-    var preview=it.hex?'background:linear-gradient(180deg,#ffffff 0%,#'+it.hex+' 55%,#5e5e5e 100%);':'background:var(--primary-soft);';
-    var badge=equipped?'<span class="swatch-badge">Equipped</span>':'';
+    var included=it.price===0;
+    var preview=it.hex?'background:#'+it.hex+';':'background:var(--primary-soft);';
     var art=it.image?'<img src="'+it.image+'" alt="" loading="lazy">':(it.hex?'':it.i);
-    var action;
-    if(it.category&&owned){
-      action=equipped?'<div class="price">Equipped</div>':'<button class="buybtn sm" data-buy="'+it.id+'">Equip</button>';
-    }else if(it.type==='cosmetic'&&owned&&!it.category){
-      action='<div class="price">Owned</div>';
-    }else{
-      action='<button class="buybtn sm" data-buy="'+it.id+'"'+(afford?'':' disabled')+'>'+MR+' '+it.price+'</button>';
-    }
-    return '<div><div class="swatch-card'+(equipped?' equipped':'')+'" style="'+preview+'">'+art+badge+'</div>'+
-      '<div class="swatch-label"><b>'+it.n+'</b>'+action+'</div></div>';
+    var badge=equipped?'<div class="cust-badge equipped"><span>Equipped</span></div>':(included?'<div class="cust-badge included"><span>Included</span></div>':'');
+    var canClick=!(it.type==='cosmetic'&&owned&&!it.category); // plain one-time cosmetics: nothing left to do once owned
+    var cardCls='cust-card'+(equipped?' equipped':'')+((!owned&&!afford&&!included)?' unaffordable':'');
+    var priceLine;
+    if(equipped)priceLine='<span class="price equipped">Equipped</span>';
+    else if(included)priceLine='<span class="price included">Included</span>';
+    else if(it.category&&owned)priceLine='<span class="price">Tap to equip</span>';
+    else if(it.type==='cosmetic'&&owned&&!it.category)priceLine='<span class="price">Owned</span>';
+    else priceLine='<span class="price">'+MR+' '+it.price+'</span>';
+    return '<div class="cust-card-group"'+(canClick?' data-buy="'+it.id+'"':'')+'>'+
+      '<div class="'+cardCls+'" style="'+preview+'">'+art+badge+itemInfoIconHtml(it)+'</div>'+
+      '<div class="cust-card-text"><b>'+it.n+'</b>'+priceLine+'</div></div>';
+  }
+  function sectionGridHtml(group,items){
+    // Only build collapsible collection headers when at least one item in
+    // this tab actually carries a real `.section` (Solids/Woodgrains/Signia,
+    // Rods/Hardware, ...) - tabs like Room/Layouts/Boosts don't have that
+    // distinction in the real catalog, so they stay one flat grid.
+    var hasSections=items.some(function(it){return it.section;});
+    if(!hasSections)return '<div class="cust-grid">'+items.map(swatchCardHtml).join('')+'</div>';
+    var buckets={}; items.forEach(function(it){ var s=it.section||'Other'; (buckets[s]=buckets[s]||[]).push(it); });
+    var names=Object.keys(buckets).sort(function(a,b){
+      var ai=SECTION_ORDER.indexOf(a),bi=SECTION_ORDER.indexOf(b);
+      return (ai<0?99:ai)-(bi<0?99:bi);
+    });
+    if(!custClosedSections[group])custClosedSections[group]=names.slice(1); // first section open by default
+    var closed=custClosedSections[group];
+    return names.map(function(name){
+      var isClosed=closed.indexOf(name)>=0;
+      return '<div class="cust-sec'+(isClosed?' closed':'')+'" data-sec="'+name+'">'+
+        '<div class="cust-sec-head" data-sechead="'+name+'"><span class="t">'+name+'</span>'+
+        '<span class="n"><span>'+buckets[name].length+'</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></div>'+
+        '<div class="cust-grid">'+buckets[name].map(swatchCardHtml).join('')+'</div></div>';
+    }).join('');
   }
   function renderShop(){
     document.getElementById('shopBal').innerHTML=MR+' '+st.tokens;
-    document.getElementById('shopTabs').innerHTML=SHOP_GROUPS.map(function(g){
+    document.getElementById('custPillRow').innerHTML=Object.keys(CUST_TOPS).map(function(t){
+      return '<button class="'+(t===custTop?'on':'')+'" data-top="'+t+'">'+t+'</button>';
+    }).join('');
+    document.getElementById('shopTabs').innerHTML=CUST_TOPS[custTop].map(function(g){
       return '<button class="'+(g===shopCat?'on':'')+'" data-cat="'+g+'">'+g+'</button>';
     }).join('');
     var groupItems=CLOSET_ITEMS.filter(function(it){return it.group===shopCat;});
-    // Only show filter chips when this tab's items actually span more than
-    // one real catalog section (see catalog-data.js `sections`) - e.g.
-    // Accessories mixes Rods and Hardware, so filtering helps; a tab with
-    // one section has nothing to filter.
-    var sections=[]; groupItems.forEach(function(it){ if(it.section&&sections.indexOf(it.section)<0)sections.push(it.section); });
-    var filtersEl=document.getElementById('shopFilters');
-    if(sections.length>1){
-      filtersEl.style.display='';
-      filtersEl.innerHTML=['All'].concat(sections).map(function(s){
-        return '<button class="'+(s===shopSection?'on':'')+'" data-sec="'+s+'">'+s+'</button>';
-      }).join('');
-    }else{
-      filtersEl.style.display='none'; shopSection='All';
-    }
-    var shown=groupItems.filter(function(it){return shopSection==='All'||it.section===shopSection;});
-    document.getElementById('shopGroups').innerHTML='<div class="swatch-grid">'+shown.map(swatchCardHtml).join('')+'</div>';
-    [].slice.call(document.querySelectorAll('#shopTabs button')).forEach(function(b){
-      b.addEventListener('click',function(){ shopCat=b.dataset.cat; shopSection='All'; renderShop(); });
+    document.getElementById('shopGroups').innerHTML=sectionGridHtml(shopCat,groupItems);
+    var canClear=shopCat==='Closet Finish'||shopCat==='Room';
+    var clearTab=document.getElementById('custClearTab'),clearAll=document.getElementById('custClearAll');
+    document.getElementById('custClearTabLabel').textContent=shopCat;
+    clearTab.disabled=!canClear;
+    clearAll.disabled=!(st.equippedWall||st.equippedFloor);
+    [].slice.call(document.querySelectorAll('#custPillRow button')).forEach(function(b){
+      b.addEventListener('click',function(){ custTop=b.dataset.top; shopCat=CUST_TOPS[custTop][0]; renderShop(); });
     });
-    [].slice.call(document.querySelectorAll('#shopFilters button')).forEach(function(b){
-      b.addEventListener('click',function(){ shopSection=b.dataset.sec; renderShop(); });
+    [].slice.call(document.querySelectorAll('#shopTabs button')).forEach(function(b){
+      b.addEventListener('click',function(){ shopCat=b.dataset.cat; renderShop(); });
+    });
+    [].slice.call(document.querySelectorAll('[data-sechead]')).forEach(function(b){
+      b.addEventListener('click',function(){
+        var name=b.dataset.sechead,list=custClosedSections[shopCat]||[];
+        var idx=list.indexOf(name);
+        if(idx>=0)list.splice(idx,1); else list.push(name);
+        custClosedSections[shopCat]=list; renderShop();
+      });
     });
     [].slice.call(document.querySelectorAll('[data-buy]')).forEach(function(b){ b.addEventListener('click',function(){buy(b.dataset.buy);}); });
   }
@@ -1177,6 +1253,14 @@
   document.getElementById('customizeClose').addEventListener('click',function(){
     document.getElementById('customizePanel').style.display='none';
     document.getElementById('customizeBtn').style.display='';
+  });
+  document.getElementById('custClearTab').addEventListener('click',function(){
+    if(shopCat==='Closet Finish')st.equippedWall=null;
+    if(shopCat==='Room')st.equippedFloor=null;
+    refreshAll();
+  });
+  document.getElementById('custClearAll').addEventListener('click',function(){
+    st.equippedWall=null; st.equippedFloor=null; refreshAll();
   });
 
   /* ── monthly raffle: real backend, opened from the glowing header icon
