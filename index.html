@@ -1183,7 +1183,10 @@
     var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
     var included=it.price===0;
     var preview=it.hex?'background:#'+it.hex+';':'background:var(--primary-soft);';
-    var art=it.image?'<img src="'+it.image+'" alt="" loading="lazy">':(it.hex?'':it.i);
+    // onerror hides a failed/slow photo instead of showing the browser's
+    // broken-image glyph - the flat hex background behind it still reads
+    // fine as the swatch on its own.
+    var art=it.image?'<img src="'+it.image+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">':(it.hex?'':it.i);
     var badge=equipped?'<div class="cust-badge equipped"><span>Equipped</span></div>':(included?'<div class="cust-badge included"><span>Included</span></div>':'');
     var canClick=!(it.type==='cosmetic'&&owned&&!it.category); // plain one-time cosmetics: nothing left to do once owned
     var cardCls='cust-card'+(equipped?' equipped':'')+((!owned&&!afford&&!included)?' unaffordable':'');
