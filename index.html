@@ -263,13 +263,13 @@
   .rcollect{margin-top:18px;width:100%;background:var(--color-button-primary);color:#fff;border:none;border-radius:999px;padding:13px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(56,33,95,.28);}
 
   /* ─── Leaderboard ─── */
-  /* ─── Your Closet (3D) ─── */
-  /* Static "dollhouse" illustration - a 3-sided room drawn in SVG at a fixed
-     angle (not a real rotatable 3D space), replacing an earlier WebGL
-     attempt that was slow to iterate on and couldn't be previewed reliably. */
-  .closet-view-wrap{position:relative;border-radius:18px;overflow:hidden;background:#f7f6fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(26,21,35,.08);margin-top:14px;}
-  .closet-view-wrap svg.dollhouse{display:block;width:100%;height:auto;}
-  .closet-viewing-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--purple-2);border:1px solid #ddd0fb;border-radius:12px;padding:10px 14px;margin-top:14px;font-size:13px;font-weight:700;color:var(--color-button-primary);}
+  /* ─── My Closet (real 3D) ─── */
+  /* 3D-only now (Mo's call after reviewing with Heather): the old 2D SVG
+     "dollhouse" illustration is gone, so this wrapper needs its own real
+     height - it used to get that for free from the in-flow 2D SVG sibling,
+     since the 3D wrap was always `position:absolute;inset:0` riding on top
+     of it. See index.html's closet section markup for the min-height. */
+  .closet-view-wrap{position:relative;border-radius:18px;overflow:hidden;background:#f7f6fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(26,21,35,.08);margin-top:14px;min-height:520px;}
   .browse-card{cursor:pointer;}
   .browse-card:hover{border-color:#c9c4db;box-shadow:0 4px 14px rgba(26,21,35,.1);}
   .browse-card .lvl{font-size:11px;font-weight:700;color:var(--primary);}
@@ -311,19 +311,15 @@
   .support-form textarea:focus{border-color:var(--primary);}
   .how-step span{font-size:13px;color:var(--ink);line-height:1.45;}
 
-  /* ─── Your Closet customize panel ─── */
-  /* Floats ON TOP of the illustration itself (matches the real app's
-     in-viewport Options panel), not beside it as a separate section. */
+  /* ─── My Closet customize panel ─── */
+  /* Floats ON TOP of the 3D view itself (matches the real app's in-viewport
+     Options panel), not beside it as a separate section. */
   .closet-customize-btn{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.94);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 2px 10px rgba(26,21,35,.14);}
   /* Real 3D closet - a genuine Three.js/WebGPU render of the actual Sales
-     Designer App engine (see "8 Real 3D/"), not an illustration. Toggles
-     in over the 2D dollhouse rather than replacing it, since the 2D view
-     is what visualizes day-by-day streak progress. */
-  .closet-view3d-btn{position:absolute;top:14px;right:132px;z-index:3;background:var(--primary);border:1px solid #8e66b1;color:#fff;font-family:inherit;font-size:12px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 2px 10px rgba(114,57,234,.3);}
-  .closet-view3d-btn.on{background:rgba(255,255,255,.94);border-color:var(--line);color:var(--ink);box-shadow:0 2px 10px rgba(26,21,35,.14);}
+     Designer App engine (see "8 Real 3D/"), fills the whole view now that
+     it's the only view - no more 2D/3D toggle. */
   .closet-3d-wrap{position:absolute;inset:0;z-index:2;background:#f7f6fb;}
   .closet-3d-wrap iframe{width:100%;height:100%;border:none;display:block;}
-  @media (max-width:640px){.closet-view3d-btn{right:14px;top:56px;}}
   /* Mirrors the real app's "Customize Panel V3": a floating card docked to
      the viewport edge, not a full sidebar - see the Figma handoff
      (node 23719:18941) Mo asked this to match "just like this". */
@@ -400,9 +396,8 @@
   .side-lb-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .side-lb-row .val{font-size:11px;font-weight:700;flex:0 0 auto;display:flex;align-items:center;gap:4px;}
   .side-subhead{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:16px 0 6px;}
-  .browse-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-radius:8px;cursor:pointer;}
+  .browse-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-radius:8px;}
   .browse-row .rank{width:16px;font-size:11px;font-weight:700;color:var(--muted);flex:0 0 auto;text-align:center;}
-  .browse-row:hover{background:#faf9fc;}
   .browse-row .av{width:24px;height:24px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;letter-spacing:.02em;}
   .browse-row .nm2{flex:1;font-size:11.5px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .browse-row .lvl2{font-size:10px;color:var(--muted);flex:0 0 auto;}
@@ -476,7 +471,7 @@
     <button class="nl on" data-sec="dashboard">Dashboard</button>
     <button class="nl" data-sec="quizzes">Challenges</button>
     <button class="nl" data-sec="trainings">Trainings</button>
-    <button class="nl" data-sec="closet">Your Closet</button>
+    <button class="nl" data-sec="closet">My Closet</button>
   </div>
   <div class="nav-right">
     <button class="raffleGlow" id="raffleGlowBtn" title="Monthly Raffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a1.5 1.5 0 0 0 0 3V14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a1.5 1.5 0 0 0 0-3V8z"/><path d="M9 6.5v11" stroke-dasharray="2.2 3"/></svg><span>Raffle</span></button>
@@ -510,7 +505,7 @@
         </div>
         <!-- Right: info -->
         <div class="info">
-          <div class="k">Your Closet</div>
+          <div class="k">My Closet</div>
           <h3 id="closetDay">Day 1</h3>
           <div class="mood" id="closetMood">Filthy. A pile of dirty laundry and closet monsters live here. Log in to clean me up.</div>
         </div>
@@ -590,16 +585,18 @@
     </div>
   </section>
 
-  <!-- ═══ YOUR CLOSET ═══ -->
+  <!-- ═══ MY CLOSET ═══ -->
   <section data-sec="closet">
-    <h1 class="title">Your Closet</h1>
-    <p class="lead">Make it yours. Every moon rock you earn goes straight into your closet's finishes, layout, and hardware, and the closet you build here is what shows up on the leaderboard. Tap Customize to change colors and textures.</p>
+    <h1 class="title">My Closet</h1>
+    <p class="lead">Make it yours. Every moon rock you earn goes straight into your closet's finishes, layout, and hardware. Tap Customize to change colors and textures - real finishes, shown live in the real 3D designer engine.</p>
     <div class="closet-view-wrap" id="closetView">
-      <div id="closetIllustration"></div>
-      <div class="closet-3d-wrap" id="closet3dWrap" style="display:none;">
+      <!-- 3D-only (Mo's call after reviewing with Heather) - the old 2D
+           "dollhouse" SVG illustration and its View in 3D toggle are gone,
+           this real Three.js/WebGPU render of the actual Sales Designer App
+           engine (see "8 Real 3D/") is the only view now. -->
+      <div class="closet-3d-wrap" id="closet3dWrap">
         <iframe id="closet3dFrame" title="Your closet in 3D" src="./8%20Real%203D/app/dist/index.html" loading="lazy"></iframe>
       </div>
-      <button class="closet-view3d-btn" id="view3dBtn">✨ View in 3D</button>
       <button class="closet-customize-btn" id="customizeBtn">Customize</button>
       <div class="closet-customize" id="customizePanel" style="display:none;">
         <div class="cust-head">
@@ -621,17 +618,13 @@
         </div>
       </div>
     </div>
-    <div class="closet-viewing-bar" id="closetViewingBar" style="display:none;">
-      <span id="closetViewingLabel"></span>
-      <button class="cbtn" id="closetBackBtn">Back to my closet</button>
-    </div>
     <div class="closet-stats-row">
       <div><div class="statnum"><span class="mricn"></span><b id="closetTokBig">1</b></div><span>moon rocks</span></div>
       <div><div class="statnum"><span class="flameicn"></span><b id="closetStrkBig">1</b></div><span>day streak</span></div>
     </div>
 
     <div class="sechead" style="margin-top:28px;"><h2>Leaderboard</h2></div>
-    <p class="lead" style="margin-top:-6px;">Ranked by moon rocks put into the closet - tap a designer to view their closet in 3D above. Top designers each quarter win a prize (details coming soon), so the more you build here, the higher you climb.</p>
+    <p class="lead" style="margin-top:-6px;">Ranked by moon rocks put into the closet. Top designers each quarter win a prize (details coming soon), so the more you build here, the higher you climb.</p>
     <div id="browseList" style="margin-top:12px;max-width:520px;"></div>
   </section>
 
@@ -670,6 +663,9 @@
       </div>
     </div>
     <div class="help-view" id="helpViewFaq" style="display:none;">
+      <div class="sechead" style="margin:14px 18px 10px;">
+        <div class="srch" style="width:100%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="faqSearchInput" placeholder="Search FAQs"></div>
+      </div>
       <div class="faq-browse-list" id="faqBrowseList"></div>
     </div>
     <div class="help-view" id="helpViewSupport" style="display:none;">
@@ -762,10 +758,10 @@
     '<path d="M-11 6 l3.5 6 3.5 -6 3.5 6 3.5 -6 3.5 6 3.5 -6" fill="#fff"/>'+
     '</g>'; }
 
-  // Builds just the inner "back wall" scene markup (no outer <svg> wrapper),
-  // shared by the small Dashboard preview (closetSVG) and the bigger
-  // dollhouse room view (closetDollhouse) so the furniture drawing logic
-  // only lives in one place.
+  // Builds just the inner "back wall" scene markup (no outer <svg> wrapper) -
+  // used by the small Dashboard-card preview (closetSVG). The My Closet
+  // tab's own big view used to share this too (via a "dollhouse" room
+  // wrapper), before that was dropped for the real 3D-only view below.
   // Mixes a hex color toward white (amt>0) or black (amt<0) by `amt` (0-1) -
   // used to derive trim/toe-kick shades from a single purchased finish hex.
   function shade(hex,amt){
@@ -776,8 +772,7 @@
   function closetScene(s,ownedAcc,panelHex){
     // Real Closet World finish (see MOON_CATALOG.materials, "Closet: X" shop
     // items) recolors the cabinet's own surfaces - panels, trim, toe-kick,
-    // drawers - not the room around it (that's `wallHex` in closetDollhouse,
-    // which is a separate, unrelated concept: the room's walls).
+    // drawers.
     var ph=panelHex?'#'+panelHex:null;
     var boxFill=ph||'#f1ece0', trimFill=ph?shade(ph,0.15):'#fbf9f4', toeFill=ph?shade(ph,-0.12):'#efe7d6',
       sideFill=ph?shade(ph,0.08):'#f6f1e6', drawerFill=ph?shade(ph,0.2):'#f7f3ec';
@@ -900,40 +895,6 @@
     return MOON_CATALOG.accessoryCatalog.filter(function(a){ return st.owned['acc_'+a.id]; });
   }
 
-  // Bigger "dollhouse" view: the same scene as the back wall of a static,
-  // fixed-angle 3-sided room (side walls + floor drawn as simple perspective
-  // polygons around it) - not a real rotatable 3D space, just styled to look
-  // like one, per Mo's call to drop the WebGL room in favor of something
-  // fully static that renders reliably everywhere.
-  function closetDollhouse(s,wallHex,floorHex,ownedAcc){
-    // `wallHex` is the real closet FINISH color (see closetScene) - it
-    // recolors the cabinet itself, not this room's walls, which stay a
-    // fixed neutral. `floorHex` genuinely is the room floor.
-    var roomWall='#fbfaf9';
-    var floor=floorHex?'#'+floorHex:'#d9bd8f';
-    var backX=170,backY=18,backW=360,backH=246; // where the 440x300 scene sits, scaled ~0.818
-    var scale=backW/440;
-    var out='';
-    // side walls, receding outward toward the viewer
-    out+='<polygon points="'+backX+','+backY+' 46,58 0,458 '+backX+','+(backY+backH)+'" fill="'+roomWall+'"/>';
-    out+='<polygon points="'+(backX+backW)+','+backY+' 654,58 700,458 '+(backX+backW)+','+(backY+backH)+'" fill="'+roomWall+'"/>';
-    out+='<polygon points="46,58 0,458 700,458 654,58" fill="'+roomWall+'" opacity=".55"/>'; // ceiling sliver softened into walls
-    // floor
-    out+='<polygon points="'+backX+','+(backY+backH)+' '+(backX+backW)+','+(backY+backH)+' 690,478 10,478" fill="'+floor+'"/>';
-    out+='<polygon points="'+backX+','+(backY+backH)+' '+(backX+backW)+','+(backY+backH)+' 690,478 10,478" fill="#000" opacity=".08"/>';
-    // subtle side-wall shading for depth
-    out+='<polygon points="'+backX+','+backY+' 46,58 0,458 '+backX+','+(backY+backH)+'" fill="#000" opacity=".05"/>';
-    out+='<g transform="translate('+backX+','+backY+') scale('+scale+')">'+closetScene(s,ownedAcc,wallHex)+'</g>';
-    out+='<rect x="'+backX+'" y="'+backY+'" width="'+backW+'" height="'+backH+'" fill="none" stroke="#000" stroke-opacity=".06" stroke-width="1"/>';
-    return '<svg class="dollhouse" viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">'+out+'</svg>';
-  }
-
-  function renderClosetIllustration(){
-    var el=document.getElementById('closetIllustration');
-    if(viewingMock){ el.innerHTML=closetDollhouse(viewingMock.stage,null,null,[]); }
-    else { el.innerHTML=closetDollhouse(stage(),st.equippedWall,st.equippedFloor,ownedAccessories()); }
-  }
-
   function renderCloset(){
     var s=stage();
     document.getElementById('closetArt').innerHTML=closetSVG(s,ownedAccessories(),st.equippedWall);
@@ -944,39 +905,34 @@
     document.getElementById('closetTokBig').textContent=st.tokens;
     document.getElementById('closetStrkBig').textContent=st.streak;
     var navTok=document.getElementById('navTokBig'); if(navTok)navTok.textContent=st.tokens;
-    renderClosetIllustration();
+    // The My Closet tab's big view is the real 3D iframe now (closetSVG
+    // above is only the small Dashboard-card preview) - keep its equipped
+    // finish in sync. See apply3DClosetFinish() near the Customize wiring.
+    apply3DClosetFinish();
   }
 
   // ── real cross-user leaderboard (/api/leaderboard) ── ranked server-side
   // by lifetime_spent (rocks actually put into the closet), not current
   // balance. Replaces the old MOCK_CLOSETS placeholder array.
+  //
+  // Used to be tap-a-row-to-preview-their-closet (rendered via the 2D
+  // dollhouse illustration with that person's stage). There's no 3D
+  // equivalent: the 3D view is one fixed shared demo scene, not per-user -
+  // faking a per-user 3D preview would show everyone the exact same closet
+  // and call it theirs, which is worse than no preview at all. So this is
+  // now just the ranked list, with the preview interaction dropped rather
+  // than faked. Flagged to Mo/Heather as a real gap versus the old 2D flow.
   var LEADERBOARD=[];
-  var viewingMock=null;
   function initials(name){ return (name||'?').split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase(); }
   async function renderBrowse(){
     try{ LEADERBOARD=await apiFetch('/api/leaderboard'); }
     catch(e){ console.error(e); return; }
     document.getElementById('browseList').innerHTML=LEADERBOARD.map(function(m,i){
       var badges=(m.badges||[]).map(badgeIcon).join('');
-      return '<div class="browse-row" data-mock="'+i+'"><div class="rank">'+(i+1)+'</div><div class="av">'+initials(m.name)+'</div>'+
+      return '<div class="browse-row"><div class="rank">'+(i+1)+'</div><div class="av">'+initials(m.name)+'</div>'+
         '<div class="nm2">'+m.name+'</div><div class="lvl2">'+(m.stage+1)+'/10</div><div class="browse-badges">'+badges+'</div></div>';
     }).join('');
-    [].slice.call(document.querySelectorAll('[data-mock]')).forEach(function(card){
-      card.addEventListener('click',function(){ viewMock(+card.dataset.mock); });
-    });
   }
-  function viewMock(i){
-    var m=LEADERBOARD[i]; if(!m)return;
-    viewingMock=m;
-    renderClosetIllustration();
-    document.getElementById('closetViewingBar').style.display='flex';
-    document.getElementById('closetViewingLabel').textContent='Viewing '+m.name+"'s closet";
-  }
-  document.getElementById('closetBackBtn').addEventListener('click',function(){
-    viewingMock=null;
-    document.getElementById('closetViewingBar').style.display='none';
-    renderClosetIllustration();
-  });
 
   /* ── FAQ chat: client-side keyword match against a curated Q&A set, no
      real AI backend - a canned-answer "assistant" feel rather than a
@@ -987,7 +943,7 @@
     {q:'Can I enter the raffle more than once?',kw:['multiple entries','enter again','more than once','multiple times'],a:'Yes - every time you have enough rocks, you can enter again. Each entry is a separate chance to win, so more entries means better odds.'},
     {q:'Who wins the raffle?',kw:['who wins','winner','who gets the prize'],a:'Exactly one person wins, drawn at random from every entry across everyone in the program that month - not one winner per person or per team.'},
     {q:'What is the Daily Challenge?',kw:['daily challenge','what is the daily'],a:'A quick hands-on task inside a mock of the real Sales Designer App - find it under Trainings. It\'s the main way to earn moon rocks.'},
-    {q:'How do I customize my closet?',kw:['customize','change my closet','closet colors','closet layout'],a:'Go to Your Closet and tap Customize to spend moon rocks on layouts, colors/textures, and accessories.'},
+    {q:'How do I customize my closet?',kw:['customize','change my closet','closet colors','closet layout'],a:'Go to My Closet and tap Customize to spend moon rocks on layouts, colors/textures, and accessories.'},
     {q:'What is the leaderboard ranked by?',kw:['leaderboard','ranked','ranking'],a:'By how many moon rocks you\'ve actually spent on your closet - not your current balance. Someone sitting on unspent rocks won\'t outrank someone who\'s spent more.'},
     {q:'Where do I find the quizzes?',kw:['quiz','quizzes'],a:'Under the Challenges tab, alongside the Daily Challenge and Weekly Trivia.'},
     {q:'I found a bug or have feedback - what do I do?',kw:['bug','feedback','issue','problem','broken','support'],a:'Tap the Support button (bottom-right of the screen) to send it in.'}
@@ -1052,9 +1008,17 @@
       });
     });
   });
-  document.getElementById('faqBrowseList').innerHTML=FAQ_DATA.map(function(f){
-    return '<div class="fq"><b>'+f.q+'</b><span>'+f.a+'</span></div>';
-  }).join('');
+  function renderFaqBrowse(query){
+    var q=(query||'').trim().toLowerCase();
+    var list=!q?FAQ_DATA:FAQ_DATA.filter(function(f){
+      return (f.q+' '+f.a+' '+f.kw.join(' ')).toLowerCase().indexOf(q)>-1;
+    });
+    document.getElementById('faqBrowseList').innerHTML=list.length?list.map(function(f){
+      return '<div class="fq"><b>'+f.q+'</b><span>'+f.a+'</span></div>';
+    }).join(''):'<div class="fq"><span>No matches - try a different word, or ask in Chat.</span></div>';
+  }
+  renderFaqBrowse('');
+  document.getElementById('faqSearchInput').addEventListener('input',function(){ renderFaqBrowse(this.value); });
 
   /* ── support ticket: mock confirmation only, no real backend yet ── */
   document.getElementById('supportSend').addEventListener('click',function(){
@@ -1257,6 +1221,102 @@
   // with the standalone Shop tab in favor of the monthly raffle - see
   // renderRaffle() below. ALL_SHOP_ITEMS now only needs closet cosmetics.
   var ALL_SHOP_ITEMS=CLOSET_ITEMS;
+
+  // ── Customize → live 3D wiring ──
+  // Maps a "Closet Finish" swatch's hex (st.equippedWall's own key, see
+  // buy()/swatchCardHtml below) to the REAL @moon/designer-core material
+  // UUID it corresponds to, so equipping a finish here also applies it to
+  // the real 3D scene (window.applyClosetMaterial, exposed by "8 Real 3D/
+  // app/src/main.js"). Built by matching every MOON_CATALOG.materials name
+  // against the real body/door material labels actually loaded into that
+  // 3D scene (8 Real 3D/app/data/materials.json) - 33 of the 42 real
+  // finishes had a clean, unambiguous name match; the other 9 (mostly
+  // AGT/TAF-branded names, plus Mirror and Glass Transparent, which aren't
+  // body/door materials at all in this data) don't exist under that name
+  // in this project's real data, so per this repo's "never invent a
+  // placeholder catalog value" rule they're left unwired - those swatches
+  // still work normally (ownable, equippable, drives the small Dashboard
+  // SVG preview) but won't change the 3D view. The 2 hand-authored "Sage"/
+  // "Blush" swatches above (not sourced from MOON_CATALOG) are unwired for
+  // the same reason - they were never real Closet World finishes to begin
+  // with.
+  var CLOSET_FINISH_3D={
+    ffffff:'9726d945-f70b-4b94-ad19-fb6db25d3f57', // White
+    fffcf3:'eb55fdc3-1a57-459b-94e9-0c9d5efbdc86', // Antique White
+    e1e2dc:'04ac1feb-1531-4733-8988-7ac55108da3e', // Pearl
+    e1ddd1:'26c4c97f-4cc6-41e6-b8d3-a3505c8f2857', // Antique Pearl
+    cdcec8:'8e5dddd8-8654-464b-bd6e-cc6a99d718c1', // Light Grey
+    a2a2a0:'2b691e25-7c78-4988-9622-f861e16454cd', // Dark Grey
+    '9e9788':'7970696d-71f9-40b1-8658-3d9039971150', // Latitude Grey
+    efe2bf:'95d6c243-6898-4888-9436-c2c49b40001e', // Almond
+    '000000':'c2a5ad06-15fa-4991-97b9-20332a7229a8', // Black
+    282725:'53a566ce-d623-4184-bf6a-ce8ad5a7035e', // Onyx
+    b2aea5:'be4ad8c6-7d8c-496a-b8c9-24c0ea50ee04', // River Rock
+    '69605a':'466cdfa1-91f1-4229-ba88-08436e6aed2d', // Mocha
+    cbab7e:'ebf86a82-4c73-4f0f-bfdd-151dd5fcd47b', // Fusion Maple
+    c9a97c:'f98119ec-d9d7-48ec-95e4-4c3df227d506', // Hard Rock Maple
+    b07442:'6afc54b8-0867-463c-8c77-ab220dec207a', // Honey Maple
+    b47e52:'df5d843f-8508-4a2c-97c7-d5257b6a666d', // Candlelight
+    '585753':'3cfce1f3-1044-4489-8527-c54e3141c8a9', // Oyster Pine
+    '9c8a74':'f7bfa5c5-1a97-41f9-bd67-d7dd46556515', // Sand Pine
+    502512:'e30a2193-2660-4bcb-a602-773127ddc67a', // Autumn Leaves
+    '413a34':'67201156-1653-451d-aabb-ea5b0fdc4fa3', // Spring Blossom
+    ccbda2:'fcaa3bc9-55a9-4a10-8bd8-670cf24a1225', // Summer Breeze
+    '623d31':'e3289f13-e7d5-4f55-a30c-5b7f436fbfe5', // Cherry Blossom
+    101212:'b2518479-3bf0-4ef8-b9b4-76e23d78a1e8', // Espresso
+    d2cbc1:'74f40f5c-e871-40de-b484-7ed02cfeaffd', // Sandstone
+    c4c2bd:'07d5ba26-8df2-46a0-b9a1-e057d3471a0a', // Greystone
+    '874d35':'8374ef24-7a2f-49fe-b5d5-c37c9931d44c', // Summer Flame
+    b06b40:'9821184b-1a94-4abf-997f-bbb26fbc90cf', // Pearwood
+    '726157':'3101061b-a39b-4cd4-b64f-86367eab23e7', // Dark Teak
+    b89878:'4046c668-ed8e-4b8e-8037-ecfa5d69dec2', // Light Teak
+    463130:'bf8503ad-5a7a-4ea7-ad0e-e14ae89a0406', // African Walnut
+    '7d402f':'6fa57f48-82b4-44ad-8b49-4c4dacc66c16', // Wild Cherry
+    '8e4d30':'e74ee4ee-70f8-4370-800d-9e84f1c132a9', // Okanogan Cherry
+    443734:'39191cfe-4264-46cc-9185-57b3fb4034c7' // Chocolate Pear
+  };
+  // Applies one real material to the live 3D iframe (same-origin, so a
+  // direct call on contentWindow works - no postMessage needed). No-ops
+  // quietly if the iframe hasn't finished booting yet, or if this
+  // materialType/id has nothing to change in the current scene - either
+  // way there's nothing useful to surface to the trainee, and the next
+  // equip/reload will just re-apply the current state anyway.
+  function apply3DMaterial(materialType,materialId){
+    if(!materialId)return;
+    try{
+      var frame=document.getElementById('closet3dFrame');
+      var win=frame&&frame.contentWindow;
+      if(win&&typeof win.applyClosetMaterial==='function'){
+        win.applyClosetMaterial(materialType,materialId);
+      }
+    }catch(e){ /* iframe not ready / cross-origin in some preview context - fine */ }
+  }
+  // The 3D scene's own out-of-the-box closet finish (its "Classic White
+  // Set" body/door material, confirmed by inspecting a live core instance)
+  // - applied when nothing is equipped, so Clear/Clear All visibly resets
+  // the 3D view too instead of just leaving whatever was last applied.
+  var DEFAULT_CLOSET_FINISH_3D='32b9f7bf-a070-4712-bf96-2af71b149f52';
+  // Re-applies the currently-equipped Closet Finish to the 3D view - called
+  // after every state change (buy/clear) and once the iframe finishes
+  // loading, so the 3D scene always matches st.equippedWall.
+  function apply3DClosetFinish(){
+    // Guards the iframe's own 'load' listener below, which can fire before
+    // /api/state resolves in edge cases (e.g. a slow network) - nothing to
+    // sync yet if so, renderCloset() will call this again once st is set.
+    if(!st)return;
+    var materialId=st.equippedWall?CLOSET_FINISH_3D[st.equippedWall]:DEFAULT_CLOSET_FINISH_3D;
+    // An equipped finish with no real 3D match (see CLOSET_FINISH_3D above)
+    // - leave the 3D scene showing whatever it last had rather than guess.
+    if(!materialId)return;
+    // 'door' cascades finishEnd/visiblePanel/edgebanding automatically
+    // (see SetMaterialsBaseValueCommand in the real engine), 'body' does
+    // not - calling both is what fully re-themes the closet, matching a
+    // single "Finish" pick in the real app.
+    apply3DMaterial('body',materialId);
+    apply3DMaterial('door',materialId);
+  }
+  var closet3dFrameEl=document.getElementById('closet3dFrame');
+  if(closet3dFrameEl)closet3dFrameEl.addEventListener('load',function(){ apply3DClosetFinish(); });
   // Two top-level pills (mirrors the real panel's Finishes/Hardware toggle)
   // grouping the 5 SHOP_GROUPS - Finishes is the only side with an
   // "equipped" concept (a single wall/floor color slot), Hardware is
@@ -1351,20 +1411,6 @@
   document.getElementById('customizeClose').addEventListener('click',function(){
     document.getElementById('customizePanel').style.display='none';
     document.getElementById('customizeBtn').style.display='';
-  });
-  // Real 3D closet toggle - swaps the 2D dollhouse for an iframed, genuine
-  // Three.js/WebGPU render of the actual designer engine (see "8 Real 3D/
-  // app"). Customize edits the 2D illustration's colors only, so it's
-  // hidden while the (separate, fixed-demo) 3D view is showing rather than
-  // implying it does something there too.
-  var in3D=false;
-  document.getElementById('view3dBtn').addEventListener('click',function(){
-    in3D=!in3D;
-    document.getElementById('closet3dWrap').style.display=in3D?'block':'none';
-    document.getElementById('view3dBtn').classList.toggle('on',in3D);
-    document.getElementById('view3dBtn').textContent=in3D?'2D view':'✨ View in 3D';
-    document.getElementById('customizeBtn').style.display=in3D?'none':'';
-    document.getElementById('customizePanel').style.display='none';
   });
   document.getElementById('custClearTab').addEventListener('click',function(){
     if(shopCat==='Closet Finish')st.equippedWall=null;
