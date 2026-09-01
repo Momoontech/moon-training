@@ -1,0 +1,4 @@
+class WebSettings {
+}
+
+export { WebSettings };

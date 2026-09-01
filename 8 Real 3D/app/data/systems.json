@@ -1,0 +1,376 @@
+[
+  {
+    "id": "531ec37c-9ea4-4d8a-8492-dbf79014dc38",
+    "name": "Office Desk System",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "DESIGN",
+    "needs": [
+      {
+        "systemTypeNeedId": "07c4ac4c-0eab-456b-b9bc-7d32fcc3abcc",
+        "name": "Double hang section",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "1516888b-2567-4a8a-a34a-59eff91db059",
+        "name": "Drawers",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "73a00133-1764-4cb9-8ce6-a3cae186f38c",
+        "name": "Long-hang section",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "ed11aeef-8e86-4b0a-9b70-bdd3e0eca67e",
+    "name": "Office Wall Unit",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "DRAFT",
+    "needs": [
+      {
+        "systemTypeNeedId": "73a00133-1764-4cb9-8ce6-a3cae186f38c",
+        "name": "Long-hang section",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000001-0000-4000-8000-000000000001",
+    "name": "FD 01 · shelves only → 5 sh",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000002-0000-4000-8000-000000000002",
+    "name": "FD 02 · drawers only → 4 dr + shelf balance",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "1516888b-2567-4a8a-a34a-59eff91db059",
+        "name": "Drawers",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000003-0000-4000-8000-000000000003",
+    "name": "FD 03 · double hang only → 2 short",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "07c4ac4c-0eab-456b-b9bc-7d32fcc3abcc",
+        "name": "Double hang section",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000004-0000-4000-8000-000000000004",
+    "name": "FD 04 · shelves + drawers → 5 sh 4 dr",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "1516888b-2567-4a8a-a34a-59eff91db059",
+        "name": "Drawers",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000005-0000-4000-8000-000000000005",
+    "name": "FD 05 · both hangs → 2 short 1 long",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "07c4ac4c-0eab-456b-b9bc-7d32fcc3abcc",
+        "name": "Double hang section",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "73a00133-1764-4cb9-8ce6-a3cae186f38c",
+        "name": "Long-hang section",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000006-0000-4000-8000-000000000006",
+    "name": "FD 06 · all four, needs done → same result",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "DESIGN",
+    "needs": [
+      {
+        "systemTypeNeedId": "07c4ac4c-0eab-456b-b9bc-7d32fcc3abcc",
+        "name": "Double hang section",
+        "done": true
+      },
+      {
+        "systemTypeNeedId": "1516888b-2567-4a8a-a34a-59eff91db059",
+        "name": "Drawers",
+        "done": true
+      },
+      {
+        "systemTypeNeedId": "73a00133-1764-4cb9-8ce6-a3cae186f38c",
+        "name": "Long-hang section",
+        "done": true
+      },
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": true
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000007-0000-4000-8000-000000000007",
+    "name": "OVER 07 · shelves x2 → clamped to 5 sh",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0001-0000-4000-8000-000000000001",
+        "name": "Shelving",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000008-0000-4000-8000-000000000008",
+    "name": "OVER 08 · drawers x2 → clamped to 4 dr",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "1516888b-2567-4a8a-a34a-59eff91db059",
+        "name": "Drawers",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0002-0000-4000-8000-000000000002",
+        "name": "Drawer",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000009-0000-4000-8000-000000000009",
+    "name": "OVER 09 · long hang x3 → 3 long",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "73a00133-1764-4cb9-8ce6-a3cae186f38c",
+        "name": "Long-hang section",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0003-0000-4000-8000-000000000003",
+        "name": "Long hang",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0004-0000-4000-8000-000000000004",
+        "name": "long_hang_section",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000010-0000-4000-8000-000000000010",
+    "name": "OVER 10 · everything x2",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0005-0000-4000-8000-000000000005",
+        "name": "Shelving",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "1516888b-2567-4a8a-a34a-59eff91db059",
+        "name": "Drawers",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0006-0000-4000-8000-000000000006",
+        "name": "Drawers",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "07c4ac4c-0eab-456b-b9bc-7d32fcc3abcc",
+        "name": "Double hang section",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0007-0000-4000-8000-000000000007",
+        "name": "Short hang",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "73a00133-1764-4cb9-8ce6-a3cae186f38c",
+        "name": "Long-hang section",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0008-0000-4000-8000-000000000008",
+        "name": "Long hang",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000011-0000-4000-8000-000000000011",
+    "name": "EDGE 11 · no needs → skipped",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "DRAFT",
+    "needs": [],
+    "todos": []
+  },
+  {
+    "id": "fd000012-0000-4000-8000-000000000012",
+    "name": "EDGE 12 · only unmapped names → skipped",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "DRAFT",
+    "needs": [
+      {
+        "systemTypeNeedId": "aaaa0009-0000-4000-8000-000000000009",
+        "name": "Lighting",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0010-0000-4000-8000-000000000010",
+        "name": "Venting",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000013-0000-4000-8000-000000000013",
+    "name": "EDGE 13 · unmapped + shelves → 5 sh",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "aaaa0011-0000-4000-8000-000000000011",
+        "name": "Lighting",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "0bc732ce-e15d-4f97-9c56-d83e30376fc8",
+        "name": "Shelves",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0012-0000-4000-8000-000000000012",
+        "name": "Spice Rack",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000014-0000-4000-8000-000000000014",
+    "name": "EDGE 14 · unknown category Shoe shelves → ignored",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "DRAFT",
+    "needs": [
+      {
+        "systemTypeNeedId": "aaaa0013-0000-4000-8000-000000000013",
+        "name": "Shoe shelves",
+        "done": false
+      }
+    ],
+    "todos": []
+  },
+  {
+    "id": "fd000015-0000-4000-8000-000000000015",
+    "name": "EDGE 15 · spelling variants → all recognised",
+    "systemTypeEntityId": "37eda641-3089-449c-9391-183884869939",
+    "systemTypeName": "Custom Closet",
+    "state": "PLOT",
+    "needs": [
+      {
+        "systemTypeNeedId": "aaaa0014-0000-4000-8000-000000000014",
+        "name": "shelves",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0015-0000-4000-8000-000000000015",
+        "name": "DRAWERS",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0016-0000-4000-8000-000000000016",
+        "name": "Double hang",
+        "done": false
+      },
+      {
+        "systemTypeNeedId": "aaaa0017-0000-4000-8000-000000000017",
+        "name": "long-hang sections",
+        "done": false
+      }
+    ],
+    "todos": []
+  }
+]

@@ -1,0 +1,26 @@
+import { Catalog } from '../';
+import { IAttributes } from './Attributes';
+import { UUID } from './core';
+import { InterpretedVector2 } from './InterpretedVector2';
+import { InterpretedVector3 } from './InterpretedVector3';
+import { IShapeValue } from './IShapeValue';
+import { IValue } from './IValue';
+import { NodeSharedConfig, NodeType } from './Node';
+export type CrownMoldingConfig = NodeSharedConfig & {
+    type: NodeType.CrownMolding;
+    parent: UUID;
+    children: UUID[];
+    exists?: IValue<number>;
+    position: InterpretedVector3;
+    rotation: InterpretedVector3;
+    attributes: IAttributes;
+    shape: IShapeValue;
+    contour: IShapeValue;
+    contourLeft: IShapeValue;
+    contourRight: IShapeValue;
+    contourLeftRight: IShapeValue;
+    grainDirection: IValue<number>;
+    grainOffset?: InterpretedVector2;
+    materialId?: UUID;
+};
+export type CrownMoldingCatalogConfig = Catalog<CrownMoldingConfig>;

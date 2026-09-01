@@ -1,0 +1,23 @@
+import { Catalog } from '../';
+import { IAttributes } from './Attributes';
+import { UUID } from './core';
+import { InterpretedVector2 } from './InterpretedVector2';
+import { InterpretedVector3 } from './InterpretedVector3';
+import { IShapeValue } from './IShapeValue';
+import { IValue } from './IValue';
+import { NodeSharedConfig, NodeType } from './Node';
+export type ToeKickPanelConfig = NodeSharedConfig & {
+    type: NodeType.ToeKickPanel;
+    parent: UUID;
+    children: UUID[];
+    exists?: IValue<number>;
+    grainDirection: IValue<number>;
+    grainOffset?: InterpretedVector2;
+    shape: IShapeValue;
+    size: InterpretedVector3;
+    position: InterpretedVector3;
+    rotation: InterpretedVector3;
+    attributes: IAttributes;
+    materialId?: UUID;
+};
+export type ToeKickPanelCatalogConfig = Catalog<ToeKickPanelConfig>;

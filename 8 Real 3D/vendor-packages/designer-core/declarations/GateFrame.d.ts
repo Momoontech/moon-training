@@ -1,0 +1,21 @@
+import { Catalog, InterpretedVector2, IShapeValue } from '../';
+import { IAttributes } from './Attributes';
+import { UUID } from './core';
+import { InterpretedVector3 } from './InterpretedVector3';
+import { IValue } from './IValue';
+import { NodeSharedConfig, NodeType } from './Node';
+export type GateFrameConfig = NodeSharedConfig & {
+    type: NodeType.GateFrame;
+    parent: UUID;
+    children: UUID[];
+    exists?: IValue<number>;
+    size: InterpretedVector3;
+    shape: IShapeValue;
+    grainDirection: IValue<number>;
+    grainOffset: InterpretedVector2;
+    materialId?: IValue<UUID>;
+    position: InterpretedVector3;
+    rotation: InterpretedVector3;
+    attributes: IAttributes;
+};
+export type GateFrameCatalogConfig = Catalog<GateFrameConfig>;

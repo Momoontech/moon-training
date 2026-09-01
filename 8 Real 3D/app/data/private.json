@@ -1,0 +1,380 @@
+{
+  "Panels": {
+    "General": {
+      "faciaClosetToeKick": {
+        "name": "TK facia",
+        "image": null,
+        "source": "master/Parts/General/faciaClosetToeKick"
+      }
+    }
+  },
+  "Parts": {
+    "General": {
+      "multiClosetLongHangerPart": {
+        "name": "Long Hanger - Adjustable",
+        "image": null,
+        "source": "master/Parts/General/multiClosetLongHangerPart"
+      },
+      "multiClosetShortHangerPart": {
+        "name": "Short Hanger - Adjustable",
+        "image": null,
+        "source": "master/Parts/General/multiClosetShortHangerPart"
+      },
+      "MultiClosetSeparatorTall": {
+        "name": "Multi Closet Tall Separator",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatortall-multi-closet-tall-separator.png",
+        "source": "master/Parts/General/MultiClosetSeparatorTall"
+      },
+      "MultiClosetSeparatorBase": {
+        "name": "Multi Closet Base Separator",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatorbase-multi-closet-base-separator.png",
+        "source": "master/Parts/General/MultiClosetSeparatorBase"
+      },
+      "MultiClosetSeparatorUpper": {
+        "name": "Multi Closet Upper Separator",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatorupper-multi-closet-upper-separator.png",
+        "source": "master/Parts/General/MultiClosetSeparatorUpper"
+      },
+      "MultiClosetSeparatorBaseUpper": {
+        "name": "Multi Closet Base+Upper Separator",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetseparatorbaseupper-multi-closet-base-upper-separator.png",
+        "source": "master/Parts/General/MultiClosetSeparatorBaseUpper"
+      },
+      "multiClosetShelfPart": {
+        "name": "Multi Closet Shelf",
+        "image": null,
+        "source": "master/Parts/General/multiClosetShelfPart"
+      },
+      "defaultClosetBottomFixShelf": {
+        "name": "FS Bottom",
+        "image": null,
+        "source": "master/Parts/General/fixBottomShelfHorizontalNonDraggable"
+      },
+      "multiClosetDrawerPart": {
+        "name": "Multi Closet Drawer Part",
+        "image": null,
+        "source": "master/Parts/General/multiClosetDrawerPart"
+      },
+      "multiClosetAdjustableShelfPart": {
+        "source": "master/Parts/General/adjustableShelfHorizontal",
+        "name": "Multi Closet Adjustable Shelf Part",
+        "image": null
+      },
+      "multiClosetFixedShelfPart": {
+        "source": "master/Parts/General/fixShelfHorizontal",
+        "name": "Multi Closet Fixed Shelf Part",
+        "image": null
+      },
+      "multiClosetSectionToeKickPart": {
+        "source": "master/Parts/General/defaultMultiClosetSectionToeKick",
+        "name": "Multi Closet Toe Kick Part",
+        "image": null
+      },
+      "defaultClosetTopFixShelf": {
+        "name": "FS Top",
+        "image": null,
+        "source": "master/Parts/General/fixTopShelfHorizontalNonDraggable"
+      }
+    },
+    "MultiSectionContents": {
+      "10DBLongHangersContentTall": {
+        "name": "1 Drawer + Long Hang",
+        "source": "master/Parts/MultiSectionContents/10DBLongHangersContentTall"
+      },
+      "ShortHangShelfContentTall": {
+        "name": "Short Hang + Shelf",
+        "source": "master/Parts/MultiSectionContents/ShortHangShelfContentTall"
+      },
+      "OneBottomHangerWithShelvesContentTall": {
+        "name": "Bottom Hang + Shelves",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/onebottomhangerwithshelvescontenttall-1-bottom-hanger-with-shelves.png",
+        "source": "master/Parts/MultiSectionContents/OneBottomHangerWithShelvesContentTall"
+      },
+      "DoubleHungContentTall": {
+        "name": "Double Hang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/doublehungcontenttall-double-hung.png",
+        "source": "master/Parts/MultiSectionContents/DoubleHungContentTall"
+      },
+      "LongHungContentTall": {
+        "name": "Long Hang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/longhungcontenttall-long-hung.png",
+        "source": "master/Parts/MultiSectionContents/LongHungContentTall"
+      },
+      "10-10-10-10DBShelvesContentTall": {
+        "name": "4 Drawer + Shelves",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/10-10-10-10dbshelvescontenttall-10-10-10-10-db-shelves.png",
+        "source": "master/Parts/MultiSectionContents/10-10-10-10DBShelvesContentTall"
+      },
+      "10-10-10DBShelvesContentTall": {
+        "name": "3 Drawer + Shelves",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/10-10-10dbshelvescontenttall-10-10-10-db-shelves.png",
+        "source": "master/Parts/MultiSectionContents/10-10-10DBShelvesContentTall"
+      },
+      "ShelvesStackContentTall": {
+        "name": "Shelves",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/shelvesstackcontenttall-shelves-stack.png",
+        "source": "master/Parts/MultiSectionContents/ShelvesStackContentTall"
+      },
+      "MultiClosetSectionContentBaseUpper": {
+        "name": "Content Upper+Base",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsectioncontentbaseupper-content-upper-base.png",
+        "source": "master/Parts/MultiSectionContents/MultiClosetSectionContentBaseUpper"
+      },
+      "MultiClosetSectionContentBase": {
+        "name": "Content Base",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsectioncontentbase-content-base.png",
+        "source": "master/Parts/MultiSectionContents/MultiClosetSectionContentBase"
+      }
+    },
+    "MultiSectionSections": {
+      "MultiClosetSection": {
+        "name": "Section",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosetsection-section.png",
+        "source": "master/Parts/MultiSectionSections/MultiClosetSection"
+      }
+    },
+    "MultiSectionBays": {
+      "multiClosetShortHangersStack": {
+        "name": "Multi Closet Short Hangers Stack",
+        "image": null,
+        "source": "master/Parts/MultiSectionBays/multiClosetShortHangersStack"
+      },
+      "multiClosetLongHangersStack": {
+        "name": "Multi Closet Long Hangers Stack",
+        "image": null,
+        "source": "master/Parts/MultiSectionBays/multiClosetLongHangersStack"
+      },
+      "multiClosetShelvesStack": {
+        "name": "Shelf Adjustable - Stack",
+        "image": null,
+        "source": "master/Parts/MultiSectionBays/multiClosetShelvesStack"
+      },
+      "multiClosetDrawersStack": {
+        "name": "Drawer - Stack",
+        "image": null,
+        "source": "master/Parts/MultiSectionBays/multiClosetDrawersStack"
+      }
+    }
+  },
+  "Products": {
+    "Cabinets": {
+      "ReachInCloset1": {
+        "name": "Reach In Closet 1",
+        "image": null,
+        "source": "master/Products/Cabinets/ReachInCloset1"
+      },
+      "MultiClosetTallProduct": {
+        "name": "Multi Closet Tall Product",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images/multiclosettallproduct-multi-closet-tall-product.png",
+        "source": "master/Products/Cabinets/MultiClosetTallProduct"
+      }
+    },
+    "Appliances": {
+      "Unknown": {
+        "name": "Unknown",
+        "image": null,
+        "source": "master/Products/Appliances/Fridge",
+        "children": [
+          {
+            "source": "master/Models/General/scalableApplianceModel",
+            "modelId": "42294d15-53ba-41e8-8d65-5e2ec3fc56c7"
+          }
+        ]
+      },
+      "LaundryFrontLoadUpperWhite": {
+        "name": "Laundry Front Load Upper White",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/laundryfrontloadupperwhite-laundry-front-load-upper-white.png",
+        "source": "master/Products/Appliances/LaundryFrontLoadUpperWhite"
+      },
+      "DeskLampBlack": {
+        "name": "Desk Lamp Black",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/desklampblack-desk-lamp-black.png",
+        "source": "master/Products/Appliances/DeskLampBlack"
+      },
+      "LightSwitchToggleDoubleGang": {
+        "name": "Light Switch Toggle - Double Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtoggledoublegang-light-switch-toggle-double-gang.png",
+        "source": "master/Products/Appliances/LightSwitchToggleDoubleGang"
+      },
+      "LightSwitchToggleTripleGang": {
+        "name": "Light Switch Toggle - Triple Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtoggletriplegang-light-switch-toggle-triple-gang.png",
+        "source": "master/Products/Appliances/LightSwitchToggleTripleGang"
+      },
+      "LaundryTopLoadWhite": {
+        "name": "Laundry Top Load White",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/laundrytoploadwhite-laundry-top-load-white.png",
+        "source": "master/Products/Appliances/LaundryTopLoadWhite"
+      },
+      "CeilingFan": {
+        "name": "Ceiling Fan",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/ceilingfan-ceiling-fan.png",
+        "source": "master/Products/Appliances/CeilingFan"
+      },
+      "LightSwitchToggleSingleGang": {
+        "name": "Light Switch Toggle - Single Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtogglesinglegang-light-switch-toggle-single-gang.png",
+        "source": "master/Products/Appliances/LightSwitchToggleSingleGang"
+      },
+      "WallOutletSingleGang": {
+        "name": "Wall Outlet - Single Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/walloutletsinglegang-wall-outlet-single-gang.png",
+        "source": "master/Products/Appliances/WallOutletSingleGang"
+      },
+      "LightSwitchRockerTripleGang": {
+        "name": "Light Switch Rocker - Triple Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchrockertriplegang-light-switch-rocker-triple-gang.png",
+        "source": "master/Products/Appliances/LightSwitchRockerTripleGang"
+      },
+      "LightSwitchDoubleRockerDoubleGang": {
+        "name": "Light Switch Double Rocker - Double Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchdoublerockerdoublegang-light-switch-double-rocker-double-gang.png",
+        "source": "master/Products/Appliances/LightSwitchDoubleRockerDoubleGang"
+      },
+      "LightSwitchDoubleRockerSingleGang": {
+        "name": "Light Switch Double Rocker - Single Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchdoublerockersinglegang-light-switch-double-rocker-single-gang.png",
+        "source": "master/Products/Appliances/LightSwitchDoubleRockerSingleGang"
+      },
+      "LightSwitchTripleRockerSingleGang": {
+        "name": "Light Switch Triple Rocker - Single Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchtriplerockersinglegang-light-switch-triple-rocker-single-gang.png",
+        "source": "master/Products/Appliances/LightSwitchTripleRockerSingleGang"
+      },
+      "VentRegisterLarge": {
+        "name": "Vent Register Large",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/ventregisterlarge-vent-register-large.png",
+        "source": "master/Products/Appliances/VentRegisterLarge"
+      },
+      "VentRegisterSmall": {
+        "name": "Vent Register Small",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/ventregistersmall-vent-register-small.png",
+        "source": "master/Products/Appliances/VentRegisterSmall"
+      },
+      "TVWallMounted": {
+        "name": "TV Wall Mounted",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/tvwallmounted-tv-wall-mounted.png",
+        "source": "master/Products/Appliances/TVWallMounted"
+      },
+      "WallObstacle": {
+        "name": "Wall Obstacle",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/wallobstacle-wall-obstacle.png",
+        "source": "master/Products/Appliances/WallObstacle"
+      },
+      "FloorObstacle": {
+        "name": "Floor Obstacle",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/floorobstacle-floor-obstacle.png",
+        "source": "master/Products/Appliances/FloorObstacle"
+      },
+      "TableLamp": {
+        "name": "Table Lamp",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/tablelamp-table-lamp.png",
+        "source": "master/Products/Appliances/TableLamp"
+      },
+      "WineCooler": {
+        "name": "Wine Cooler",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/winecooler-wine-cooler.png",
+        "source": "master/Products/Appliances/WineCooler"
+      },
+      "StandardLight": {
+        "name": "Standard Light",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/standardlight-standard-light.png",
+        "source": "master/Products/Appliances/StandardLight"
+      },
+      "ElectricalPanel": {
+        "name": "Electrical Panel",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/electricalpanel-electrical-panel.png",
+        "source": "master/Products/Appliances/ElectricalPanel"
+      },
+      "IslandLightBlackThreeBulb": {
+        "name": "Island Light - Black 3 Bulb",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/islandlightblackthreebulb-island-light-black-3-bulb.png",
+        "source": "master/Products/Appliances/IslandLightBlackThreeBulb"
+      },
+      "LightSwitchRockerSingleGang": {
+        "name": "Light Switch Rocker - Single Gang",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/lightswitchrockersinglegang-light-switch-rocker-single-gang.png",
+        "source": "master/Products/Appliances/LightSwitchRockerSingleGang"
+      },
+      "WallSconceGoldwFrostedGlobe": {
+        "name": "Wall Sconce - Gold w Frosted Globe",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/wallsconcegoldwfrostedglobe-wall-sconce-gold-w-frosted-globe.png",
+        "source": "master/Products/Appliances/WallSconceGoldwFrostedGlobe"
+      },
+      "PendantFrostedCylinder": {
+        "name": "Pendant - Frosted Cylinder",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/pendantfrostedcylinder-pendant-frosted-cylinder.png",
+        "source": "master/Products/Appliances/PendantFrostedCylinder"
+      },
+      "ChandelierBlackNineBulb": {
+        "name": "Chandelier - Black 9 Bulb",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/environment-objects/images-enhanced/chandelierblackninebulb-chandelier-black-9-bulb.png",
+        "source": "master/Products/Appliances/ChandelierBlackNineBulb"
+      },
+      "Clothes03": {
+        "source": "master/Products/Appliances/Clothes03",
+        "image": "https://vesta360.com/web/imagesource/product.template/151662/image_256",
+        "name": "Clothes003"
+      }
+    },
+    "Doors": {
+      "DoorDouble": {
+        "name": "Double Door",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doordouble-double-door.png",
+        "source": "master/Products/Doors/DoorDouble"
+      },
+      "CasedWallOpening": {
+        "name": "Cased Wall Opening",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/casedwallopening-cased-wall-opening.png",
+        "source": "master/Products/Doors/CasedWallOpening"
+      },
+      "DoorSlidingLeft": {
+        "name": "Door - Sliding Left",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorslidingleft-door-sliding-left.png",
+        "source": "master/Products/Doors/DoorSlidingLeft"
+      },
+      "DoorSingle": {
+        "name": "Door",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorsingle-door.png",
+        "source": "master/Products/Doors/DoorSingle"
+      },
+      "DoorDoubleSidePanels": {
+        "name": "Door - Double Side Panels",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doordoublesidepanels-door-double-side-panels.png",
+        "source": "master/Products/Doors/DoorDoubleSidePanels"
+      },
+      "DoorSingleSidePanel": {
+        "name": "Door - Single Side Panel",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorsinglesidepanel-door-single-side-panel.png",
+        "source": "master/Products/Doors/DoorSingleSidePanel"
+      },
+      "DoorSlidingRight": {
+        "name": "Door - Sliding Right",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/doorslidingright-door-sliding-right.png",
+        "source": "master/Products/Doors/DoorSlidingRight"
+      }
+    },
+    "Windows": {
+      "WindowBay": {
+        "name": "Window - Bay",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowbay-window-bay.png",
+        "source": "master/Products/Windows/WindowBay"
+      },
+      "WindowSinglePane": {
+        "name": "Window - Single Pane",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowsinglepane-window-single-pane.png",
+        "source": "master/Products/Windows/WindowSinglePane"
+      },
+      "WindowSliding": {
+        "name": "Window - Sliding",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowsliding-window-sliding.png",
+        "source": "master/Products/Windows/WindowSliding"
+      },
+      "WindowDoubleHung": {
+        "name": "Window - Double-Hung",
+        "image": "https://stmoonsalespubdevwus3.blob.core.windows.net/catalog-media/catalog-items/images-enhanced/windowdoublehung-window-double-hung.png",
+        "source": "master/Products/Windows/WindowDoubleHung"
+      }
+    }
+  }
+}

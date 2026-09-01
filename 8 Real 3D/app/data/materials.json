@@ -1,0 +1,1982 @@
+{
+  "Materials": [
+    {
+      "label": "1/4 Mel White [0.25-96.0-48.0] [1]",
+      "lookId": "474f1056-b7b9-494d-b9f0-2b9f7de72d88",
+      "_id": "920c3ea5-775b-4d37-a239-a5aa513d6b4a",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Quarter Thick",
+      "sheetWidth": 48.0,
+      "sheetLength": 96.0,
+      "thickness": 0.25
+    },
+    {
+      "label": "African_Walnut",
+      "lookId": "d9d6fd8d-0144-4d0c-9707-21439a24f154",
+      "thickness": 0.0393701,
+      "_id": "be8afe19-716a-4918-aaa1-e08bc5b86de6",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "African_Walnut [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "d9d6fd8d-0144-4d0c-9707-21439a24f154",
+      "_id": "bf8503ad-5a7a-4ea7-ad0e-e14ae89a0406",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "be8afe19-716a-4918-aaa1-e08bc5b86de6",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Almond [0.75-24.0-24.0] [SOLIDS]",
+      "lookId": "d3fc6177-98f2-4cfc-a324-5419ebcecfe1",
+      "_id": "95d6c243-6898-4888-9436-c2c49b40001e",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "5e66e466-3ab5-46e7-9b05-0c5e4ba25548",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Almond",
+      "lookId": "d3fc6177-98f2-4cfc-a324-5419ebcecfe1",
+      "thickness": 0.0393701,
+      "_id": "5e66e466-3ab5-46e7-9b05-0c5e4ba25548",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Antique_Pearl",
+      "lookId": "26ba5a8f-47c9-4e0c-aee2-bf01339736d5",
+      "thickness": 0.0393701,
+      "_id": "5babb2ec-a7fd-46cd-a1af-05134931a597",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Antique_Pearl [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "26ba5a8f-47c9-4e0c-aee2-bf01339736d5",
+      "_id": "26c4c97f-4cc6-41e6-b8d3-a3505c8f2857",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "5babb2ec-a7fd-46cd-a1af-05134931a597",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Antique_White",
+      "lookId": "f0980719-c2d9-4cc0-ab1d-d13b229428ce",
+      "thickness": 0.0393701,
+      "_id": "bd963c42-73f1-4edd-b32b-2f9f03f05d9e",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Antique_White [0.75-24.0-24.0] [SOLIDS]",
+      "lookId": "f0980719-c2d9-4cc0-ab1d-d13b229428ce",
+      "_id": "eb55fdc3-1a57-459b-94e9-0c9d5efbdc86",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "bd963c42-73f1-4edd-b32b-2f9f03f05d9e",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Autumn_Leaves [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "dc08ef2f-a5f7-45ef-92b1-0d4db3162ea6",
+      "_id": "e30a2193-2660-4bcb-a602-773127ddc67a",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "a4b22386-4b1e-42a6-8eb0-2e7f58f2933a",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Autumn_Leaves",
+      "lookId": "dc08ef2f-a5f7-45ef-92b1-0d4db3162ea6",
+      "thickness": 0.0393701,
+      "_id": "a4b22386-4b1e-42a6-8eb0-2e7f58f2933a",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Black",
+      "lookId": "03b5a82a-cfbe-4b64-8b4c-1b4759b0119c",
+      "thickness": 0.0393701,
+      "_id": "33a7a1a2-2677-4b10-9d74-9064868d08fd",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Black [0.75-24.0-24.0] [SOLIDS]",
+      "lookId": "03b5a82a-cfbe-4b64-8b4c-1b4759b0119c",
+      "_id": "c2a5ad06-15fa-4991-97b9-20332a7229a8",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "33a7a1a2-2677-4b10-9d74-9064868d08fd",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Candlelight [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "4bb8a42d-5156-4f21-ab98-c28c2197b0ea",
+      "_id": "df5d843f-8508-4a2c-97c7-d5257b6a666d",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "0d8936e9-2ab4-4a93-92b8-1c2b5de90221",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Candlelight",
+      "lookId": "4bb8a42d-5156-4f21-ab98-c28c2197b0ea",
+      "thickness": 0.0393701,
+      "_id": "0d8936e9-2ab4-4a93-92b8-1c2b5de90221",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Cherry_Blossom [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "3123c2bf-692c-4dcc-b6a5-3b514e26a5f4",
+      "_id": "e3289f13-e7d5-4f55-a30c-5b7f436fbfe5",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "2eb22299-08a1-402f-8436-44edecf9e262",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Cherry_Blossom",
+      "lookId": "3123c2bf-692c-4dcc-b6a5-3b514e26a5f4",
+      "thickness": 0.0393701,
+      "_id": "2eb22299-08a1-402f-8436-44edecf9e262",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Chocolate_Pear [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "42cb9c0e-52d2-4788-8d73-63c3ac0685dd",
+      "_id": "39191cfe-4264-46cc-9185-57b3fb4034c7",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "3c0114ba-98fd-442e-a550-591fb08c3cc6",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Chocolate_Pear",
+      "lookId": "42cb9c0e-52d2-4788-8d73-63c3ac0685dd",
+      "thickness": 0.0393701,
+      "_id": "3c0114ba-98fd-442e-a550-591fb08c3cc6",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Classic Shaker [TAF-Classic White-L178] [1]",
+      "_id": "bcc8c618-f3cc-4420-a8e0-3c3af5f76acd",
+      "subCategory1": "Doors",
+      "subCategory2": "Melamine",
+      "doorStyle": "5Piece90DegJoint",
+      "doorStyleImg": "https://vesta360.com/web/imagesource/product.template/170558/other_image",
+      "isGlassStyle": false,
+      "calcType": "Single Piece",
+      "lookId": "8bc1f2c8-488a-4fc7-86c3-0ff904f158ce",
+      "DoorExportName": false,
+      "DrawerExportName": false,
+      "thickness": 0.75
+    },
+    {
+      "label": "Classic Shaker [TAF-Apres Ski-M2015] [27]",
+      "_id": "d86a4e22-c8fc-42d2-beac-ef86fb5e0d92",
+      "subCategory1": "Doors",
+      "subCategory2": "Melamine",
+      "doorStyle": "5Piece90DegJoint",
+      "doorStyleImg": "https://vesta360.com/web/imagesource/product.template/170558/other_image",
+      "isGlassStyle": false,
+      "calcType": "Single Piece",
+      "lookId": "3da6a4ff-30e2-43f4-bbab-89cdffd4ec75",
+      "DoorExportName": false,
+      "DrawerExportName": false,
+      "thickness": 0.75
+    },
+    {
+      "label": "Classic Shaker [TAF-Eucalyptus-PM773] [54]",
+      "_id": "2f3bd18e-dd4e-4aac-b0b1-b9681b57cccf",
+      "subCategory1": "Doors",
+      "subCategory2": "Melamine",
+      "doorStyle": "5Piece90DegJoint",
+      "doorStyleImg": "https://vesta360.com/web/imagesource/product.template/170558/other_image",
+      "isGlassStyle": false,
+      "calcType": "Single Piece",
+      "lookId": "98d798fd-fae7-4cd4-a5b4-ff0d8da37c7c",
+      "DoorExportName": false,
+      "DrawerExportName": false,
+      "thickness": 0.75
+    },
+    {
+      "label": "Classic Shaker - Glass Insert [TAF-Classic White-L178] [1]",
+      "_id": "e13c64c9-0da0-41de-af36-6c4c9fb336c0",
+      "subCategory1": "Doors",
+      "subCategory2": "Glass",
+      "doorStyle": "Fusion90Glass",
+      "doorStyleImg": "https://vesta360.com/web/imagesource/product.template/170559/other_image",
+      "isGlassStyle": false,
+      "calcType": "Single Piece",
+      "lookId": "8bc1f2c8-488a-4fc7-86c3-0ff904f158ce",
+      "DoorExportName": false,
+      "DrawerExportName": false,
+      "thickness": 0.75
+    },
+    {
+      "label": "Dark_Grey [0.75-24.0-24.0] [SOLIDS]",
+      "lookId": "9aa3e1a2-cf16-458c-a7b6-9317bf5ed710",
+      "_id": "2b691e25-7c78-4988-9622-f861e16454cd",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "7bfe6bda-ac8c-4a69-8f31-8edde5bff5a6",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Dark_Grey",
+      "lookId": "9aa3e1a2-cf16-458c-a7b6-9317bf5ed710",
+      "thickness": 0.0393701,
+      "_id": "7bfe6bda-ac8c-4a69-8f31-8edde5bff5a6",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Dark_Teak [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "ca9c3084-fff7-4437-ad6f-3e5e26a268a0",
+      "_id": "3101061b-a39b-4cd4-b64f-86367eab23e7",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "1a2839ae-3edb-40c7-8db8-e8362b6a5e8f",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Dark_Teak",
+      "lookId": "ca9c3084-fff7-4437-ad6f-3e5e26a268a0",
+      "thickness": 0.0393701,
+      "_id": "1a2839ae-3edb-40c7-8db8-e8362b6a5e8f",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Espresso",
+      "lookId": "8d29bbb7-b6bd-43fb-b0ce-509f5f47c6b5",
+      "thickness": 0.0393701,
+      "_id": "57ccebb0-d6d2-4de9-bbac-6239b42bb864",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Espresso [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "8d29bbb7-b6bd-43fb-b0ce-509f5f47c6b5",
+      "_id": "b2518479-3bf0-4ef8-b9b4-76e23d78a1e8",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "57ccebb0-d6d2-4de9-bbac-6239b42bb864",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Fusion_Maple",
+      "lookId": "7606b386-c260-4b06-adc7-4bf04c733790",
+      "thickness": 0.0393701,
+      "_id": "3a914b03-e54d-441c-a6e8-a547bcf2c3c0",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Fusion_Maple [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "7606b386-c260-4b06-adc7-4bf04c733790",
+      "_id": "ebf86a82-4c73-4f0f-bfdd-151dd5fcd47b",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "3a914b03-e54d-441c-a6e8-a547bcf2c3c0",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Greystone [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "26a6e953-1029-4f22-940c-13f4434fea6c",
+      "_id": "07d5ba26-8df2-46a0-b9a1-e057d3471a0a",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "5f329b2e-82f4-4768-9eee-f07eef683cac",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Greystone",
+      "lookId": "26a6e953-1029-4f22-940c-13f4434fea6c",
+      "thickness": 0.0393701,
+      "_id": "5f329b2e-82f4-4768-9eee-f07eef683cac",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Hard_Rock_Maple",
+      "lookId": "a6d801dd-bb14-42ff-a310-5df5142fa9b9",
+      "thickness": 0.0393701,
+      "_id": "2c8a764c-d4e7-47ec-a26d-0ea01859fae9",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Hard_Rock_Maple [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "a6d801dd-bb14-42ff-a310-5df5142fa9b9",
+      "_id": "f98119ec-d9d7-48ec-95e4-4c3df227d506",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "2c8a764c-d4e7-47ec-a26d-0ea01859fae9",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Honey_Maple [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "be3e78ee-2cae-4d55-9c49-34a56cbd9ba2",
+      "_id": "6afc54b8-0867-463c-8c77-ab220dec207a",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "fd4a13fc-9501-4b80-84a2-cfbc6e553b85",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Honey_Maple",
+      "lookId": "be3e78ee-2cae-4d55-9c49-34a56cbd9ba2",
+      "thickness": 0.0393701,
+      "_id": "fd4a13fc-9501-4b80-84a2-cfbc6e553b85",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Latitude White [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "081cdad0-9203-4095-910b-412cb5f4f90c",
+      "_id": "32b9f7bf-a070-4712-bf96-2af71b149f52",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "55dc3305-cdea-430d-b50a-4a9fc22877d5",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Latitude White",
+      "lookId": "081cdad0-9203-4095-910b-412cb5f4f90c",
+      "thickness": 0.0393701,
+      "_id": "55dc3305-cdea-430d-b50a-4a9fc22877d5",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Latitude_Grey",
+      "lookId": "c7c706fe-abda-4790-80af-fc0fbcab1e49",
+      "thickness": 0.0393701,
+      "_id": "8fe82488-a5c6-4ed0-ac92-0d918ae39a8b",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Latitude_Grey [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "c7c706fe-abda-4790-80af-fc0fbcab1e49",
+      "_id": "7970696d-71f9-40b1-8658-3d9039971150",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "8fe82488-a5c6-4ed0-ac92-0d918ae39a8b",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Light_Grey",
+      "lookId": "fca6e032-152d-41a5-9f92-3246bca18335",
+      "thickness": 0.0393701,
+      "_id": "fe84b74e-9eef-4a50-be80-e2b80e5e50dd",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Light_Grey [0.75-24.0-24.0] [SOLIDS]",
+      "lookId": "fca6e032-152d-41a5-9f92-3246bca18335",
+      "_id": "8e5dddd8-8654-464b-bd6e-cc6a99d718c1",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "fe84b74e-9eef-4a50-be80-e2b80e5e50dd",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Light_Teak",
+      "lookId": "2a839665-8a99-45eb-b98d-541aeef3b445",
+      "thickness": 0.0393701,
+      "_id": "5c4afe80-c27c-405e-9ff5-4c8c02dafff7",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Light_Teak [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "2a839665-8a99-45eb-b98d-541aeef3b445",
+      "_id": "4046c668-ed8e-4b8e-8037-ecfa5d69dec2",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "5c4afe80-c27c-405e-9ff5-4c8c02dafff7",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Mirror [0.25-96.0-48.0] [1]",
+      "lookId": "1a6366fa-ddd8-44fb-a3ef-25799db24a70",
+      "_id": "c781915f-a17f-44cd-8366-128d735a36f7",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Mirror",
+      "sheetWidth": 48.0,
+      "sheetLength": 96.0,
+      "thickness": 0.25
+    },
+    {
+      "label": "Mocha [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "42d700f2-dd30-4bcd-b3b7-e483566ed52e",
+      "_id": "466cdfa1-91f1-4229-ba88-08436e6aed2d",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "576b84cf-c994-4c57-9b87-98669a2c4ee1",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Mocha",
+      "lookId": "42d700f2-dd30-4bcd-b3b7-e483566ed52e",
+      "thickness": 0.0393701,
+      "_id": "576b84cf-c994-4c57-9b87-98669a2c4ee1",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Okanogan_Cherry",
+      "lookId": "db3ac085-1608-42e4-9a73-78bab21faaef",
+      "thickness": 0.0393701,
+      "_id": "c571ba31-a80b-4557-a172-3c0cd56defc9",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Okanogan_Cherry [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "db3ac085-1608-42e4-9a73-78bab21faaef",
+      "_id": "e74ee4ee-70f8-4370-800d-9e84f1c132a9",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "c571ba31-a80b-4557-a172-3c0cd56defc9",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Onyx",
+      "lookId": "117accf7-65c6-4bfb-8481-d2b28cbb082b",
+      "thickness": 0.0393701,
+      "_id": "7afe7fe5-8583-49e0-88bc-2e478a1c7f85",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Onyx [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "117accf7-65c6-4bfb-8481-d2b28cbb082b",
+      "_id": "53a566ce-d623-4184-bf6a-ce8ad5a7035e",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "7afe7fe5-8583-49e0-88bc-2e478a1c7f85",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Oyster_Pine",
+      "lookId": "be2b0f97-7fde-4155-bdea-0ca92b338916",
+      "thickness": 0.0393701,
+      "_id": "cc3f53d9-4e6e-467c-8bf0-c92040876efe",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Oyster_Pine [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "be2b0f97-7fde-4155-bdea-0ca92b338916",
+      "_id": "3cfce1f3-1044-4489-8527-c54e3141c8a9",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "cc3f53d9-4e6e-467c-8bf0-c92040876efe",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Pearl [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "d7179a7d-0d86-4604-9868-fc50f196fcdf",
+      "_id": "04ac1feb-1531-4733-8988-7ac55108da3e",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "6910c8a3-9bcd-4083-9121-db7fd082e071",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Pearl",
+      "lookId": "d7179a7d-0d86-4604-9868-fc50f196fcdf",
+      "thickness": 0.0393701,
+      "_id": "6910c8a3-9bcd-4083-9121-db7fd082e071",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Pearwood",
+      "lookId": "02406ddf-513e-4ee9-a627-1f9e73ec2428",
+      "thickness": 0.0393701,
+      "_id": "9a08219f-b084-486c-9bec-634c8df21562",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Pearwood [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "02406ddf-513e-4ee9-a627-1f9e73ec2428",
+      "_id": "9821184b-1a94-4abf-997f-bbb26fbc90cf",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "9a08219f-b084-486c-9bec-634c8df21562",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "River_Rock",
+      "lookId": "9e56ab8a-1091-4988-ae51-854381efc539",
+      "thickness": 0.0393701,
+      "_id": "f48adc3e-3af7-40e2-b529-ead32a53ae1f",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "River_Rock [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "9e56ab8a-1091-4988-ae51-854381efc539",
+      "_id": "be4ad8c6-7d8c-496a-b8c9-24c0ea50ee04",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "f48adc3e-3af7-40e2-b529-ead32a53ae1f",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Sand_Pine",
+      "lookId": "2a3295b2-7252-4c21-ad52-af7f8b812e9c",
+      "thickness": 0.0393701,
+      "_id": "36e9c0a3-6684-41ed-ab40-03fe516d27da",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Sand_Pine [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "2a3295b2-7252-4c21-ad52-af7f8b812e9c",
+      "_id": "f7bfa5c5-1a97-41f9-bd67-d7dd46556515",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "36e9c0a3-6684-41ed-ab40-03fe516d27da",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Sandstone",
+      "lookId": "6de947c1-7a98-4d5e-a915-2d2e318f034a",
+      "thickness": 0.0393701,
+      "_id": "12755081-b824-4964-b979-0ba25041f8f1",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Sandstone [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "6de947c1-7a98-4d5e-a915-2d2e318f034a",
+      "_id": "74f40f5c-e871-40de-b484-7ed02cfeaffd",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "12755081-b824-4964-b979-0ba25041f8f1",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Spring_Blossom [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "81648f46-0e80-4b50-a78d-811bcdb1c907",
+      "_id": "67201156-1653-451d-aabb-ea5b0fdc4fa3",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "610d70a8-d025-46d5-b8d1-328edd9739fe",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Spring_Blossom",
+      "lookId": "81648f46-0e80-4b50-a78d-811bcdb1c907",
+      "thickness": 0.0393701,
+      "_id": "610d70a8-d025-46d5-b8d1-328edd9739fe",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Summer_Breeze [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "d36b482a-724a-4957-a0b1-aadab9366a48",
+      "_id": "fcaa3bc9-55a9-4a10-8bd8-670cf24a1225",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "13b11cd0-a5d6-432f-8f53-57d9fae83d41",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Summer_Breeze",
+      "lookId": "d36b482a-724a-4957-a0b1-aadab9366a48",
+      "thickness": 0.0393701,
+      "_id": "13b11cd0-a5d6-432f-8f53-57d9fae83d41",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Summer_Flame",
+      "lookId": "6efbed87-05dd-4547-9e20-f6a16bcb6a81",
+      "thickness": 0.0393701,
+      "_id": "62a932ec-fb9c-49b5-b2b8-bffcf1a8c2f0",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Summer_Flame [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "6efbed87-05dd-4547-9e20-f6a16bcb6a81",
+      "_id": "8374ef24-7a2f-49fe-b5d5-c37c9931d44c",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "62a932ec-fb9c-49b5-b2b8-bffcf1a8c2f0",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "White [0.75-24.0-24.0] [SOLIDS]",
+      "lookId": "c46bc162-0201-435b-8863-c9a01695f8f1",
+      "_id": "9726d945-f70b-4b94-ad19-fb6db25d3f57",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "47bc164e-8741-4dce-aad3-c546f8b5848f",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "White",
+      "lookId": "c46bc162-0201-435b-8863-c9a01695f8f1",
+      "thickness": 0.0393701,
+      "_id": "47bc164e-8741-4dce-aad3-c546f8b5848f",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Wild_Cherry [0.75-96.0-24.0] [WOODGRAINS]",
+      "lookId": "6dfdd925-af59-4b98-948b-461f61c2f9a8",
+      "_id": "6fa57f48-82b4-44ad-8b49-4c4dacc66c16",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "f84ec0b8-c3b4-4a93-8100-2bfdb2137b00",
+      "sheetWidth": 24.0,
+      "sheetLength": 96.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Wild_Cherry",
+      "lookId": "6dfdd925-af59-4b98-948b-461f61c2f9a8",
+      "thickness": 0.0393701,
+      "_id": "f84ec0b8-c3b4-4a93-8100-2bfdb2137b00",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    },
+    {
+      "label": "Winter_Cherry [0.75-24.0-24.0] [SIGNIA]",
+      "lookId": "d97d07de-678d-4d9e-b482-d8efa549092b",
+      "_id": "cc131042-93cd-4f7e-9b40-7134fde47d4b",
+      "subCategory1": "Sheet Stock",
+      "subCategory2": "Melamine",
+      "matchingEdgeband": "04eec6e1-e80f-4156-b40d-bb7a43067961",
+      "sheetWidth": 24.0,
+      "sheetLength": 24.0,
+      "thickness": 0.75
+    },
+    {
+      "label": "Winter_Cherry",
+      "lookId": "d97d07de-678d-4d9e-b482-d8efa549092b",
+      "thickness": 0.0393701,
+      "_id": "04eec6e1-e80f-4156-b40d-bb7a43067961",
+      "subCategory1": "Edgebandings",
+      "subCategory2": "PVC"
+    }
+  ],
+  "Surfaces": [
+    {
+      "label": "Alpina White",
+      "lookId": "46437d53-711f-4f31-a31d-62787f4dcc4f",
+      "thickness": 0.75,
+      "_id": "e454b16b-8c2c-433b-82bc-6bf76a96bc05",
+      "subCategory1": "Countertops",
+      "subCategory2": "Marble"
+    },
+    {
+      "label": "Brick - Red",
+      "lookId": "5839a880-59d1-4d7a-8e67-e2d5eb31c8a6",
+      "_id": "ec587e17-aa28-4c4c-8840-a27df98c7a3a",
+      "subCategory1": "Walls",
+      "subCategory2": "Stone"
+    },
+    {
+      "label": "Carpet - Beige",
+      "lookId": "c52f15b7-8fdf-454c-acdd-e7c6f84eec2e",
+      "_id": "733c4f21-12d9-48c4-af88-0ddbb4051b19",
+      "subCategory1": "Floors",
+      "subCategory2": "Tile Floors"
+    },
+    {
+      "label": "Concrete Floor",
+      "lookId": "e41ba663-e5d2-493a-a816-9b1378db24d2",
+      "_id": "121d15bd-b76b-47d8-ba99-003fa7477908",
+      "subCategory1": "Floors",
+      "subCategory2": "Tile Floors"
+    },
+    {
+      "label": "Fleurale",
+      "lookId": "cc1fe864-49dc-4303-941f-4928f7c49435",
+      "_id": "7718826f-38c4-4e3d-ac2a-5d3b94dedce6",
+      "subCategory1": "Walls",
+      "subCategory2": "Wall Paper"
+    },
+    {
+      "label": "Glass - Transparent",
+      "lookId": "81725b7a-1d06-4fd7-93f9-b7588544a937",
+      "_id": "970211a5-d3f8-447c-b640-993806a4b684",
+      "subCategory1": "Walls",
+      "subCategory2": "Paints"
+    },
+    {
+      "label": "Granite - Bleu Araras",
+      "lookId": "9d3e9f6b-a191-4701-8e2c-4cf624d05407",
+      "thickness": 0.0,
+      "_id": "63c50c5f-2cd3-4f47-8a73-56ac404b35a6",
+      "subCategory1": "Countertops",
+      "subCategory2": "Granite"
+    },
+    {
+      "label": "Hardwood Floor - Pine",
+      "lookId": "b9d6eed5-1efc-4a10-85e4-f1ce27508671",
+      "_id": "75a4ed64-d06c-45e2-855d-24160ffc54a1",
+      "subCategory1": "Floors",
+      "subCategory2": "Hardwood"
+    },
+    {
+      "label": "Herringbone Tile - Dark Grey",
+      "lookId": "b5a58055-d7b0-4328-a9e3-faa3e7a787f8",
+      "_id": "8ca4ac3e-01b9-4299-8a33-a2cc1259b839",
+      "subCategory1": "Floors",
+      "subCategory2": "Tile Floors"
+    },
+    {
+      "label": "Laminate",
+      "lookId": "8c390224-1cfa-4048-8cd7-16a057818337",
+      "thickness": 0.0,
+      "_id": "bc7e318a-d1ae-48cf-87ca-265083230bb1",
+      "subCategory1": "Countertops",
+      "subCategory2": "Laminate"
+    },
+    {
+      "label": "Marble Tile Floor - White",
+      "lookId": "f9bae42e-9c37-497e-b93d-1b0b46cc432e",
+      "_id": "06262999-cae4-47dc-b8cc-6eca1939b3ef",
+      "subCategory1": "Floors",
+      "subCategory2": "Marble"
+    },
+    {
+      "label": "Paint - Pure White",
+      "lookId": "1397cb06-af76-4f95-9512-45edcad34a52",
+      "_id": "cb63ae4a-5a74-499e-841f-d3a8bd6fa039",
+      "subCategory1": "Walls",
+      "subCategory2": "Paints"
+    },
+    {
+      "label": "Plaster - Light Grey",
+      "lookId": "ee9607d6-d1c9-4cd9-bc88-7c89ad2c3367",
+      "_id": "c16d7567-0269-4097-8ecf-8abad41cc310",
+      "subCategory1": "Walls",
+      "subCategory2": "Paints"
+    },
+    {
+      "label": "Stone Tile - Dark Grey - Hexagon",
+      "lookId": "41ac10fa-423e-4e36-b3df-a2f00a4caf28",
+      "_id": "c43a5ac5-cfab-4f7b-8fc7-bc24d4f31033",
+      "subCategory1": "Walls",
+      "subCategory2": "Stone"
+    },
+    {
+      "label": "Stone Tile - Natural Beige",
+      "lookId": "12133f89-0eac-4354-b64f-9d70cf3cead5",
+      "_id": "b54948ee-0b15-462c-8f4d-0264232f9e5e",
+      "subCategory1": "Floors",
+      "subCategory2": "Tile Floors"
+    },
+    {
+      "label": "Wall Marble Tile - Black",
+      "lookId": "2f8ea5ab-68f8-4cfd-a3a5-45ed5407975e",
+      "_id": "cebecb97-8c31-43ff-8d87-1f780fe36a11",
+      "subCategory1": "Walls",
+      "subCategory2": "Marble"
+    },
+    {
+      "label": "Wall Marble Tile - Black Mosaic",
+      "lookId": "73eec794-68a5-4542-a4fc-7a9b8734a3a7",
+      "_id": "6d49b366-62d9-462f-8298-6634fc899b5d",
+      "subCategory1": "Walls",
+      "subCategory2": "Marble"
+    },
+    {
+      "label": "Wall Marble Tile - Med Grey",
+      "lookId": "8a882fae-66b1-4356-b720-7e220e65cc58",
+      "_id": "7ad0ec12-d116-47ec-a23c-257bc82dff62",
+      "subCategory1": "Walls",
+      "subCategory2": "Marble"
+    },
+    {
+      "label": "Wall Stone - Charcoal Block",
+      "lookId": "16ca8e68-7302-4cc3-a6d2-f2c69792b1c5",
+      "_id": "12eb2460-b7b9-4211-ae5c-3f363acddce5",
+      "subCategory1": "Walls",
+      "subCategory2": "Stone"
+    },
+    {
+      "label": "Wall Tile - Blue White - Deco",
+      "lookId": "811cc45d-9bad-4af2-abb6-a415555d3d28",
+      "_id": "86da685c-18e2-480a-8e43-e4006a4d2834",
+      "subCategory1": "Walls",
+      "subCategory2": "Tiles"
+    },
+    {
+      "label": "Wall Tile - Grey - Arabesque",
+      "lookId": "2a19244a-4aeb-4769-b3b2-cf002e9b772a",
+      "_id": "f5755b13-e71b-4ee9-b636-d0ea10a60508",
+      "subCategory1": "Walls",
+      "subCategory2": "Tiles"
+    },
+    {
+      "label": "Wall Tile - Light Grey - Hexagon",
+      "lookId": "43754d73-5bef-4e5a-88f6-a05c8e1b5bf6",
+      "_id": "ae82d766-095e-4582-bf69-233c94afb01a",
+      "subCategory1": "Walls",
+      "subCategory2": "Tiles"
+    }
+  ],
+  "Hardware": [
+    {
+      "label": "Aventos HF Lift Bracket 20F2200",
+      "modelId": null,
+      "_id": "3f540fd9-679a-4a17-a8f3-7c9538d0bf55",
+      "subCategory1": "Hinges",
+      "subCategory2": "Lift-Up"
+    },
+    {
+      "label": "CW Americana Braded Edge Handle - 11.75in - Brushed Nickel - H48",
+      "drillingDistance": 11.75,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "2faa579b-4c62-4a40-8f92-3e5833223c1e",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Americana Braded Edge Handle - 11.75in - Oil Rubbed Bronze - H48",
+      "drillingDistance": 11.75,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "7ba989b4-2eeb-4771-accb-381981f6d283",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Americana Braded Edge Handle - 4in - Brushed Nickel - H46",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "68544a96-23f0-4937-b086-c9641b37f622",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Americana Braded Edge Handle - 4in - Oil Rubbed Bronze - H46",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "7264886b-1575-4b0a-aca6-97afaf11a9f0",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Americana Braded Edge Handle - 5in - Brushed Nickel - H47",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "3851d662-c7d6-4e46-86d4-690dd0e489c5",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Americana Braded Edge Handle - 5in - Oil Rubbed Bronze - H47",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "f05a1951-e43b-4565-84ff-4ec5e5900e8d",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Americana Braided Knob - Brushed Nickel - H49",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "bd7a76bb-419e-4f54-bf82-9a1503a15af4",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Americana Braided Knob - Oil Rubbed Bronze - H49",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "365b9a43-f548-4277-aa72-19b6704a2bf1",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Arch Pull - 6in - Black Nickel - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "797bd9c8-a0d9-4e41-9402-b8c80efc3acc",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Arch Pull - 6in - Matte Black - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "db824e89-8e6d-4a94-aa65-247449d4b6c3",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Arch Pull - 6in - Polished Brass - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "e624881e-7502-43fe-bd16-621232e17418",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Arch Pull - 6in - Polished Chrome - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "ab6e1d14-6926-437e-8a89-b9e36a5bae53",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Arch Pull - 6in - Satin Chrome - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "3e7d9bbb-7e48-4ca4-8951-0d5632273645",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Arch Pull - 6in - Satin Nickel - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "db7bc530-e6ee-4ab9-80b3-c359a7b0bf8f",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Arch Pull - 6in - White - H10",
+      "drillingDistance": 5.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "e48615da-83b3-4960-8918-4f6d44706a59",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Bar Pull Handle - 10in - Satin Nickel - H40",
+      "drillingDistance": 7.56,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "37dc30cc-bfa2-448a-b2b3-0564f1b80695",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 12in - Satin Nickel - H40",
+      "drillingDistance": 9.67,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "1b8f4815-1473-4e5f-aa17-88bc7657e9a1",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 15in - Oil Rubbed Bronze - H41",
+      "drillingDistance": 12.56,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "8d834493-00dc-4e51-b439-8f44ad3f7a65",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 16in - Satin Nickel - H40",
+      "drillingDistance": 12.63,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "4e0b7aa5-993c-4303-a6d5-084f4d0ee028",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 20in - Oil Rubbed Bronze - H41",
+      "drillingDistance": 17.56,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "725ae693-170a-4d40-aac1-32afe50a7897",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 20in - Satin Nickel - H40",
+      "drillingDistance": 16.37,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "8cacbf48-2085-4ef9-8a0c-94d7e48e83cc",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 24in - Satin Nickel - H40",
+      "drillingDistance": 21.4,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "27a25912-f838-487b-b373-2322cd113340",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 30in - Satin Nickel - H40",
+      "drillingDistance": 27.4,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "a931f9c2-ec8e-48ac-a722-3ff439e5fb83",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 6.25in - Oil Rubbed Bronze - H41",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "23b517aa-9a39-4229-a009-0a953b97b41c",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 6in - Satin Nickel - H40",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "2c477501-667f-41d7-86e9-e023fd327fb7",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Bar Pull Handle - 9in - Oil Rubbed Bronze - H41",
+      "drillingDistance": 6.56,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "006b89dd-1348-41ad-be49-e35220222a51",
+      "subCategory1": "Handles",
+      "subCategory2": "Bars"
+    },
+    {
+      "label": "CW Brushed Finish Handle - 8in - Zinc - H76",
+      "drillingDistance": 7.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "b2711833-910e-4c70-9591-ee18d84c2bc3",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Brushed Finish Knob - 1.75in - Zinc - H77",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "f7005663-6465-48cd-b1d1-7dd6c538ed7c",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Clear Glass and Ceramic Finish Handle - 8in - Clear - H63",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "2661035a-e4c6-4ff9-b1d3-0bcd0777da4f",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Colored Acrylic Handle - 6in - Blue Matte - H66",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "016b6348-9f1c-4a07-bca0-90b8713153ee",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 4.5in - Brushed Nickel with Chestnut Leather Base - H54",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "b896a8a0-7a14-4db7-b573-2ff7f2223964",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 5in - Matte Nickel - H42",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "1fc96888-cb68-4075-aacf-8701ce7dfcf0",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 5in - Matte Nickel - H43",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "acf9fd00-618f-4a45-8627-dc4e6ad8eb27",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 5in - Matte Nickel - H44",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "a35e1c72-b56c-4ebe-af2c-5d5136d2c46b",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 5in - Stainless Steel - H50",
+      "drillingDistance": 5.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "1310cf4d-ff60-4ebe-bbe4-c0f44c801c63",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 6in - Stainless Steel - H51",
+      "drillingDistance": 6.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "960d17b6-834c-4353-a3b7-b9c2de610298",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 7.25in - Stainless Steel - H52",
+      "drillingDistance": 7.25,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "941ed81f-f7d2-4935-9f57-9acb2b63323e",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Handle - 8.25in - Stainless Steel - H53",
+      "drillingDistance": 8.25,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "c3a786fd-5acb-487f-9aa8-79f4af4dda06",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Contemporary Knob - 1.5in - Brushed Nickel with Chestnut Leather Base - H55",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "5bdb4a64-e1d1-43c5-b6f1-c2c2773f70f7",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Contemporary Knob - 1.625in x 0.75in - Matte Nickel - H45",
+      "drillingDistance": 0.0,
+      "modelId": "2ea8d6ec-efba-422c-812d-60d9a0393d1f",
+      "_id": "3bc7e881-a99e-405c-89b3-bdc03e864a24",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Crystal Knob - 1.25in - Crystal Brass - H37",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "128b66c0-fddc-46dd-809c-190fed9b4fb9",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Crystal Matte Knob - 0.75in - Matte - H58",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "7e0f972c-0a69-480e-9de5-a5ffb4774e96",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Crystal Matte Knob - 1in - Matte - H59",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "b77d1113-5a32-488a-b983-7789172ea950",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Die Cast Knob - 1.25in - Oil Brushed Bronze - H39",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "02c7227a-e221-4b3d-8264-ae03d7014f21",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Glass Matte Knob - 1.25in - H60",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "c00e4ed6-0996-4915-8835-048e4e12a0ad",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Inset Pull Handle - 3x1.5in - White Plastic - H24",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "d05d9adf-205e-4068-a9b7-efdde0fdf67b",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Inset Pull Handle - 4.25x2.25in - Matte Chrome - H27",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "8e5e6f11-c493-4a7c-ba8c-db0b374d8c43",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Inset Pull Handle - 4x1.5in - Chrome with Black Recess - H26",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "7a79488e-0f60-4c64-ac9f-200e8e933dce",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Inset Pull Handle - 4x1.5in - Matte Black - H25",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "df9c414c-feb6-41fb-8633-f2989bd6f6f0",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Matte Acrylic Handle - 5in - Aluminum Feet - H64",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "eeb8f365-fd6d-48b0-a212-bf230ed8313f",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Matte Chrome Handle - 4.625in - Zinc - H71",
+      "drillingDistance": 4.625,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "54bb82c6-a71a-4fea-9093-84639b28d8a8",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Matte Chrome Handle - 5.75in - Zinc - H73",
+      "drillingDistance": 5.75,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "90e72606-df1a-4b0c-97e6-ae411ac5b4c1",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Matte Chrome Handle - 9in - Zinc - H72",
+      "drillingDistance": 9.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "6ac41b37-4211-422e-bf0b-efcdf92749a9",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Matte Glass and Ceramic Finish Handle - 8in - Matte - H62",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "f77581bb-ebbf-4f43-b77f-9aa0eca10fdd",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Matte Glass and Ceramic Finish Knob - 1.5625in - Matte - H61",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "f74773fa-334b-4600-a170-1722d4b80a81",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Matte Nickel Knob - 1in - H70",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "fe515d8c-ad48-42ff-8846-fd728060a368",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Modern Pull - 4in - Chrome with Gold Feet - H4",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "70e30a6d-97a2-4c90-aa2e-7adec89db519",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Pull - 4in - Gold Ends with White Center - H7",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "82067ad4-5cde-4d18-9578-9585022ada87",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Pull - 4in - Gold with Chrome Feet - H6",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "27ab7655-9b86-4b61-91d3-e4e712a2a0d7",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Pull - 4in - White with Chrome Feet - H5",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "0515c84c-7671-485a-ab7c-a6b9bbdda053",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Structured Pull - 4in - Black Textured - H9",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "56b596ec-e60d-45c3-a3b5-c47466506ba6",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Structured Pull - 4in - Chrome - H9",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "e9f64dc0-e7b3-4c44-b3f4-b9b2ab979069",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Structured Pull - 4in - Gold - H9",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "5396401c-0aeb-4c77-924e-0e659d4c9727",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Structured Pull - 4in - Matte Nickel - H9",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "1ab929a5-9f97-4db5-832a-132d4315171b",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Modern Structured Pull - 4in - White Textured - H9",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "e94af9db-01be-483d-bbe5-a1eb05c1b14d",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Black - H30",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "2f365467-4bb4-4cb7-9d39-bd0d35c83fc2",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Black Nickel - H28",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "05ad829e-ce4c-44e6-84d8-47f0c3738829",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Brushed Brass - H28",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "1ec78159-c7cf-4515-a124-3dc2ba13fc4f",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Brushed Chrome - H28",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "033b4504-b44c-4a13-952b-145dc657ceb6",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Polished Brass - H28",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "79a4a1bf-d26d-4dfc-a971-41cfb615927b",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Polished Chrome - H28",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "7cf74ee6-6c28-4e1c-a563-dfccc042b8e4",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - Satin Nickel - H28",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "1ecba304-e060-469a-abb4-c6fa77d550c3",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1.25in - White - H30",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "5142ab2d-2fd3-446f-9a5f-a78880c07bb9",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1in - Black Nickel - H29",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "72ed156b-9fb1-4ab0-a104-2f7d62135043",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1in - Brushed Brass - H29",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "a6c85519-080e-4484-b7a1-c478bd7a4d14",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1in - Brushed Chrome - H29",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "e6e4c36c-f134-489f-9a32-ac607cc9a708",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1in - Polished Brass - H29",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "ba54bb89-9da8-4f85-8c78-b0b12c6f08a5",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1in - Polished Chrome - H29",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "db3bd19d-48c7-4f6d-85b3-8d76729094f4",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Mushroom Knob - 1in - Satin Nickel - H29",
+      "drillingDistance": 0.0,
+      "modelId": "1d9386b2-c8d5-47d7-9484-66ff132e267f",
+      "_id": "1232cf89-3ea6-4955-bc36-e5c359968b89",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Nylon Pull - 4in - Almond - H20",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "c33a65ae-4321-4707-974c-7d2c9641e66d",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Nylon Pull - 4in - Black - H20",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "2d8cddc2-8a2c-4314-999a-8725fa180d14",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Nylon Pull - 4in - Brown - H20",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "e8e06fbc-fd4e-4186-a2b3-05f11018cee8",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Nylon Pull - 4in - White - H20",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "a394a644-d6f2-4bc8-a2b0-ebce054b43e2",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Octagon Knob - 1.25in - Black Nickel - H31",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "8c266e36-0494-49c5-9ed3-27693b5dc8f4",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1.25in - Brushed Brass - H31",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "546f3c2c-bd35-4577-a627-c586940f6317",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1.25in - Brushed Chrome - H31",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "586ed431-aaba-482a-890e-748fd26716bf",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1.25in - Polished Brass - H31",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "a12d96e1-ea3f-46e7-b341-ac08ebf71cf5",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1.25in - Polished Chrome - H31",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "da6b332b-a1fc-417a-9677-42de21ae81ac",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1.25in - Satin Nickel - H31",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "0ea7aa85-a784-4ca2-8bfc-5f1ec6f27945",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1in - Black Nickel - H32",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "0237099a-ee23-4e56-bf82-0c0d37bbcb5b",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1in - Brushed Brass - H32",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "701d01c1-ddfc-405e-8842-4520de18369d",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1in - Brushed Chrome - H32",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "2c5721ce-6350-4757-928e-d04510c0e184",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1in - Polished Brass - H32",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "055cbad7-6e4e-46ae-bbec-6b6b6babac59",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1in - Polished Chrome - H32",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "4dbe04d2-3079-494e-a963-f7041d989453",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Octagon Knob - 1in - Satin Nickel - H32",
+      "drillingDistance": 0.0,
+      "modelId": "d67b318c-d877-44d7-9bbf-3d758cc46ca7",
+      "_id": "ebbb2e34-83b0-429c-b37c-c55cd30bfc66",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Scroll Pull - 4in - Polished Brass - H2",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "7996acb8-36a9-4eb5-b629-ff4d20e3bf24",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Scroll Pull - 4in - Polished Chrome - H2",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "845400c7-4043-4ff5-b8de-8d0530532bea",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Star Shape Knob - 1.5in - Matte - H57",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "f5dc9088-b081-47d1-9392-b185dce80a9c",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Tapered Arch Pull - 1in - Satin Stainless Steel - H16",
+      "drillingDistance": 1.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "7784ac8d-00ac-463b-b530-15c97df6d052",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Tapered Arch Pull - 3in - Satin Stainless Steel - H15",
+      "drillingDistance": 3.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "8dd8c7cd-748f-44c8-a21a-de3db83f0039",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Tapered Arch Pull - 6in - Satin Stainless Steel - H14",
+      "drillingDistance": 6.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "b025e61b-f508-4328-beca-8c16689d088d",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Textured Arch Pull - 4in - Black Textured - H11",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "179328b6-c2da-4746-b72f-25ce5a7044e2",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Traditional Knob - 1.25in - Antique Bronze - H33",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "6886c7d5-f3a9-43e5-9311-dcf210451902",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Traditional Knob - 1in - Antique Bronze - H34",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "220cbd50-ab68-4399-a043-f7778b56b372",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Traditional Knob - 1in - Polished Brass - H36",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "6f0a64b7-7775-427f-9f09-ab681a94f19a",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW White and Chrome Knob - 1.5in - H69",
+      "drillingDistance": 0.0,
+      "modelId": "656daffa-1b7d-4d0a-859f-c5a60b3cc8bb",
+      "_id": "166c05f6-4b22-49db-a72d-82ea3d275af5",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Wire Pull Stainless Steel - 3in - Satin - H18",
+      "drillingDistance": 3.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "c29d8683-8eaa-4000-bd2b-cf5bffa7e204",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Stainless Steel - 6in - Satin - H17",
+      "drillingDistance": 6.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "f8ab0c55-41fc-48c4-97a4-346cbb8e40bc",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Brushed Chrome - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "d9656fb5-62c5-457a-a56f-b811a96e5b00",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Matte Black - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "2c0d79c1-6cf0-4a58-b7bb-7cb140567374",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Oil Brushed Bronze - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "2cb86b33-60af-4e0c-b32b-ca60a627733d",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Polished Brass - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "7637bb42-1d46-4c56-a5c1-b886eab0af56",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Polished Chrome - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "436c6331-5e06-4119-a1ab-53ff92314e23",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Satin Brass - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "b0f7946d-7444-4ae6-834e-270a74992f76",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wire Pull Steel - 4in - Satin Nickel - H19",
+      "drillingDistance": 4.0,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "ed823427-96ba-4c79-a314-32b9900f3ac7",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wood Knob - 1.25in - Maple - H38",
+      "drillingDistance": 0.0,
+      "modelId": "c611bc8b-d047-4048-80ed-a9aeddeffa20",
+      "_id": "4b41df9e-f1d1-46c8-abaa-082a127ee353",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Wood Knob - 1.25in - White Oak - H38",
+      "drillingDistance": 0.0,
+      "modelId": "c611bc8b-d047-4048-80ed-a9aeddeffa20",
+      "_id": "c12ba00c-a0dc-474c-99fb-b2dd60adff0e",
+      "subCategory1": "Handles",
+      "subCategory2": "Knobs"
+    },
+    {
+      "label": "CW Wood Pull - 4in - Double Red Oak - H23",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "f0d89b7c-410e-4c73-b110-42291ce6c0f9",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wood Pull - 4in - Single Maple - H22",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "94b2af78-0e22-4e72-919b-c62831b8a30f",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "CW Wood Pull - 4in - Single Red Oak - H22",
+      "drillingDistance": 3.78,
+      "modelId": "55013287-f7a9-4bf7-9b4a-219e0cdb4b3c",
+      "_id": "a1282b47-5df6-4a8b-9a85-31c2de5feeea",
+      "subCategory1": "Handles",
+      "subCategory2": "Decorative"
+    },
+    {
+      "label": "Corner",
+      "modelId": "0e3ecf31-ee8c-493a-88bb-b1e391e3b79e",
+      "_id": "c9ab822d-4486-4f8e-b0eb-36e34fa30556",
+      "subCategory1": "Hinges",
+      "subCategory2": "PieCut"
+    },
+    {
+      "label": "Corner Diagonal",
+      "modelId": "0e3ecf31-ee8c-493a-88bb-b1e391e3b79e",
+      "_id": "427fb0bf-7fd0-4e22-8fb5-85a573f1598c",
+      "subCategory1": "Hinges",
+      "subCategory2": "Diagonal"
+    },
+    {
+      "label": "Hinge BLUM 110deg Inserta",
+      "modelId": null,
+      "_id": "585e9026-a227-4711-b018-378adae52b41",
+      "subCategory1": "Hinges",
+      "subCategory2": "Soft-Close"
+    },
+    {
+      "label": "Hinge BLUM Blind Corner Inserta",
+      "modelId": null,
+      "_id": "2de9f1d1-a7e6-4c58-b7a5-76be45ed4c06",
+      "subCategory1": "Hinges",
+      "subCategory2": "Blind"
+    },
+    {
+      "label": "Hinge Bi-Fold Lift",
+      "modelId": null,
+      "_id": "bcb0d84e-3096-4d3d-b417-86250c3f7822",
+      "subCategory1": "Hinges",
+      "subCategory2": "Bi-Fold Lift"
+    },
+    {
+      "label": "Matte Gold with clear plastic cover, 1 5/16 diameter, 16g, 8in [CR-ROUND-16G-MG]",
+      "modelId": null,
+      "_id": "fc5ddc09-c838-4498-b32b-98afc7eb49ba",
+      "subCategory1": "Extrusions",
+      "subCategory2": "Rods",
+      "lookId": "4c16d50e-b44c-4ead-9f70-49daaa47f50e",
+      "shape": "private/Shapes/Extrusions/ClosetRodCircularR0.5"
+    },
+    {
+      "label": "Melamine Box Drawer Slide",
+      "modelId": null,
+      "_id": "b1119fa9-2aeb-423c-afa0-9b2d80d00aad",
+      "subCategory1": "Drawer Slides",
+      "subCategory2": "Soft Close"
+    },
+    {
+      "label": "Oval Pole (Polished Chrome)",
+      "_id": "f86bccda-137b-4a0c-a468-8c44ee17ee63",
+      "subCategory1": "Closets",
+      "subCategory2": "Poles",
+      "modelId": "42afa717-d91d-4971-ba93-7a6ac2c2567d",
+      "finish": "Polished Chrome",
+      "modelEndCupId": "76608d41-3372-4fb4-bdf6-e5e0258ea8a1"
+    },
+    {
+      "label": "Oval Pole (Brass)",
+      "_id": "070d263d-58a7-4d42-9503-b4b4b6c1949c",
+      "subCategory1": "Closets",
+      "subCategory2": "Poles",
+      "modelId": null,
+      "finish": "Brass",
+      "modelEndCupId": null
+    },
+    {
+      "label": "Oval Pole (White)",
+      "_id": "5c7e51df-4240-4f80-a3b6-6718b038b129",
+      "subCategory1": "Closets",
+      "subCategory2": "Poles",
+      "modelId": null,
+      "finish": "White",
+      "modelEndCupId": null
+    },
+    {
+      "label": "Plastic Legs",
+      "modelId": "0324b23a-a695-4978-a6fd-3f6c28529d44",
+      "_id": "1eb3535d-0c13-4c3f-9354-79bb4c2df4d0",
+      "subCategory1": "Legs",
+      "subCategory2": "Plastic"
+    },
+    {
+      "label": "Richelieu Exemple",
+      "modelId": null,
+      "_id": "d3428712-d84d-4db7-9099-87e75cb40e66",
+      "subCategory1": "Drawer Systems",
+      "subCategory2": "Mel Box"
+    },
+    {
+      "label": "Strip Light",
+      "_id": "fef5b49f-db1a-49d2-a83a-55753b93e366",
+      "subCategory1": "Closets",
+      "subCategory2": "Strip Lights",
+      "modelId": "b2cdb2b3-352a-495e-bfbc-d0b82f8e60a4"
+    }
+  ],
+  "Mouldings": [
+    {
+      "label": "Crown Molding #1",
+      "lookId": "18f29a3b-2717-4fb7-a269-28cfc660ac3c",
+      "_id": "e9568857-973a-44f1-87e4-b41d6417fdbd",
+      "subCategory1": "Crown Moulding",
+      "subCategory2": "MDF"
+    }
+  ],
+  "Miscellaneous": []
+}

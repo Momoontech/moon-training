@@ -1,0 +1,22 @@
+import { Catalog } from '../';
+import { IAttributes } from './Attributes';
+import { UUID } from './core';
+import { InterpretedVector3 } from './InterpretedVector3';
+import { IValue } from './IValue';
+import { materialType } from './Loader';
+import { NodeSharedConfig, NodeType } from './Node';
+export type AdjustableBoxConfig = NodeSharedConfig & {
+    type: NodeType.AdjustableBox;
+    parent: UUID;
+    children: UUID[];
+    exists?: IValue<number>;
+    size: InterpretedVector3;
+    position: InterpretedVector3;
+    rotation: InterpretedVector3;
+    attributes: IAttributes;
+    grainScale?: number;
+    grainDirection: [IValue<number>, IValue<number>, IValue<number>, IValue<number>, IValue<number>, IValue<number>];
+    materialTypes: [materialType, materialType, materialType, materialType, materialType, materialType];
+    materialIds: [UUID, UUID, UUID, UUID, UUID, UUID];
+};
+export type AdjustableBoxCatalogConfig = Catalog<AdjustableBoxConfig>;

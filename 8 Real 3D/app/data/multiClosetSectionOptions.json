@@ -1,0 +1,51 @@
+[
+    {
+        "path": "private/Parts/MultiSectionContents/DoubleHungContentTall",
+        "multiClosetShelfPart": 0,
+        "multiClosetShortHangerPart": 2,
+        "multiClosetLongHangerPart": 0,
+        "multiClosetDrawerPart": 0
+    },
+    {
+        "path": "private/Parts/MultiSectionContents/LongHungContentTall",
+        "multiClosetShelfPart": 0,
+        "multiClosetShortHangerPart": 0,
+        "multiClosetLongHangerPart": 1,
+        "multiClosetDrawerPart": 0
+    },
+    {
+        "path": "private/Parts/MultiSectionContents/OneBottomHangerWithShelvesContentTall",
+        "multiClosetShelfPart": 3,
+        "multiClosetShortHangerPart": 1,
+        "multiClosetLongHangerPart": 0,
+        "multiClosetDrawerPart": 0
+    },
+    {
+        "path": "private/Parts/MultiSectionContents/ShelvesStackContentTall",
+        "multiClosetShelfPart": 6,
+        "multiClosetShortHangerPart": 0,
+        "multiClosetLongHangerPart": 0,
+        "multiClosetDrawerPart": 0
+    },
+    {
+        "path": "private/Parts/MultiSectionContents/10-10-10DBShelvesContentTall",
+        "multiClosetShelfPart": 3,
+        "multiClosetShortHangerPart": 0,
+        "multiClosetLongHangerPart": 0,
+        "multiClosetDrawerPart": 3
+    },
+    {
+        "path": "private/Parts/MultiSectionContents/ShortHangShelfContentTall",
+        "multiClosetShelfPart": 3,
+        "multiClosetShortHangerPart": 1,
+        "multiClosetLongHangerPart": 0,
+        "multiClosetDrawerPart": 0
+    },
+    {
+        "path": "private/Parts/MultiSectionContents/10DBLongHangersContentTall",
+        "multiClosetShelfPart": 0,
+        "multiClosetShortHangerPart": 0,
+        "multiClosetLongHangerPart": 1,
+        "multiClosetDrawerPart": 1
+    }
+]

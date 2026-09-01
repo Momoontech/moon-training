@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Closet — Real 3D</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #f7f6fb; overflow: hidden; }
+    #root { position: absolute; inset: 0; }
+    #status { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 10; font: 13px -apple-system, sans-serif; color: #6b6b7e; }
+    #hint { position: absolute; bottom: 12px; left: 12px; z-index: 10; font: 11px -apple-system, sans-serif; color: #6b6b7e; background: rgba(255,255,255,.85); padding: 5px 10px; border-radius: 999px; }
+    /* The engine's own dev profiler/FPS overlay - not meant for trainees. */
+    #profiler-shell { display: none !important; }
+  </style>
+  <script type="module" crossorigin src="./assets/index-CKqcdtHi.js"></script>
+</head>
+<body>
+  <div id="status">booting…</div>
+  <div id="hint">Drag to look around · scroll to zoom</div>
+  <div id="root"></div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+import { Catalog } from '../';
+import { IAttributes } from './Attributes';
+import { UUID } from './core';
+import { InterpretedVector3 } from './InterpretedVector3';
+import { IValue } from './IValue';
+import { NodeSharedConfig, NodeType } from './Node';
+export type GlassConfig = NodeSharedConfig & {
+    type: NodeType.Glass;
+    parent: UUID;
+    children: UUID[];
+    exists?: IValue<number>;
+    size: InterpretedVector3;
+    position: InterpretedVector3;
+    rotation: InterpretedVector3;
+    attributes: IAttributes;
+    materialId?: IValue<UUID | undefined>;
+};
+export type GlassCatalogConfig = Catalog<GlassConfig>;

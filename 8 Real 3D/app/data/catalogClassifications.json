@@ -1,0 +1,213 @@
+{
+  "items": {
+    "aa95366e-af72-47ac-b490-db00862ab89f": [],
+    "1005c9b4-2be3-4cc3-a138-0079eb61b720": [
+      "private/Parts/MultiSectionSections/MultiClosetSection"
+    ],
+    "df0e2e87-5201-4514-baf2-4e5335467265": [
+      "private/Parts/MultiSectionBays/multiClosetShelvesStack",
+      "private/Parts/MultiSectionBays/multiClosetShortHangersStack",
+      "private/Parts/MultiSectionBays/multiClosetLongHangersStack",
+      "private/Parts/MultiSectionBays/multiClosetDrawersStack"
+    ],
+    "726d1f8b-896e-48ca-864c-0f4b31de1080": [
+      "private/Parts/MultiSectionContents/OneBottomHangerWithShelvesContentTall",
+      "private/Parts/MultiSectionContents/DoubleHungContentTall",
+      "private/Parts/MultiSectionContents/LongHungContentTall",
+      "private/Parts/MultiSectionContents/10-10-10-10DBShelvesContentTall",
+      "private/Parts/MultiSectionContents/10-10-10DBShelvesContentTall",
+      "private/Parts/MultiSectionContents/ShelvesStackContentTall"
+    ],
+    "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6": [],
+    "3389ccff-5f37-4c54-bdc2-553b637e6433": [],
+    "3d1c4936-785b-4da7-b9bd-376639852af7": [
+      "private/Products/Appliances/WineCooler"
+    ],
+    "cdb96ded-8d71-47b8-834b-a32c933b15ee": [
+      "private/Products/Appliances/LaundryFrontLoadUpperWhite",
+      "private/Products/Appliances/LaundryTopLoadWhite"
+    ],
+    "dd24b208-9b28-4cff-bd31-39cb134206e1": [],
+    "1df42cda-0e8c-474d-9822-a2ec86cc678b": [
+      "private/Products/Doors/DoorDouble"
+    ],
+    "8ddf6ea5-0dba-4ffb-83d2-c36f5f48a345": [
+      "private/Products/Doors/CasedWallOpening"
+    ],
+    "72c18e1b-e5e9-4eab-966d-003e0f9e7524": [
+      "private/Products/Doors/DoorSingle",
+      "private/Products/Doors/DoorDoubleSidePanels",
+      "private/Products/Doors/DoorSingleSidePanel"
+    ],
+    "4d105baa-d856-4e92-841e-bf61de5db63a": [
+      "private/Products/Doors/DoorSlidingLeft",
+      "private/Products/Doors/DoorSlidingRight"
+    ],
+    "a27fd076-23f0-4413-88f2-97a033e669ea": [],
+    "cfcf76bf-9abe-4c98-8372-a8d912a1e69c": [
+      "private/Products/Appliances/CeilingFan"
+    ],
+    "0a33edfd-cc9a-4393-9508-1b6fde639772": [
+      "private/Products/Appliances/StandardLight",
+      "private/Products/Appliances/DeskLampBlack",
+      "private/Products/Appliances/TableLamp",
+      "private/Products/Appliances/IslandLightBlackThreeBulb",
+      "private/Products/Appliances/ChandelierBlackNineBulb",
+      "private/Products/Appliances/WallSconceGoldwFrostedGlobe",
+      "private/Products/Appliances/PendantFrostedCylinder"
+    ],
+    "ad80fd76-e674-49e5-ad06-0571343bcde5": [],
+    "21acefb8-2f16-47ed-a4c1-f6e6b852726c": [
+      "private/Products/Appliances/TVWallMounted"
+    ],
+    "60f1784b-8f07-4141-81c4-c5a2652406e9": [],
+    "4759df5e-9227-42d9-abab-ca64fd9e5d93": [
+      "private/Products/Appliances/FloorObstacle",
+      "private/Products/Appliances/WallObstacle"
+    ],
+    "b5d5eb09-5986-4ea7-9a76-4bff28a9f21d": [],
+    "c30f2579-07dd-45cb-ada6-e460a8e6534b": [
+      "private/Products/Appliances/ElectricalPanel",
+      "private/Products/Appliances/LightSwitchToggleDoubleGang",
+      "private/Products/Appliances/LightSwitchToggleSingleGang",
+      "private/Products/Appliances/LightSwitchToggleTripleGang",
+      "private/Products/Appliances/WallOutletSingleGang",
+      "private/Products/Appliances/LightSwitchRockerTripleGang",
+      "private/Products/Appliances/LightSwitchDoubleRockerDoubleGang",
+      "private/Products/Appliances/LightSwitchDoubleRockerSingleGang",
+      "private/Products/Appliances/LightSwitchTripleRockerSingleGang",
+      "private/Products/Appliances/LightSwitchRockerSingleGang"
+    ],
+    "3fe45f22-c987-4d1e-8370-b1eb969488aa": [
+      "private/Products/Appliances/VentRegisterLarge",
+      "private/Products/Appliances/VentRegisterSmall"
+    ],
+    "395e91d5-b81f-4ec7-bf8d-7ce04004889d": [],
+    "cfd7fcc6-a95e-43f2-89d1-47cd61cc3831": [
+      "private/Products/Windows/WindowBay"
+    ],
+    "140183a0-e474-41db-b413-4628c4a88219": [
+      "private/Products/Windows/WindowDoubleHung"
+    ],
+    "01014443-5689-4ce0-b885-26cb86417dfb": [
+      "private/Products/Windows/WindowSinglePane"
+    ],
+    "83085081-bc6e-4c09-9930-fad167a289ab": [
+      "private/Products/Windows/WindowSliding"
+    ]
+  },
+  "classifications": {
+    "aa95366e-af72-47ac-b490-db00862ab89f": {
+      "label": "Catalog",
+      "parent": null
+    },
+    "1005c9b4-2be3-4cc3-a138-0079eb61b720": {
+      "label": "Sections",
+      "parent": "aa95366e-af72-47ac-b490-db00862ab89f"
+    },
+    "df0e2e87-5201-4514-baf2-4e5335467265": {
+      "label": "Bays",
+      "parent": "aa95366e-af72-47ac-b490-db00862ab89f"
+    },
+    "726d1f8b-896e-48ca-864c-0f4b31de1080": {
+      "label": "Contents",
+      "parent": "aa95366e-af72-47ac-b490-db00862ab89f"
+    },
+    "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6": {
+      "label": "Architecture",
+      "parent": null
+    },
+    "3389ccff-5f37-4c54-bdc2-553b637e6433": {
+      "label": "Appliances",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "3d1c4936-785b-4da7-b9bd-376639852af7": {
+      "label": "Refrigerators",
+      "parent": "3389ccff-5f37-4c54-bdc2-553b637e6433"
+    },
+    "cdb96ded-8d71-47b8-834b-a32c933b15ee": {
+      "label": "Washers & Dryers",
+      "parent": "3389ccff-5f37-4c54-bdc2-553b637e6433"
+    },
+    "dd24b208-9b28-4cff-bd31-39cb134206e1": {
+      "label": "Doors",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "1df42cda-0e8c-474d-9822-a2ec86cc678b": {
+      "label": "Double",
+      "parent": "dd24b208-9b28-4cff-bd31-39cb134206e1"
+    },
+    "8ddf6ea5-0dba-4ffb-83d2-c36f5f48a345": {
+      "label": "Open",
+      "parent": "dd24b208-9b28-4cff-bd31-39cb134206e1"
+    },
+    "72c18e1b-e5e9-4eab-966d-003e0f9e7524": {
+      "label": "Single",
+      "parent": "dd24b208-9b28-4cff-bd31-39cb134206e1"
+    },
+    "4d105baa-d856-4e92-841e-bf61de5db63a": {
+      "label": "Sliding",
+      "parent": "dd24b208-9b28-4cff-bd31-39cb134206e1"
+    },
+    "a27fd076-23f0-4413-88f2-97a033e669ea": {
+      "label": "Fixtures",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "cfcf76bf-9abe-4c98-8372-a8d912a1e69c": {
+      "label": "Ceiling Fans",
+      "parent": "a27fd076-23f0-4413-88f2-97a033e669ea"
+    },
+    "0a33edfd-cc9a-4393-9508-1b6fde639772": {
+      "label": "Lights",
+      "parent": "a27fd076-23f0-4413-88f2-97a033e669ea"
+    },
+    "ad80fd76-e674-49e5-ad06-0571343bcde5": {
+      "label": "Furniture",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "21acefb8-2f16-47ed-a4c1-f6e6b852726c": {
+      "label": "Entertainment",
+      "parent": "ad80fd76-e674-49e5-ad06-0571343bcde5"
+    },
+    "60f1784b-8f07-4141-81c4-c5a2652406e9": {
+      "label": "Obstructions",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "4759df5e-9227-42d9-abab-ca64fd9e5d93": {
+      "label": "Other Obstacles",
+      "parent": "60f1784b-8f07-4141-81c4-c5a2652406e9"
+    },
+    "b5d5eb09-5986-4ea7-9a76-4bff28a9f21d": {
+      "label": "Utility Fixtures",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "c30f2579-07dd-45cb-ada6-e460a8e6534b": {
+      "label": "Outlets & Switches",
+      "parent": "b5d5eb09-5986-4ea7-9a76-4bff28a9f21d"
+    },
+    "3fe45f22-c987-4d1e-8370-b1eb969488aa": {
+      "label": "Vent Registers",
+      "parent": "b5d5eb09-5986-4ea7-9a76-4bff28a9f21d"
+    },
+    "395e91d5-b81f-4ec7-bf8d-7ce04004889d": {
+      "label": "Windows",
+      "parent": "aa30ad56-1bdf-4cfb-80c6-4c7faeb211a6"
+    },
+    "cfd7fcc6-a95e-43f2-89d1-47cd61cc3831": {
+      "label": "Bay",
+      "parent": "395e91d5-b81f-4ec7-bf8d-7ce04004889d"
+    },
+    "140183a0-e474-41db-b413-4628c4a88219": {
+      "label": "Hung",
+      "parent": "395e91d5-b81f-4ec7-bf8d-7ce04004889d"
+    },
+    "01014443-5689-4ce0-b885-26cb86417dfb": {
+      "label": "Picture",
+      "parent": "395e91d5-b81f-4ec7-bf8d-7ce04004889d"
+    },
+    "83085081-bc6e-4c09-9930-fad167a289ab": {
+      "label": "Sliding",
+      "parent": "395e91d5-b81f-4ec7-bf8d-7ce04004889d"
+    }
+  }
+}

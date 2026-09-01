@@ -1,0 +1,10 @@
+import { NominalHard, NominalHardNum, NominalNum, NominalStr } from './core';
+export type inches = NominalHardNum<'inches'>;
+export type px = NominalHardNum<'px'>;
+export type squareFt = NominalNum<'SquareFt'>;
+export type hours = NominalNum<'hours'>;
+export type percent = NominalNum<'percent'>;
+export type quantity = NominalHardNum<'quantity'>;
+export type date = NominalStr<'date'>;
+export type feetAndInchRegexps = NominalHard<string[], 'feetAndInchRegexp'>;
+export type inchesConvertedToUnits = NominalHard<string | number, 'inchesConvertedToUnits'>;

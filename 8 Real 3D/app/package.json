@@ -1,0 +1,26 @@
+{
+  "name": "moon-training-3d",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@moon/designer-core": "file:../vendor-packages/designer-core",
+    "@moon/designer3d": "file:../vendor-packages/designer3d",
+    "@moon/vesta-converter": "file:../vendor-packages/vesta-converter",
+    "@preact/signals-react": "^3.9.1",
+    "@sapphire/snowflake": "^3.5.5",
+    "gsap": "^3.15.0",
+    "polygon-clipping": "^0.15.7",
+    "three": "^0.183.1",
+    "three-mesh-bvh": "^0.9.3",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.1",
+    "playwright": "^1.62.1",
+    "vite": "^6.0.0"
+  }
+}

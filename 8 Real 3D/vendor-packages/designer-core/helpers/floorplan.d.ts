@@ -1,0 +1,14 @@
+import { Point } from '../components/Node/components/Point';
+import type { RoomSegment } from '../components/Node/components/RoomSegment';
+import { UUID } from '../declarations';
+import { CoreDesigner } from '../designer-core';
+import { Vector2 } from '../helpers/math';
+export declare const expandRoomSegmentWithPoint: (core: CoreDesigner, roomSegment: UUID | RoomSegment, point: Vector2 | Point | UUID, parentId: UUID) => UUID;
+export declare const expandRoomWithHole: (core: CoreDesigner, roomId: UUID, ccwPoints: Vector2[]) => void;
+export declare const removeSegmentFromRoom: (core: CoreDesigner, segmentId: UUID, deleteSegment?: boolean) => UUID;
+export declare const createRoomSegment: (core: CoreDesigner, from: Vector2 | Point | UUID, to: Vector2 | Point | UUID, parentId: UUID) => readonly [UUID, UUID, UUID, UUID[]];
+export declare const createRoomFromSegments: (core: CoreDesigner, segments: (UUID | RoomSegment)[], parentId: UUID) => readonly [UUID, UUID, UUID, UUID[]];
+export declare const createRoomFromPoints: (core: CoreDesigner, points: (Vector2 | Point | UUID)[], parentId: UUID) => (UUID | UUID[])[];
+export declare const createPoint: (core: CoreDesigner, position: Vector2, parentId: UUID) => UUID;
+export declare const createRoomPoint: (core: CoreDesigner, pos: Vector2, parentId: UUID, addToHistory?: boolean) => void;
+export declare const addRoomSegment: (core: CoreDesigner, id: UUID) => void;
