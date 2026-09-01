@@ -30,7 +30,7 @@ MOON_CATALOG.materials.forEach(function (m) {
 MOON_CATALOG.rods.forEach(function (r) {
   SHOP_ITEMS['rod_' + r.id] = { price: r.rocks };
 });
-MOON_CATALOG.shopAccessories.forEach(function (a) {
+MOON_CATALOG.accessoryCatalog.forEach(function (a) {
   SHOP_ITEMS['acc_' + a.id] = { price: a.rocks };
 });
 // Real closet layouts from the app's own catalog (appCatalog.closetContent)

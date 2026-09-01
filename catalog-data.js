@@ -167,56 +167,46 @@ var MOON_CATALOG = {
   // catalog filter (see `sections` below) - there's no separate
   // "Accessories" chip in the real app.
   accessoryFinishes: ['Polished Chrome', 'Matte Chrome', 'Satin Nickel (Champagne)', 'Oil-Rubbed Bronze', 'Black Nickel'],
+  // Every real accessory product from the catalog's "Closet Accessories"
+  // (pages 11-13) and "Specialty Items" (page 16) sections - all 30, none
+  // added or dropped, each one purchasable in the app (not a curated
+  // subset - see CLAUDE.md's "implement every catalog item" rule). `icon`
+  // names a shared placeholder shape (see index.html's ACC_ICONS) since
+  // there's no per-item photo in the real source for any of these; `rocks`
+  // is this training app's own invented price, tiered to track each item's
+  // real relative cost (a garment clip is real-world cheap, a movable
+  // island or Create-A-Closet system is real-world premium).
   accessoryCatalog: [
-    { id: 'cwTieRack', name: 'CW Tie Rack', note: 'Deco base matches your panel color. Fixed or sliding, 12"-24" wide.', section: 'Hardware' },
-    { id: 'cwBeltRack', name: 'CW Belt Rack', note: 'Deco base. Fixed or sliding, 12"-24" wide.', section: 'Hardware' },
-    { id: 'cwComboRack', name: 'CW Combo Tie & Belt Rack', note: 'Deco base. Fixed or sliding, 12"-24" wide.', section: 'Hardware' },
-    { id: 'synergyTieRack', name: 'Synergy Tie Rack', note: 'Sliding only, 12"/14", anodized aluminum base.', section: 'Hardware' },
-    { id: 'synergyBeltRack', name: 'Synergy Belt Rack', note: 'Sliding only, 12"/14".', section: 'Hardware' },
-    { id: 'manufacturedBeltRack', name: 'Manufactured Belt Rack', note: '14" wide, 6 chrome hooks on a white base.', section: 'Hardware' },
-    { id: 'manufacturedTieRack', name: 'Manufactured Tie Rack', note: '14" wide, 24 chrome hooks on a white base.', section: 'Hardware' },
-    { id: 'cwValetRod', name: 'CW Telescoping Valet Rod', note: '12" or 14", Chrome or Satin Nickel.', section: 'Hardware' },
-    { id: 'synergyValetRod', name: 'Synergy Valet Rod', note: '12" pull-out rod.', section: 'Hardware' },
-    { id: 'synergyPantRack', name: 'Synergy Pull-Out Pant Rack', note: '18"/24"/30" wide, 12-24 hangers.', section: 'Hardware' },
-    { id: 'garmentClips', name: 'Garment Clips', note: 'Black clips for the pant rack, sold in packs of 24/36.', section: 'Hardware' },
-    { id: 'wirePantHanger', name: 'Extra Wire Pant Hanger', note: 'Black, sold in packs of 6.', section: 'Hardware' },
-    { id: 'coatHookRack', name: 'Coat Hook Rack', note: '1 to 5 hooks on a Deco base, 6"-24" wide.', section: 'Hardware' },
-    { id: 'pullOutHamper', name: 'Pull-Out Hamper', note: 'Large drawer box, max 24"w x 24"h x 24"d.', section: 'Hardware' },
-    { id: 'tiltOutHamperWire', name: 'Tilt-Out Hamper (wire basket)', note: 'Removable wire basket, White or Chrome.', section: 'Hardware' },
-    { id: 'tiltOutHamperBag', name: 'Tilt-Out Hamper (nylon bag)', note: '18"/24"/30" wide, removable black nylon bag.', section: 'Hardware' },
-    { id: 'clothesCarrier', name: 'Clothes Carrier', note: '12"/16"/20", Chrome.', section: 'Hardware' },
-    { id: 'pullDownRod', name: 'Pull-Down Rod', note: '28"-42" wide sections, Chrome or Black.', section: 'Hardware' },
-    { id: 'designerBasket', name: 'Designer Series Basket', note: 'Roller-slide wire basket, White or Chrome, various sizes.', section: 'Hardware' },
-    { id: 'shelfSupportedBasket', name: 'Shelf-Supported Basket', note: 'For section widths wider than a roller basket allows.', section: 'Hardware' },
-    { id: 'createACloset', name: 'Create-A-Closet (CAC)', note: 'Sliding mirror/glass door system, 2 or 3-panel, below-ceiling or to-ceiling.', section: 'Hardware' },
-    { id: 'wineRackLattice', name: 'Wine Rack Lattice Panel', note: 'Unfinished oak or maple, 18x30" up to 24x43", holds 20+ bottles.', section: 'Hardware' },
-    { id: 'wineBottleScallops', name: 'Wine Bottle Scallops', note: '18"/24"/30" wide, unfinished oak or maple.', section: 'Hardware' },
-    { id: 'computerGrommet', name: 'Computer Paper Slot Grommet', note: 'For cable pass-through behind a desk/printer shelf.', section: 'Hardware' },
-    { id: 'electricalGrommet', name: 'Electrical Cord Grommet', note: '2" or 3" diameter, 5 colors.', section: 'Hardware' },
-    { id: 'lBracket', name: 'L-Bracket', note: 'High-quality, white, for shelf spans up to 32".', section: 'Hardware' },
-    { id: 'heavyDutyLBracket', name: 'Heavy-Duty L-Bracket', note: 'For 16"-24" deep shelves, up to 32" spacing.', section: 'Hardware' },
-    { id: 'centerRodSupport', name: 'Center Rod Support', note: 'Chrome, includes a high-quality L-bracket - required over 42" spans.', section: 'Hardware' },
-    { id: 'movableIsland', name: 'Movable Island', note: 'Freestanding, up to 36"w x 42"d, casters and bottom trim included.', section: 'Hardware' },
-    { id: 'wallIroningBoard', name: 'Wall-Mount Ironing Board', note: 'Folds away behind a Deco door, 36" board.', section: 'Hardware' }
-  ],
-
-  // Curated, purchasable real accessories - a representative pick across the
-  // catalog's accessory categories (not every SKU/size variant), priced in
-  // rock tiers that preserve the real relative cost order (a coat hook rack
-  // is real-world cheap, a pull-out pant rack or wine rack is real-world
-  // premium). No custom illustration per item yet - `icon` names a shared
-  // placeholder shape to render with until real art exists.
-  shopAccessories: [
-    { id: 'coatHooks', name: 'Coat Hook Rack', desc: '5 hooks on a Deco base.', icon: 'hook', rocks: 20 },
-    { id: 'lBracketSupport', name: 'Center Rod Support Kit', desc: 'L-bracket + center support for long spans.', icon: 'bracket', rocks: 20 },
-    { id: 'valetRod', name: 'Telescoping Valet Rod', desc: 'Pulls out for easy outfit-staging.', icon: 'rod', rocks: 25 },
-    { id: 'tieBeltRack', name: 'Tie & Belt Rack', desc: 'Combo rack, Deco base to match your panels.', icon: 'hook', rocks: 30 },
-    { id: 'designerBasket', name: 'Designer Series Basket', desc: 'Roller-slide wire basket, White or Chrome.', icon: 'basket', rocks: 35 },
-    { id: 'movableIsland', name: 'Movable Island', desc: 'Freestanding island with casters and bottom trim.', icon: 'box', rocks: 50 },
-    { id: 'pullOutHamper', name: 'Pull-Out Hamper', desc: 'Large drawer box hamper, removable liner.', icon: 'drawer', rocks: 55 },
-    { id: 'wallIroningBoard', name: 'Wall-Mount Ironing Board', desc: 'Folds away behind a Deco door.', icon: 'box', rocks: 80 },
-    { id: 'pantRack', name: 'Pull-Out Pant Rack', desc: 'Synergy pull-out rack, up to 24 hangers.', icon: 'basket', rocks: 75 },
-    { id: 'wineRackLattice', name: 'Wine Rack Lattice Panel', desc: 'Unfinished oak or maple, holds 20+ bottles.', icon: 'box', rocks: 90 }
+    { id: 'cwTieRack', name: 'CW Tie Rack', note: 'Deco base matches your panel color. Fixed or sliding, 12"-24" wide.', section: 'Hardware', icon: 'hook', rocks: 20 },
+    { id: 'cwBeltRack', name: 'CW Belt Rack', note: 'Deco base. Fixed or sliding, 12"-24" wide.', section: 'Hardware', icon: 'hook', rocks: 20 },
+    { id: 'cwComboRack', name: 'CW Combo Tie & Belt Rack', note: 'Deco base. Fixed or sliding, 12"-24" wide.', section: 'Hardware', icon: 'hook', rocks: 28 },
+    { id: 'synergyTieRack', name: 'Synergy Tie Rack', note: 'Sliding only, 12"/14", anodized aluminum base.', section: 'Hardware', icon: 'hook', rocks: 22 },
+    { id: 'synergyBeltRack', name: 'Synergy Belt Rack', note: 'Sliding only, 12"/14".', section: 'Hardware', icon: 'hook', rocks: 22 },
+    { id: 'manufacturedBeltRack', name: 'Manufactured Belt Rack', note: '14" wide, 6 chrome hooks on a white base.', section: 'Hardware', icon: 'hook', rocks: 18 },
+    { id: 'manufacturedTieRack', name: 'Manufactured Tie Rack', note: '14" wide, 24 chrome hooks on a white base.', section: 'Hardware', icon: 'hook', rocks: 18 },
+    { id: 'cwValetRod', name: 'CW Telescoping Valet Rod', note: '12" or 14", Chrome or Satin Nickel.', section: 'Hardware', icon: 'rod', rocks: 25 },
+    { id: 'synergyValetRod', name: 'Synergy Valet Rod', note: '12" pull-out rod.', section: 'Hardware', icon: 'rod', rocks: 22 },
+    { id: 'synergyPantRack', name: 'Synergy Pull-Out Pant Rack', note: '18"/24"/30" wide, 12-24 hangers.', section: 'Hardware', icon: 'basket', rocks: 75 },
+    { id: 'garmentClips', name: 'Garment Clips', note: 'Black clips for the pant rack, sold in packs of 24/36.', section: 'Hardware', icon: 'default', rocks: 10 },
+    { id: 'wirePantHanger', name: 'Extra Wire Pant Hanger', note: 'Black, sold in packs of 6.', section: 'Hardware', icon: 'default', rocks: 10 },
+    { id: 'coatHookRack', name: 'Coat Hook Rack', note: '1 to 5 hooks on a Deco base, 6"-24" wide.', section: 'Hardware', icon: 'hook', rocks: 20 },
+    { id: 'pullOutHamper', name: 'Pull-Out Hamper', note: 'Large drawer box, max 24"w x 24"h x 24"d.', section: 'Hardware', icon: 'drawer', rocks: 55 },
+    { id: 'tiltOutHamperWire', name: 'Tilt-Out Hamper (wire basket)', note: 'Removable wire basket, White or Chrome.', section: 'Hardware', icon: 'basket', rocks: 45 },
+    { id: 'tiltOutHamperBag', name: 'Tilt-Out Hamper (nylon bag)', note: '18"/24"/30" wide, removable black nylon bag.', section: 'Hardware', icon: 'drawer', rocks: 40 },
+    { id: 'clothesCarrier', name: 'Clothes Carrier', note: '12"/16"/20", Chrome.', section: 'Hardware', icon: 'rod', rocks: 30 },
+    { id: 'pullDownRod', name: 'Pull-Down Rod', note: '28"-42" wide sections, Chrome or Black.', section: 'Hardware', icon: 'rod', rocks: 35 },
+    { id: 'designerBasket', name: 'Designer Series Basket', note: 'Roller-slide wire basket, White or Chrome, various sizes.', section: 'Hardware', icon: 'basket', rocks: 35 },
+    { id: 'shelfSupportedBasket', name: 'Shelf-Supported Basket', note: 'For section widths wider than a roller basket allows.', section: 'Hardware', icon: 'basket', rocks: 30 },
+    { id: 'createACloset', name: 'Create-A-Closet (CAC)', note: 'Sliding mirror/glass door system, 2 or 3-panel, below-ceiling or to-ceiling.', section: 'Hardware', icon: 'default', rocks: 90 },
+    { id: 'wineRackLattice', name: 'Wine Rack Lattice Panel', note: 'Unfinished oak or maple, 18x30" up to 24x43", holds 20+ bottles.', section: 'Hardware', icon: 'box', rocks: 90 },
+    { id: 'wineBottleScallops', name: 'Wine Bottle Scallops', note: '18"/24"/30" wide, unfinished oak or maple.', section: 'Hardware', icon: 'box', rocks: 60 },
+    { id: 'computerGrommet', name: 'Computer Paper Slot Grommet', note: 'For cable pass-through behind a desk/printer shelf.', section: 'Hardware', icon: 'default', rocks: 10 },
+    { id: 'electricalGrommet', name: 'Electrical Cord Grommet', note: '2" or 3" diameter, 5 colors.', section: 'Hardware', icon: 'default', rocks: 10 },
+    { id: 'lBracket', name: 'L-Bracket', note: 'High-quality, white, for shelf spans up to 32".', section: 'Hardware', icon: 'bracket', rocks: 12 },
+    { id: 'heavyDutyLBracket', name: 'Heavy-Duty L-Bracket', note: 'For 16"-24" deep shelves, up to 32" spacing.', section: 'Hardware', icon: 'bracket', rocks: 18 },
+    { id: 'centerRodSupport', name: 'Center Rod Support', note: 'Chrome, includes a high-quality L-bracket - required over 42" spans.', section: 'Hardware', icon: 'bracket', rocks: 22 },
+    { id: 'movableIsland', name: 'Movable Island', note: 'Freestanding, up to 36"w x 42"d, casters and bottom trim included.', section: 'Hardware', icon: 'box', rocks: 90 },
+    { id: 'wallIroningBoard', name: 'Wall-Mount Ironing Board', note: 'Folds away behind a Deco door, 36" board.', section: 'Hardware', icon: 'box', rocks: 80 }
   ],
 
   // section: 'Edgebanding'

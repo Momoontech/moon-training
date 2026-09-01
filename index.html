@@ -828,7 +828,7 @@
       p+='<g fill="#FDC63A"><path d="M405 96 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/></g>';
       p+='<g transform="translate(430,220)"><rect x="-10" y="14" width="20" height="16" rx="3" fill="#d8c19a" stroke="#c3a877" stroke-width="1.2"/><path d="M0 14 q-15 -20 -4 -34 q9 8 4 34 M0 14 q15 -18 4 -32 q-8 10 -4 32" fill="#3f9f66"/></g>';
     }
-    // Real accessories a designer has bought (see MOON_CATALOG.shopAccessories)
+    // Real accessories a designer has bought (see MOON_CATALOG.accessoryCatalog)
     // show up as a row of small badges along the floor - once the closet is
     // set up (s>=2), so they don't collide with the "before" mess/piles.
     if(s>=2&&ownedAcc&&ownedAcc.length){
@@ -844,11 +844,11 @@
   function closetSVG(s,ownedAcc,panelHex){
     return '<svg class="cl" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">'+closetScene(s,ownedAcc,panelHex)+'</svg>';
   }
-  // Which real accessories (see MOON_CATALOG.shopAccessories) this player
+  // Which real accessories (see MOON_CATALOG.accessoryCatalog) this player
   // currently owns, for drawing into the closet scene.
   function ownedAccessories(){
     if(typeof MOON_CATALOG==='undefined')return [];
-    return MOON_CATALOG.shopAccessories.filter(function(a){ return st.owned['acc_'+a.id]; });
+    return MOON_CATALOG.accessoryCatalog.filter(function(a){ return st.owned['acc_'+a.id]; });
   }
 
   // Bigger "dollhouse" view: the same scene as the back wall of a static,
@@ -1111,14 +1111,18 @@
      how your closet looks) ── */
   var SHOPICN='<svg viewBox="0 0 24 24" fill="none" stroke="#7239EA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">';
   // Placeholder shapes for real accessories that don't have dedicated
-  // illustrations yet (see MOON_CATALOG.shopAccessories `icon` field).
+  // illustrations yet (see MOON_CATALOG.accessoryCatalog `icon` field).
+  // `default` covers small hardware (grommets, clips, the CAC door system)
+  // that doesn't fit any of the other shapes - a generic sparkle rather
+  // than nothing at all.
   var ACC_ICONS={
     hook:'<path d="M8 3v9a4 4 0 0 0 8 0V9"/><circle cx="16" cy="9" r="1.4"/>',
     bracket:'<path d="M6 20V8h10"/><path d="M6 8l4-4M6 8l4 4"/>',
     rod:'<path d="M4 8h16"/><circle cx="6" cy="8" r="1.6"/><circle cx="18" cy="8" r="1.6"/><path d="M9 8v6M15 8v6"/>',
     basket:'<rect x="4" y="9" width="16" height="10" rx="1"/><path d="M4 13h16M8 9V6h8v3"/>',
     box:'<path d="M4 8l8-4 8 4-8 4-8-4z"/><path d="M4 8v9l8 4 8-4V8"/><path d="M12 12v9"/>',
-    drawer:'<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M4 12h16"/><path d="M10 15.5h4"/>'
+    drawer:'<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M4 12h16"/><path d="M10 15.5h4"/>',
+    default:'<path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8z"/>'
   };
   // Rods have no real per-item photo (see catalog-data.js) and every rod is
   // the same shape - only the metal finish differs - so a single generic
@@ -1163,12 +1167,14 @@
     (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.rods:[]).map(function(r){
       return {id:'rod_'+r.id,n:r.name,d:'Real Closet World rod finish.',price:r.rocks,type:'cosmetic',hex:rodColor(r.name),group:'Accessories',section:'Rods'};
     }),
-    // Real Closet World accessories (tie racks, hampers, baskets, etc.) - no
-    // dedicated illustration per item yet, just a shared placeholder shape
-    // per category (see ACC_ICONS) until real art exists.
-    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.shopAccessories:[]).map(function(a){
-      var shape=ACC_ICONS[a.icon]||ACC_ICONS.box;
-      return {id:'acc_'+a.id,i:SHOPICN+shape+'</svg>',n:a.name,d:a.desc,price:a.rocks,type:'cosmetic',group:'Accessories',section:'Hardware'};
+    // Every real Closet World accessory (tie racks, hampers, baskets, etc.)
+    // - all 30, none added or dropped, per Mo's call, not a curated subset
+    // anymore. No dedicated illustration per item in the real source, so
+    // every tile uses a shared placeholder shape per category (see
+    // ACC_ICONS) until real art exists.
+    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.accessoryCatalog:[]).map(function(a){
+      var shape=ACC_ICONS[a.icon]||ACC_ICONS.default;
+      return {id:'acc_'+a.id,i:SHOPICN+shape+'</svg>',n:a.name,d:a.note,price:a.rocks,type:'cosmetic',group:'Accessories',section:'Hardware'};
     }),
     // Real closet interior layouts, straight from the real app's own
     // catalog (private.json) - actual hosted product renders, not
