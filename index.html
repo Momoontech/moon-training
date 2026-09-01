@@ -24,6 +24,15 @@
     --primary:#734e94; /* real Primary-8 - accent/link/icon tier, distinct from the darker CTA-fill tier above */
     --primary-soft:#f1e2ff; /* real Primary-2 */
     --primary-tint-on-dark:#e7cdff; /* real Primary-3 - text on a dark Primary-10 card */
+    /* Added for the Customize Panel V3 Figma rebuild (node 23719:18899) -
+       distinct purple/gray steps that don't match any of the tokens above,
+       pulled from that node's real get_design_context output. */
+    --purple-4:#ddb8ff; /* real Primary-4 - active-pill/avatar border, equipped accents */
+    --purple-6:#aa81cf; /* real Primary-6 - selected swatch border */
+    --purple-7:#8e66b1; /* real Primary-7 - active pill fill, toolbar avatar fill */
+    --purple-9:#5a3977; /* real Primary-9 - selected option name text */
+    --gray-5:#a6a1aa; /* real Gray Accent-5 - section header counts */
+    --gray-8:#433f46; /* real Gray Accent-8 - inactive pill text */
     --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
     --space-6:24px; --space-8:32px; --space-12:48px; --space-16:64px;
     --fs-h5:24px; --lh-h5:30px;
@@ -96,11 +105,11 @@
   .closet{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(26,21,35,.07);}
   .closet .cw{display:grid;grid-template-columns:420px 1fr;min-height:320px;}
 
-  /* Left: illustration panel - bigger per Mo's call */
-  .closet-left{background:#f2eef9;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px 20px;gap:12px;}
-  #closetArt{display:flex;align-items:center;justify-content:center;}
-  .closet svg.cl{width:340px;height:auto;display:block;}
-  .closet-caption{font-size:12px;color:#8a82a0;font-weight:500;text-align:center;max-width:200px;line-height:1.4;}
+  /* Left: live 3D closet panel (was a flex-centered 2D SVG illustration -
+     now the same fixed 3D scene the My Closet tab shows, filling this box
+     via an absolutely-positioned iframe - see closet3dFrameDash). */
+  .closet-left{background:#f2eef9;position:relative;overflow:hidden;}
+  .closet-left iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;}
 
   /* Right: info panel */
   .closet .info{padding:24px;position:relative;display:flex;flex-direction:column;}
@@ -326,39 +335,77 @@
   .closet-customize{position:absolute;top:14px;right:14px;bottom:14px;width:308px;background:#fbfafb;border-radius:16px;padding:16px;overflow-y:auto;overflow-x:hidden;box-shadow:0 8px 24px rgba(26,21,35,.2);z-index:3;display:flex;flex-direction:column;}
   @media (max-width:640px){.closet-customize{left:14px;width:auto;}}
 
-  /* "Options" header + Clear / Clear All - real panel's top row. */
+  /* ─── Sub-step toolbar (Figma node 23719:18898) - floating, docked to the
+     bottom-center of the 3D viewer. One shared toolbarHtml() builder in the
+     script below renders this same markup into both places the 3D view
+     lives (Dashboard hero card + My Closet tab) so it never has to be
+     hand-duplicated. Only the far-right hanger button is real (opens
+     Customize); everything else is either a static label (3D segment) or
+     an honest "not available" toast - see wireClosetToolbar(). ─── */
+  .closet-toolbar{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:8px;box-shadow:0 10px 20px rgba(0,0,0,.1);max-width:calc(100% - 20px);overflow-x:auto;}
+  .ctb-pill{display:flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;border:none;background:var(--gray-2);font-family:inherit;font-size:16px;font-weight:700;color:#000;cursor:pointer;white-space:nowrap;flex:0 0 auto;}
+  .ctb-pill svg{width:16px;height:16px;flex:0 0 auto;stroke:#000;}
+  .ctb-div{width:1px;height:24px;background:var(--line);flex:0 0 auto;}
+  .ctb-3d{display:flex;align-items:center;gap:10px;height:40px;padding:0 16px;border-radius:999px;background:var(--line);font-size:16px;font-weight:700;color:#000;white-space:nowrap;flex:0 0 auto;cursor:default;}
+  .ctb-3d svg{width:20px;height:20px;flex:0 0 auto;}
+  .ctb-icon{width:40px;height:40px;border-radius:50%;border:none;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.1),0 0 10px rgba(43,127,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;padding:0;}
+  .ctb-icon svg{width:24px;height:24px;stroke:#000;fill:#000;}
+  .ctb-hanger{background:var(--purple-7);border:1px solid var(--purple-4);}
+  .ctb-hanger svg{fill:#fff;stroke:none;}
+  @media (max-width:640px){.closet-toolbar{gap:4px;padding:6px;bottom:8px;}.ctb-pill{padding:0 10px;font-size:13px;}.ctb-icon{width:34px;height:34px;}.ctb-icon svg{width:20px;height:20px;}}
+
+  /* "Options" header + Clear / Clear All - real panel's top row (Figma node
+     23719:18899, "Customize Panel V3"). Clear labels are Caption-2 12px
+     regular black + a 20x20 icon container carrying a tiny count badge (how
+     many equipped finishes that action would actually clear - 0 or 1 for
+     Clear Tab, 0-2 for Clear All - see renderShop()). */
   .cust-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;}
-  .cust-head b.cust-title{font-size:16px;font-weight:700;}
+  .cust-head b.cust-title{font-size:16px;font-weight:700;color:var(--ink);}
   .cust-head-actions{display:flex;align-items:center;gap:14px;}
-  .cust-clear{border:none;background:none;padding:0;font-family:inherit;font-size:11px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:4px;cursor:pointer;}
-  .cust-clear svg{width:13px;height:13px;flex:0 0 auto;}
+  .cust-clear{border:none;background:none;padding:0;font-family:inherit;font-size:12px;font-weight:400;color:var(--ink);display:flex;align-items:center;gap:2px;cursor:pointer;}
   .cust-clear:disabled{color:#c7c4cb;cursor:default;}
-  .cust-clear:disabled svg{opacity:.4;}
+  .cust-clear-icon{position:relative;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .cust-clear-icon svg{width:13px;height:13px;flex:0 0 auto;}
+  .cust-clear:disabled .cust-clear-icon svg{opacity:.4;}
+  .cust-clear-count{position:absolute;top:-4px;right:-5px;min-width:13px;height:13px;padding:0 2px;border-radius:999px;background:var(--purple-7);color:#fff;font-family:'Manrope',sans-serif;font-size:9px;font-weight:500;line-height:13px;text-align:center;display:none;}
+  .cust-clear-count.show{display:block;}
+  .cust-clear:disabled .cust-clear-count{display:none;}
 
-  /* Finishes / Hardware pill toggle. */
-  .cust-pill-row{display:flex;gap:8px;margin-bottom:12px;}
-  .cust-pill-row button{flex:1;border:1px solid var(--line);background:#f5f4f6;color:#433f46;font-family:inherit;font-size:13px;font-weight:600;padding:8px 6px;border-radius:10px;cursor:pointer;}
-  .cust-pill-row button.on{background:var(--primary);border-color:#ddb8ff;color:#fff;}
+  /* Filter row: 34x34 search button + Finishes/Hardware pill toggle. */
+  .cust-filter-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+  .cust-search-btn{flex:0 0 auto;width:34px;height:34px;border-radius:8px;background:var(--gray-2);border:1px solid var(--line);color:var(--gray-8);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .cust-search-btn svg{width:15px;height:15px;}
+  .cust-pill-row{display:flex;gap:8px;flex:1;min-width:0;}
+  .cust-pill-row button{flex:1;border:1px solid var(--line);background:var(--gray-2);color:var(--gray-8);font-family:inherit;font-size:14px;font-weight:600;height:34px;padding:0 9px;border-radius:10px;cursor:pointer;}
+  .cust-pill-row button.on{background:var(--purple-7);border-color:var(--purple-4);color:#fff;}
 
-  /* Sub-tabs (Main Finish / Countertop / Edgebanding equivalent) - underline
-     style with a full-width baseline, matches the real panel exactly. */
-  .cust-subtabs{display:flex;position:relative;border-bottom:1px solid var(--line);margin-bottom:14px;}
-  .cust-subtabs button{flex:1;border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--ink);padding:9px 4px 11px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
-  .cust-subtabs button.on{font-weight:700;color:var(--ink);border-bottom-color:var(--primary);}
+  /* Sub-tabs (Main Finish / Countertop / Edgebanding equivalent) - real
+     pill-shaped tabs (radius 999) with a thin active-underline sitting on
+     the row's own full-width divider baseline. */
+  .cust-subtabs{display:flex;gap:4px;padding-bottom:11px;border-bottom:1px solid var(--line);margin-bottom:14px;}
+  .cust-subtabs button{border:none;background:none;font-family:inherit;font-size:14px;font-weight:500;color:var(--ink);padding:12px 16px;border-radius:999px;cursor:pointer;position:relative;white-space:nowrap;}
+  .cust-subtabs button.on{font-weight:700;}
+  .cust-subtabs button.on::after{content:"";position:absolute;left:16px;right:16px;bottom:-12px;height:2px;background:var(--primary);}
 
-  /* Collapsible collection sections (Solid / Woodgrain / Signia). */
+  /* Collapsible collection sections (Solid / Woodgrain / Signia): name,
+     item count, a dot separator, the currently-selected option's name (only
+     shown for wall/floor categories, which are the only ones with a real
+     "selected" concept), and a collapse chevron. */
   .cust-sec{margin-bottom:4px;}
   .cust-sec-head{display:flex;align-items:center;justify-content:space-between;padding:8px 0;cursor:pointer;}
   .cust-sec-head .t{font-size:12px;font-weight:500;}
-  .cust-sec-head .n{display:flex;align-items:center;gap:8px;}
-  .cust-sec-head .n span{font-size:12px;color:#a6a1aa;font-weight:500;}
+  .cust-sec-head .n{display:flex;align-items:center;gap:6px;}
+  .cust-sec-head .n .cnt,.cust-sec-head .n .dot{font-size:12px;color:var(--gray-5);font-weight:500;}
+  .cust-sec-head .n .sel{font-size:12px;color:var(--purple-9);font-weight:600;}
   .cust-sec-head .n svg{width:18px;height:18px;stroke:#1a181b;transition:transform .15s;}
   .cust-sec.closed .n svg{transform:rotate(-90deg);}
   .cust-sec.closed .cust-grid{display:none;}
 
   /* Swatch card grid - mirrors the real app's material/color swatch tiles:
-     white rounded chip, circular info dot, Included/Equipped badge, purple
-     selection ring, name + price below. */
+     white rounded chip, circular info badge, Included/selected badges, a
+     purple selection ring, name + flat moon-rock price below (this app's
+     economy is flat per-item rocks, not the real design's strikethrough
+     standard/discount price pattern - see the price block below too). */
   /* minmax(0,1fr), not bare 1fr - a grid track's automatic minimum is the
      size of its content, so a long unwrapped name (e.g. "300 Classic White
      Blanc") was forcing that ONE column wider than its neighbors, breaking
@@ -369,15 +416,28 @@
   .cust-card-group{display:flex;flex-direction:column;gap:4px;min-width:0;cursor:pointer;}
   /* Height-via-padding, not aspect-ratio/flex sizing - immune to grid/flex
      stretch quirks so every tile is a true 1:1 square no matter what's next
-     to it (icon-only Hardware tiles, flat-hex tiles, real photo tiles). */
+     to it (icon-only Hardware tiles, flat-hex tiles, real photo tiles).
+     Figma specs a fixed 104x104 - this panel is only 308px wide (3 columns
+     of 104px + gaps would overflow it), so tiles stay a responsive square
+     sized to the column instead of a fixed pixel value. */
   .cust-card{position:relative;width:100%;height:0;padding-top:100%;}
   .cust-card-inner{position:absolute;inset:0;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
-  .cust-card.equipped .cust-card-inner{border:2px solid var(--primary);}
+  .cust-card.equipped .cust-card-inner{border:2px solid var(--purple-6);}
   .cust-card.unaffordable .cust-card-inner{opacity:.55;}
-  .cust-card .cust-badge{position:absolute;top:6px;left:0;right:0;display:flex;justify-content:center;}
+  .cust-card .cust-badge{position:absolute;top:6px;right:6px;}
   .cust-card .cust-badge span{font-size:9px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;}
   .cust-card .cust-badge.included span{background:#f8fff4;border:1px solid #ccebdb;color:#006b39;}
-  .cust-card .cust-badge.equipped span{background:var(--primary-soft);border:1px solid #ddb8ff;color:var(--primary);}
+  /* Selected/equipped check badge, top-left corner. */
+  .cust-check-badge{position:absolute;top:-6px;left:-6px;width:18px;height:18px;border-radius:50%;background:var(--purple-7);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff;}
+  .cust-check-badge svg{width:11px;height:11px;}
+  /* Info badge, bottom-right, overlapping the swatch's bottom edge - real
+     inline SVG (this project's house rule: never an <img> for a UI icon,
+     which would show a broken-image glyph on any load failure). Purely
+     decorative for now (no per-item material detail data exists to show),
+     so it isn't given its own click handler - a click still falls through
+     to the card's real buy/equip action instead of being a dead click. */
+  .cust-info-badge{position:absolute;right:-6px;bottom:-10px;width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(26,21,35,.18);}
+  .cust-info-badge svg{width:15px;height:15px;}
   .cust-card-text b{font-size:9.5px;font-weight:600;display:block;color:#1a181b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .cust-card-text .price{font-size:9px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:2px;}
   .cust-card-text .price.included{color:#006b39;}
@@ -448,7 +508,6 @@
     .drow,.drow2,.drow3{grid-template-columns:1fr;}
     .closet .cw{grid-template-columns:1fr;}
     .closet-left{border-radius:0;min-height:200px;}
-    .closet svg.cl{width:200px;}
     .thead,.trow{grid-template-columns:1.3fr 1fr .9fr;}
     .th-addr,.td-addr,.th-streak,.td-streak{display:none;}
     h1.title{font-size:26px;} .closet h3{font-size:26px;}
@@ -498,10 +557,15 @@
          any matching element, not a fixed count. -->
     <div class="closet">
       <div class="cw">
-        <!-- Left: illustration + caption -->
-        <div class="closet-left">
-          <div id="closetArt"></div>
-          <div class="closet-caption" id="closetCaption">Your closet monsters live here</div>
+        <!-- Left: live 3D closet - the same fixed 3D scene the My Closet tab
+             shows (see "8 Real 3D/"), not the old 2D SVG illustration. Only
+             one of this iframe / My Closet's closet3dFrame ever has a real
+             src at a time (see activate3DSlot() near the Customize wiring
+             below), so switching tabs never runs two WebGL contexts at
+             once. A shared bottom toolbar (toolbarHtml()) gets appended
+             into this wrap on load, same as the My Closet tab's. -->
+        <div class="closet-left" id="dashClosetWrap">
+          <iframe id="closet3dFrameDash" title="Your closet in 3D" src="about:blank" loading="lazy"></iframe>
         </div>
         <!-- Right: info -->
         <div class="info">
@@ -595,7 +659,7 @@
            this real Three.js/WebGPU render of the actual Sales Designer App
            engine (see "8 Real 3D/") is the only view now. -->
       <div class="closet-3d-wrap" id="closet3dWrap">
-        <iframe id="closet3dFrame" title="Your closet in 3D" src="./8%20Real%203D/app/dist/index.html" loading="lazy"></iframe>
+        <iframe id="closet3dFrame" title="Your closet in 3D" src="about:blank" loading="lazy"></iframe>
       </div>
       <button class="closet-customize-btn" id="customizeBtn">Customize</button>
       <div class="closet-customize" id="customizePanel" style="display:none;">
@@ -604,10 +668,13 @@
           <button id="customizeClose" style="border:none;background:#f1f1f6;border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--muted);font-size:13px;flex:0 0 auto;">✕</button>
         </div>
         <div class="cust-head-actions" style="margin-bottom:12px;">
-          <button class="cust-clear" id="custClearTab"><span>Clear <span id="custClearTabLabel"></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg></button>
-          <button class="cust-clear" id="custClearAll"><span>Clear All</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg></button>
+          <button class="cust-clear" id="custClearTab"><span>Clear <span id="custClearTabLabel"></span></span><span class="cust-clear-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg><span class="cust-clear-count" id="custClearTabCount"></span></span></button>
+          <button class="cust-clear" id="custClearAll"><span>Clear All</span><span class="cust-clear-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg><span class="cust-clear-count" id="custClearAllCount"></span></span></button>
         </div>
-        <div class="cust-pill-row" id="custPillRow"></div>
+        <div class="cust-filter-row">
+          <button class="cust-search-btn" id="custSearchBtn" title="Search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+          <div class="cust-pill-row" id="custPillRow"></div>
+        </div>
         <div class="cust-subtabs" id="shopTabs"></div>
         <div id="shopGroups"></div>
         <div class="cust-price-bar">
@@ -689,6 +756,10 @@
     document.querySelectorAll('section[data-sec]').forEach(function(s){s.classList.toggle('show',s.dataset.sec===sec);});
     window.scrollTo({top:0,behavior:'smooth'});
     if(history.replaceState)history.replaceState(null,'','#'+sec);
+    // Dashboard and My Closet both host the live 3D scene now - keep only
+    // one of the two iframes actually loaded at a time (see
+    // activate3DSlot() near the Customize wiring below).
+    if(sec==='dashboard'||sec==='closet')activate3DSlot(sec);
   }
   tabs.addEventListener('click',function(e){var b=e.target.closest('.nl'); if(b)go(b.dataset.sec);});
 
@@ -897,17 +968,16 @@
 
   function renderCloset(){
     var s=stage();
-    document.getElementById('closetArt').innerHTML=closetSVG(s,ownedAccessories(),st.equippedWall);
-    document.getElementById('closetCaption').textContent=STAGES[s].cap;
     document.getElementById('closetDay').textContent='Day '+(st.visits||1);
     document.getElementById('closetMood').textContent=STAGES[s].mood;
     var s2=document.getElementById('strkBig2'); if(s2)s2.innerHTML=FLAME+' '+st.streak+' day'+(st.streak>1?'s':'');
     document.getElementById('closetTokBig').textContent=st.tokens;
     document.getElementById('closetStrkBig').textContent=st.streak;
     var navTok=document.getElementById('navTokBig'); if(navTok)navTok.textContent=st.tokens;
-    // The My Closet tab's big view is the real 3D iframe now (closetSVG
-    // above is only the small Dashboard-card preview) - keep its equipped
-    // finish in sync. See apply3DClosetFinish() near the Customize wiring.
+    // Both the Dashboard hero card and the My Closet tab show the real 3D
+    // iframe now (the old stage-driven 2D SVG preview is gone entirely) -
+    // keep whichever one is currently active in sync with the equipped
+    // finish. See apply3DClosetFinish() near the Customize wiring.
     apply3DClosetFinish();
   }
 
@@ -1275,6 +1345,39 @@
     '8e4d30':'e74ee4ee-70f8-4370-800d-9e84f1c132a9', // Okanogan Cherry
     443734:'39191cfe-4264-46cc-9185-57b3fb4034c7' // Chocolate Pear
   };
+  // ── single-active-iframe 3D scene ──
+  // The Dashboard hero card and the My Closet tab both mount a
+  // "8 Real 3D/app" iframe now, but it's one fixed, fairly heavy WebGL
+  // scene (this app targets iPad - a real GPU/battery concern) - running
+  // two copies at once just because both sections happen to exist in the
+  // DOM (even if one is CSS-hidden) would be wasteful for zero benefit,
+  // since it's the exact same static scene either way. So only ONE of the
+  // two iframes ever has a real src; the other sits on about:blank until
+  // its tab becomes active (see go() above, which calls activate3DSlot()
+  // on every dashboard/closet switch). This costs a quick reboot when
+  // switching tabs, which is an acceptable, honest tradeoff for a scene
+  // this small - far simpler and more robust than trying to re-parent a
+  // live iframe between the two containers (which reloads it in most
+  // browsers anyway unless done very carefully).
+  var CLOSET_3D_SRC='./8%20Real%203D/app/dist/index.html';
+  var active3DSlot=null; // 'dashboard' | 'closet' | null
+  function getActive3DFrame(){
+    if(active3DSlot==='dashboard')return document.getElementById('closet3dFrameDash');
+    if(active3DSlot==='closet')return document.getElementById('closet3dFrame');
+    return null;
+  }
+  function activate3DSlot(slot){
+    if(active3DSlot===slot)return;
+    var dashFrame=document.getElementById('closet3dFrameDash'),closetFrame=document.getElementById('closet3dFrame');
+    if(slot==='dashboard'){
+      if(closetFrame)closetFrame.src='about:blank';
+      if(dashFrame)dashFrame.src=CLOSET_3D_SRC;
+    } else if(slot==='closet'){
+      if(dashFrame)dashFrame.src='about:blank';
+      if(closetFrame)closetFrame.src=CLOSET_3D_SRC;
+    }
+    active3DSlot=slot;
+  }
   // Applies one real material to the live 3D iframe (same-origin, so a
   // direct call on contentWindow works - no postMessage needed). No-ops
   // quietly if the iframe hasn't finished booting yet, or if this
@@ -1284,7 +1387,7 @@
   function apply3DMaterial(materialType,materialId){
     if(!materialId)return;
     try{
-      var frame=document.getElementById('closet3dFrame');
+      var frame=getActive3DFrame();
       var win=frame&&frame.contentWindow;
       if(win&&typeof win.applyClosetMaterial==='function'){
         win.applyClosetMaterial(materialType,materialId);
@@ -1315,8 +1418,10 @@
     apply3DMaterial('body',materialId);
     apply3DMaterial('door',materialId);
   }
-  var closet3dFrameEl=document.getElementById('closet3dFrame');
-  if(closet3dFrameEl)closet3dFrameEl.addEventListener('load',function(){ apply3DClosetFinish(); });
+  ['closet3dFrameDash','closet3dFrame'].forEach(function(id){
+    var f=document.getElementById(id);
+    if(f)f.addEventListener('load',function(){ apply3DClosetFinish(); });
+  });
   // Two top-level pills (mirrors the real panel's Finishes/Hardware toggle)
   // grouping the 5 SHOP_GROUPS - Finishes is the only side with an
   // "equipped" concept (a single wall/floor color slot), Hardware is
@@ -1326,6 +1431,11 @@
   var shopCat=CUST_TOPS[custTop][0];
   var custClosedSections={}; // group name -> array of section names currently collapsed
   var SECTION_ORDER=['Solids','Woodgrains','Signia','Rods','Hardware','Other'];
+  // Info-circle icon for the swatch's info badge - a real inline SVG per
+  // this project's house rule (never an <img> for a decorative/UI icon,
+  // which would show a broken-image glyph on any load failure).
+  var CUST_INFO_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="#76717a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8.2" r=".9" fill="#76717a" stroke="none"/></svg>';
+  var CUST_CHECK_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
   function swatchCardHtml(it){
     var owned=st.owned[it.id],afford=st.tokens>=it.price;
     var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
@@ -1338,7 +1448,14 @@
     var preview=(it.image?'background-image:url(\''+it.image+'\');background-size:cover;background-position:center;':'')+
       (it.hex?'background-color:#'+it.hex+';':(it.image?'':'background:var(--primary-soft);'));
     var art=(it.image||it.hex)?'':it.i;
-    var badge=equipped?'<div class="cust-badge equipped"><span>Equipped</span></div>':(included?'<div class="cust-badge included"><span>Included</span></div>':'');
+    // Matches Customize Panel V3 (Figma node 23719:18899): an "Included"
+    // badge (top-right, green) for the item that comes free/standard, a
+    // separate check badge (top-left) for whichever one the user has
+    // actually selected, and an info badge (bottom-right) on every tile -
+    // independent flags, since a free item can also be the one selected.
+    var badges=(included?'<div class="cust-badge included"><span>Included</span></div>':'')+
+      (equipped?'<span class="cust-check-badge">'+CUST_CHECK_ICON+'</span>':'')+
+      '<span class="cust-info-badge">'+CUST_INFO_ICON+'</span>';
     var canClick=!(it.type==='cosmetic'&&owned&&!it.category); // plain one-time cosmetics: nothing left to do once owned
     var cardCls='cust-card'+(equipped?' equipped':'')+((!owned&&!afford&&!included)?' unaffordable':'');
     var priceLine;
@@ -1348,7 +1465,7 @@
     else if(it.type==='cosmetic'&&owned&&!it.category)priceLine='<span class="price">Owned</span>';
     else priceLine='<span class="price">'+MR+' '+it.price+'</span>';
     return '<div class="cust-card-group"'+(canClick?' data-buy="'+it.id+'"':'')+'>'+
-      '<div class="'+cardCls+'"><div class="cust-card-inner" style="'+preview+'" title="'+(it.d||it.n)+'">'+art+badge+'</div></div>'+
+      '<div class="'+cardCls+'"><div class="cust-card-inner" style="'+preview+'" title="'+(it.d||it.n)+'">'+art+badges+'</div></div>'+
       '<div class="cust-card-text"><b>'+it.n+'</b>'+priceLine+'</div></div>';
   }
   function sectionGridHtml(group,items){
@@ -1367,9 +1484,17 @@
     var closed=custClosedSections[group];
     return names.map(function(name){
       var isClosed=closed.indexOf(name)>=0;
+      // The currently-selected option's name, purple, next to the count -
+      // only wall/floor categories have a real "selected" concept in this
+      // app, so sections with none (Rods, Hardware, Layouts...) just show
+      // the count and chevron, no fabricated selection.
+      var selectedItem=buckets[name].filter(function(it){
+        return it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
+      })[0];
+      var selHtml=selectedItem?'<span class="dot">·</span><span class="sel">'+selectedItem.n+'</span>':'';
       return '<div class="cust-sec'+(isClosed?' closed':'')+'" data-sec="'+name+'">'+
         '<div class="cust-sec-head" data-sechead="'+name+'"><span class="t">'+name+'</span>'+
-        '<span class="n"><span>'+buckets[name].length+'</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></div>'+
+        '<span class="n"><span class="cnt">('+buckets[name].length+')</span>'+selHtml+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></div>'+
         '<div class="cust-grid">'+buckets[name].map(swatchCardHtml).join('')+'</div></div>';
     }).join('');
   }
@@ -1388,6 +1513,13 @@
     document.getElementById('custClearTabLabel').textContent=shopCat;
     clearTab.disabled=!canClear;
     clearAll.disabled=!(st.equippedWall||st.equippedFloor);
+    // Tiny count badge on each Clear icon - how many equipped finishes that
+    // action would actually clear (0 or 1 for Clear Tab, 0-2 for Clear All).
+    var tabClearCount=(shopCat==='Closet Finish'&&st.equippedWall)||(shopCat==='Room'&&st.equippedFloor)?1:0;
+    var allClearCount=(st.equippedWall?1:0)+(st.equippedFloor?1:0);
+    var tabCountEl=document.getElementById('custClearTabCount'),allCountEl=document.getElementById('custClearAllCount');
+    tabCountEl.textContent=tabClearCount; tabCountEl.classList.toggle('show',canClear&&tabClearCount>0);
+    allCountEl.textContent=allClearCount; allCountEl.classList.toggle('show',allClearCount>0);
     [].slice.call(document.querySelectorAll('#custPillRow button')).forEach(function(b){
       b.addEventListener('click',function(){ custTop=b.dataset.top; shopCat=CUST_TOPS[custTop][0]; renderShop(); });
     });
@@ -1404,14 +1536,23 @@
     });
     [].slice.call(document.querySelectorAll('[data-buy]')).forEach(function(b){ b.addEventListener('click',function(){buy(b.dataset.buy);}); });
   }
-  document.getElementById('customizeBtn').addEventListener('click',function(){
+  // Opening/closing the Customize panel is its own named pair now (not just
+  // an inline click handler) so the toolbar's hanger button - reachable
+  // from either the My Closet tab or the Dashboard hero card - can trigger
+  // the exact same real logic instead of a second copy of it.
+  function openCustomize(){
     document.getElementById('customizePanel').style.display='block';
     document.getElementById('customizeBtn').style.display='none';
-  });
-  document.getElementById('customizeClose').addEventListener('click',function(){
+    var tb=document.querySelector('#closetView .closet-toolbar'); if(tb)tb.style.display='none';
+  }
+  function closeCustomize(){
     document.getElementById('customizePanel').style.display='none';
     document.getElementById('customizeBtn').style.display='';
-  });
+    var tb=document.querySelector('#closetView .closet-toolbar'); if(tb)tb.style.display='';
+  }
+  document.getElementById('customizeBtn').addEventListener('click',openCustomize);
+  document.getElementById('customizeClose').addEventListener('click',closeCustomize);
+  document.getElementById('custSearchBtn').addEventListener('click',function(){ toast('Not available in this training preview.'); });
   document.getElementById('custClearTab').addEventListener('click',function(){
     if(shopCat==='Closet Finish')st.equippedWall=null;
     if(shopCat==='Room')st.equippedFloor=null;
@@ -1419,6 +1560,50 @@
   });
   document.getElementById('custClearAll').addEventListener('click',function(){
     st.equippedWall=null; st.equippedFloor=null; refreshAll();
+  });
+
+  /* ── sub-step toolbar (Figma node 23719:18898) ──
+     One shared markup builder rendered into both places the 3D view lives
+     (Dashboard hero card + My Closet tab) instead of hand-duplicating the
+     toolbar's HTML/CSS in two places. Only the hanger button on the far
+     right is real (opens Customize, matching its likely real-app role);
+     "3D" is a static label now that this app is 3D-only (no toggle); the
+     rest (All Systems, undo, redo, comment, ruler) are honest dead ends -
+     none of that exists in this training app, so each shows a small toast
+     instead of silently doing nothing. */
+  function toolbarHtml(){
+    // Icon paths for undo/redo/comment/measure/hanger are the exact paths
+    // pulled from the real Figma node (23719:18898) via get_design_context -
+    // inline SVG, per this project's house rule against <img> for UI icons.
+    // The chevron and cube are hand-drawn equivalents (their exported
+    // assets didn't resolve to a matching glyph from that node).
+    return '<div class="closet-toolbar">'+
+      '<button class="ctb-pill" data-tb="systems" type="button">All Systems'+
+        '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>'+
+      '</button>'+
+      '<span class="ctb-div"></span>'+
+      '<div class="ctb-3d"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M10 2.5l6.5 3.75v7.5L10 17.5l-6.5-3.75v-7.5L10 2.5z"/><path d="M3.5 6.25L10 10l6.5-3.75M10 10v7.5"/></svg>3D</div>'+
+      '<span class="ctb-div"></span>'+
+      '<button class="ctb-icon" data-tb="undo" type="button" title="Undo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.6122 14.0425C18.6122 12.2094 17.1868 10.7233 15.4285 10.7233H6.42659L9.09082 13.5009C9.37773 13.8001 9.37773 14.2849 9.09082 14.584C8.8039 14.8832 8.33883 14.8832 8.05191 14.584L4.13354 10.4989C3.84662 10.1998 3.84662 9.71494 4.13354 9.41582L8.05191 5.3307C8.33883 5.03157 8.8039 5.03157 9.09082 5.3307C9.37773 5.62983 9.37773 6.11469 9.09082 6.41381L6.42659 9.19141H15.4285C17.9983 9.19141 20.0816 11.3633 20.0816 14.0425C20.0816 16.7217 17.9983 18.8936 15.4285 18.8936H14.4489C14.0432 18.8936 13.7142 18.5506 13.7142 18.1276C13.7142 17.7046 14.0432 17.3616 14.4489 17.3616H15.4285C17.1868 17.3616 18.6122 15.8756 18.6122 14.0425Z"/></svg></button>'+
+      '<button class="ctb-icon" data-tb="redo" type="button" title="Redo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.91835 13.8823C3.91835 12.6966 4.40893 11.5599 5.28155 10.7215C6.15417 9.88306 7.33735 9.41172 8.57142 9.41172H17.5734L14.9091 6.85197C14.6222 6.5763 14.6222 6.12947 14.9091 5.8538C15.196 5.57814 15.6611 5.57814 15.948 5.8538L19.8664 9.61852C20.1533 9.89418 20.1533 10.341 19.8664 10.6167L15.948 14.3814C15.6611 14.6571 15.196 14.6571 14.9091 14.3814C14.6222 14.1057 14.6222 13.6589 14.9091 13.3832L17.5734 10.8235H8.57142C7.72706 10.8235 6.91751 11.146 6.32046 11.7196C5.7234 12.2933 5.38774 13.0711 5.38774 13.8823C5.38774 14.6936 5.7234 15.4714 6.32046 16.045C6.91752 16.6186 7.72706 16.9411 8.57142 16.9411H9.55102C9.95678 16.9411 10.2857 17.2572 10.2857 17.647C10.2857 18.0369 9.95678 18.3529 9.55102 18.3529H8.57142C7.33735 18.3529 6.15417 17.8816 5.28155 17.0432C4.40893 16.2048 3.91835 15.068 3.91835 13.8823Z"/></svg></button>'+
+      '<span class="ctb-div"></span>'+
+      '<button class="ctb-icon" data-tb="comment" type="button" title="Comment"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.7647 6.61227C19.7647 6.02771 19.5414 5.46726 19.1443 5.05391C18.7472 4.64057 18.2087 4.40818 17.6471 4.40818H6.35294C5.79131 4.40818 5.25284 4.64057 4.8557 5.05391C4.45856 5.46726 4.2353 6.02771 4.2353 6.61227V14.449C4.2353 15.0336 4.45856 15.594 4.8557 16.0074C5.25284 16.4207 5.79131 16.6531 6.35294 16.6531H8.2353C8.62514 16.6531 8.94118 16.9821 8.94118 17.3878V19.0284L12.5781 16.7574L12.6627 16.7124C12.7503 16.6733 12.8451 16.6531 12.9412 16.6531H17.6471C18.2087 16.6531 18.7472 16.4207 19.1443 16.0074C19.5414 15.594 19.7647 15.0336 19.7647 14.449V6.61227ZM7.52941 10.5402V10.5307C7.52941 10.1249 7.84545 9.79596 8.2353 9.79596C8.62514 9.79596 8.94118 10.1249 8.94118 10.5307V10.5402C8.94118 10.946 8.62514 11.2749 8.2353 11.2749C7.84545 11.2749 7.52941 10.946 7.52941 10.5402ZM11.2941 10.5402V10.5307C11.2941 10.1249 11.6102 9.79596 12 9.79596C12.3899 9.79596 12.7059 10.1249 12.7059 10.5307V10.5402C12.7059 10.946 12.3899 11.2749 12 11.2749C11.6102 11.2749 11.2941 10.946 11.2941 10.5402ZM15.0588 10.5402V10.5307C15.0588 10.1249 15.3749 9.79596 15.7647 9.79596C16.1546 9.79596 16.4706 10.1249 16.4706 10.5307V10.5402C16.4706 10.946 16.1546 11.2749 15.7647 11.2749C15.3749 11.2749 15.0588 10.946 15.0588 10.5402ZM21.1765 14.449C21.1765 15.4233 20.8044 16.3574 20.1425 17.0463C19.4806 17.7352 18.5831 18.1225 17.6471 18.1225H13.137L8.59835 20.957C8.38037 21.093 8.10905 21.0959 7.88787 20.9656C7.66657 20.8352 7.52941 20.5913 7.52941 20.3266V18.1225H6.35294C5.41688 18.1225 4.51943 17.7352 3.85754 17.0463C3.19564 16.3574 2.82353 15.4233 2.82353 14.449V6.61227C2.82353 5.638 3.19564 4.70392 3.85754 4.01501C4.51943 3.32609 5.41688 2.93879 6.35294 2.93879H17.6471C18.5831 2.93879 19.4806 3.32609 20.1425 4.01501C20.8044 4.70392 21.1765 5.638 21.1765 6.61227V14.449Z"/></svg></button>'+
+      '<button class="ctb-icon" data-tb="measure" type="button" title="Measure"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.84827 2.98175C7.12552 2.75558 7.53467 2.77201 7.79312 3.03046L20.9697 16.207C21.2453 16.4827 21.2453 16.9295 20.9697 17.2052L17.2049 20.9699C16.9293 21.2455 16.4824 21.2455 16.2068 20.9699L3.03023 7.79335C2.75457 7.51769 2.75457 7.07085 3.03023 6.79519L6.79496 3.03046L6.84827 2.98175ZM4.52748 7.29427L16.7058 19.4726L19.4724 16.7061L18.1176 15.3513L17.2049 16.264C16.9293 16.5396 16.4824 16.5396 16.2068 16.264C15.9311 15.9883 15.9311 15.5415 16.2068 15.2658L17.1195 14.3531L15.2941 12.5277L14.3814 13.4404C14.1057 13.7161 13.6589 13.7161 13.3832 13.4404C13.1076 13.1648 13.1076 12.7179 13.3832 12.4423L14.2959 11.5296L12.4705 9.70421L11.5578 10.6169C11.2822 10.8926 10.8353 10.8926 10.5597 10.6169C10.284 10.3412 10.284 9.89439 10.5597 9.61873L11.4724 8.70604L9.64699 6.88066L8.7343 7.79335C8.45864 8.06902 8.0118 8.06902 7.73614 7.79335C7.46047 7.51769 7.46047 7.07085 7.73614 6.79519L8.64883 5.8825L7.29404 4.52771L4.52748 7.29427Z"/></svg></button>'+
+      '<button class="ctb-icon ctb-hanger" data-tb="hanger" type="button" title="Customize"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.242 16.1768C20.2421 15.9538 20.1822 15.7351 20.0691 15.543C19.9561 15.3508 19.7934 15.1923 19.5984 15.084L11.992 10.8574L4.38555 15.084C4.19059 15.1923 4.02794 15.3508 3.91485 15.543C3.80184 15.7351 3.74195 15.9538 3.742 16.1768V17C3.742 17.3315 3.87379 17.6494 4.10821 17.8838C4.34263 18.1182 4.66048 18.25 4.992 18.25H18.992C19.3235 18.25 19.6414 18.1182 19.8758 17.8838C20.1102 17.6494 20.242 17.3315 20.242 17V16.1768ZM13.2498 6C13.2498 5.66848 13.118 5.35063 12.8836 5.11621C12.6492 4.88185 12.3313 4.75 11.9998 4.75C11.6684 4.75005 11.3504 4.88183 11.116 5.11621C10.8817 5.35062 10.7498 5.66852 10.7498 6C10.7498 7.42423 11.304 8.532 12.4373 9.38965L20.327 13.7725C20.7559 14.0107 21.1133 14.3594 21.3621 14.7822C21.6108 15.2049 21.7421 15.6863 21.742 16.1768V17C21.742 17.7293 21.4521 18.4286 20.9363 18.9443C20.4206 19.4601 19.7213 19.75 18.992 19.75H4.992C4.26265 19.75 3.56339 19.4601 3.04766 18.9443C2.53194 18.4286 2.242 17.7293 2.242 17V16.1768C2.24195 15.6863 2.37322 15.2049 2.62188 14.7822C2.87067 14.3594 3.22812 14.0107 3.65704 13.7725L10.7156 9.85059C9.74718 8.80993 9.24981 7.51639 9.24981 6C9.24981 5.2707 9.53981 4.57138 10.0555 4.05566C10.5712 3.53998 11.2705 3.25005 11.9998 3.25C12.7291 3.25 13.4284 3.54 13.9441 4.05566C14.4599 4.57139 14.7498 5.27065 14.7498 6C14.7498 6.41421 14.414 6.75 13.9998 6.75C13.5857 6.7499 13.2498 6.41415 13.2498 6Z"/></svg></button>'+
+    '</div>';
+  }
+  document.getElementById('dashClosetWrap').insertAdjacentHTML('beforeend',toolbarHtml());
+  document.getElementById('closetView').insertAdjacentHTML('beforeend',toolbarHtml());
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('.ctb-pill[data-tb],.ctb-icon[data-tb]');
+    if(!btn)return;
+    if(btn.dataset.tb==='hanger'){
+      var closetSec=document.querySelector('section[data-sec="closet"]');
+      if(closetSec&&!closetSec.classList.contains('show'))go('closet');
+      openCustomize();
+      return;
+    }
+    toast('Not available in this training preview.');
   });
 
   /* ── monthly raffle: real backend, opened from the glowing header icon
@@ -1609,6 +1794,10 @@
     avatar.addEventListener('click',function(){ auth0Client.logout({logoutParams:{returnTo:window.location.origin}}); });
 
     refreshAll();
+    // Dashboard is the default section shown (see class="show" in markup) -
+    // boot its 3D iframe first; go(h) right below will switch to My
+    // Closet's instead if the URL hash points there.
+    activate3DSlot('dashboard');
     var h=(location.hash||'').replace('#',''); if(h)go(h);
   }
 
