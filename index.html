@@ -334,16 +334,12 @@
      to it (icon-only Hardware tiles, flat-hex tiles, real photo tiles). */
   .cust-card{position:relative;width:100%;height:0;padding-top:100%;}
   .cust-card-inner{position:absolute;inset:0;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
-  .cust-card img{width:100%;height:100%;object-fit:cover;display:block;}
-  .cust-card svg.itemicon{width:22px;height:22px;}
   .cust-card.equipped .cust-card-inner{border:2px solid var(--primary);}
   .cust-card.unaffordable .cust-card-inner{opacity:.55;}
   .cust-card .cust-badge{position:absolute;top:6px;left:0;right:0;display:flex;justify-content:center;}
   .cust-card .cust-badge span{font-size:9px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;}
   .cust-card .cust-badge.included span{background:#f8fff4;border:1px solid #ccebdb;color:#006b39;}
   .cust-card .cust-badge.equipped span{background:var(--primary-soft);border:1px solid #ddb8ff;color:var(--primary);}
-  .cust-info-ic{position:absolute;right:6px;bottom:6px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(26,21,35,.25);display:flex;align-items:center;justify-content:center;}
-  .cust-info-ic svg{width:13px;height:13px;stroke:#8e66b1;}
   .cust-card-text b{font-size:9.5px;font-weight:600;display:block;color:#1a181b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .cust-card-text .price{font-size:9px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:2px;}
   .cust-card-text .price.included{color:#006b39;}
@@ -1175,18 +1171,18 @@
   var shopCat=CUST_TOPS[custTop][0];
   var custClosedSections={}; // group name -> array of section names currently collapsed
   var SECTION_ORDER=['Solids','Woodgrains','Signia','Rods','Hardware','Other'];
-  function itemInfoIconHtml(it){
-    return '<span class="cust-info-ic" title="'+(it.d||it.n)+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>';
-  }
   function swatchCardHtml(it){
     var owned=st.owned[it.id],afford=st.tokens>=it.price;
     var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
     var included=it.price===0;
-    var preview=it.hex?'background:#'+it.hex+';':'background:var(--primary-soft);';
-    // onerror hides a failed/slow photo instead of showing the browser's
-    // broken-image glyph - the flat hex background behind it still reads
-    // fine as the swatch on its own.
-    var art=it.image?'<img src="'+it.image+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">':(it.hex?'':it.i);
+    // Photos are a CSS background-image, never an <img> - a background-image
+    // that fails to load just shows nothing (the flat hex/fallback color
+    // stays visible underneath), where an <img> would show the browser's
+    // broken-image glyph. This is the only way to guarantee that glyph can
+    // never appear, on any tile, regardless of why a photo didn't load.
+    var preview=(it.image?'background-image:url(\''+it.image+'\');background-size:cover;background-position:center;':'')+
+      (it.hex?'background-color:#'+it.hex+';':(it.image?'':'background:var(--primary-soft);'));
+    var art=(it.image||it.hex)?'':it.i;
     var badge=equipped?'<div class="cust-badge equipped"><span>Equipped</span></div>':(included?'<div class="cust-badge included"><span>Included</span></div>':'');
     var canClick=!(it.type==='cosmetic'&&owned&&!it.category); // plain one-time cosmetics: nothing left to do once owned
     var cardCls='cust-card'+(equipped?' equipped':'')+((!owned&&!afford&&!included)?' unaffordable':'');
@@ -1197,7 +1193,7 @@
     else if(it.type==='cosmetic'&&owned&&!it.category)priceLine='<span class="price">Owned</span>';
     else priceLine='<span class="price">'+MR+' '+it.price+'</span>';
     return '<div class="cust-card-group"'+(canClick?' data-buy="'+it.id+'"':'')+'>'+
-      '<div class="'+cardCls+'"><div class="cust-card-inner" style="'+preview+'">'+art+badge+itemInfoIconHtml(it)+'</div></div>'+
+      '<div class="'+cardCls+'"><div class="cust-card-inner" style="'+preview+'" title="'+(it.d||it.n)+'">'+art+badge+'</div></div>'+
       '<div class="cust-card-text"><b>'+it.n+'</b>'+priceLine+'</div></div>';
   }
   function sectionGridHtml(group,items){
