@@ -329,11 +329,15 @@
      selection ring, name + price below. */
   .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);align-items:start;gap:11px 8px;padding-bottom:12px;}
   .cust-card-group{display:flex;flex-direction:column;gap:4px;cursor:pointer;}
-  .cust-card{border:1px solid var(--line);border-radius:8px;position:relative;width:100%;aspect-ratio:1;flex:none;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-  .cust-card img{width:100%;height:100%;object-fit:cover;}
+  /* Height-via-padding, not aspect-ratio/flex sizing - immune to grid/flex
+     stretch quirks so every tile is a true 1:1 square no matter what's next
+     to it (icon-only Hardware tiles, flat-hex tiles, real photo tiles). */
+  .cust-card{position:relative;width:100%;height:0;padding-top:100%;}
+  .cust-card-inner{position:absolute;inset:0;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
+  .cust-card img{width:100%;height:100%;object-fit:cover;display:block;}
   .cust-card svg.itemicon{width:22px;height:22px;}
-  .cust-card.equipped{border:2px solid var(--primary);}
-  .cust-card.unaffordable{opacity:.55;}
+  .cust-card.equipped .cust-card-inner{border:2px solid var(--primary);}
+  .cust-card.unaffordable .cust-card-inner{opacity:.55;}
   .cust-card .cust-badge{position:absolute;top:6px;left:0;right:0;display:flex;justify-content:center;}
   .cust-card .cust-badge span{font-size:9px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;}
   .cust-card .cust-badge.included span{background:#f8fff4;border:1px solid #ccebdb;color:#006b39;}
@@ -1190,7 +1194,7 @@
     else if(it.type==='cosmetic'&&owned&&!it.category)priceLine='<span class="price">Owned</span>';
     else priceLine='<span class="price">'+MR+' '+it.price+'</span>';
     return '<div class="cust-card-group"'+(canClick?' data-buy="'+it.id+'"':'')+'>'+
-      '<div class="'+cardCls+'" style="'+preview+'">'+art+badge+itemInfoIconHtml(it)+'</div>'+
+      '<div class="'+cardCls+'"><div class="cust-card-inner" style="'+preview+'">'+art+badge+itemInfoIconHtml(it)+'</div></div>'+
       '<div class="cust-card-text"><b>'+it.n+'</b>'+priceLine+'</div></div>';
   }
   function sectionGridHtml(group,items){
