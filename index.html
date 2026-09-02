@@ -983,8 +983,10 @@
     // Both the Dashboard hero card and the My Closet tab show the real 3D
     // iframe now (the old stage-driven 2D SVG preview is gone entirely) -
     // keep whichever one is currently active in sync with the equipped
-    // finish. See apply3DClosetFinish() near the Customize wiring.
+    // finish and layout. See apply3DClosetFinish()/apply3DClosetLayout()
+    // near the Customize wiring.
     apply3DClosetFinish();
+    apply3DClosetLayout();
   }
 
   // ── real cross-user leaderboard (/api/leaderboard) ── ranked server-side
@@ -1288,9 +1290,12 @@
     // Real closet interior layouts, straight from the real app's own
     // catalog (private.json) - actual hosted product renders, not
     // placeholder icons. See MOON_CATALOG.appCatalog.closetContent.
+    // `category:'layout'` + `layoutId` make these equippable (like the
+    // wall/floor swatches) instead of a plain one-time cosmetic, so tapping
+    // an owned layout again re-applies it - see apply3DClosetLayout() below.
     (typeof MOON_CATALOG!=='undefined'?['shelvesStack','longHung','doubleHung','oneBottomHangerWithShelves','threeDrawerShelves','fourDrawerShelves']:[]).map(function(id){
       var c=MOON_CATALOG.appCatalog.closetContent.filter(function(x){return x.id===id;})[0];
-      return {id:'layout_'+c.id,image:c.image,n:c.name,d:'Real closet layout from the app catalog.',price:c.rocks,type:'cosmetic',group:'Layouts'};
+      return {id:'layout_'+c.id,layoutId:c.id,image:c.image,n:c.name,d:'Real closet layout from the app catalog.',price:c.rocks,type:'cosmetic',category:'layout',group:'Layouts'};
     })
   );
   // Real-world perks (coffee/lunch/tee/giftcard/mini) were retired along
@@ -1424,9 +1429,80 @@
     apply3DMaterial('body',materialId);
     apply3DMaterial('door',materialId);
   }
+  // IMPORTANT, verified this session (real Playwright screenshots, pixel
+  // diff = 0 across two before/after captures of a stark white-to-black
+  // finish swap): apply3DMaterial('body'/'door', ...) above runs cleanly
+  // and DOES update the real @moon/designer-core data layer (confirmed via
+  // a live core inspection - core.projectSettings reads back the new
+  // value), but the 3D VIEW never visibly repaints. This is the same class
+  // of finding as this file's earlier body/door note, now reconfirmed - a
+  // command completing without error is still not evidence it did anything
+  // visible. Root cause not fully isolated for body/door specifically (it
+  // looks like a missing/stale reactive subscription somewhere in the
+  // vendored "8 Real 3D/vendor-packages/designer3d" bundle's per-Panel
+  // material effect, not something fixable from this app's own code) - see
+  // the Rods section further down for a related, fully-diagnosed case.
+  // Leaving this wiring in place (it's correct and harmless, and would
+  // start working for free if that bundle is ever patched/upgraded), but
+  // this is why "Closet Finish" swatches don't visibly change the 3D scene
+  // today despite looking wired.
   ['closet3dFrameDash','closet3dFrame'].forEach(function(id){
     var f=document.getElementById(id);
     if(f)f.addEventListener('load',function(){ apply3DClosetFinish(); });
+  });
+  // ── Customize → live 3D wiring: Layouts ──
+  // Unlike Closet Finish (a material swap), a Layout is a real STRUCTURAL
+  // change - it reconfigures the placed multiCloset's section content via
+  // the real, first-class `applyMultiClosetSections` helper (see "8 Real 3D/
+  // vendor-packages/designer-core/helpers/multiCloset/applyMultiClosetSections.d.ts"),
+  // exposed here as window.applyClosetLayout(desiredVector) by "8 Real 3D/
+  // app/src/main.js". Verified genuinely visible this session: a live core
+  // inspection before/after showed real Part/Model node counts changing
+  // (drawer+shelf sections replaced with hanger sections), and a real
+  // Playwright screenshot diff showed ~7800 changed pixels - unlike the
+  // material-based tiers above and below, this one actually repaints.
+  //
+  // `desiredVector` keys are real MultiClosetComponentType values (see "8
+  // Real 3D/vendor-packages/designer-core/declarations/Part.d.ts") - a 0-5
+  // desire per category, not an exact count; the planner picks the
+  // closest-fit real section content option for whatever's available in
+  // this app's own multiClosetSectionOptions.json. Built from that same
+  // file's real per-option category profiles (so "Bottom Hang + Shelves"'s
+  // 3:1 shelf-to-hanger desire matches its real OneBottomHangerWithShelves
+  // content option, not a guess).
+  //
+  // NOTE (documented limitation, not invented data): this training app's
+  // multiClosetSectionOptions.json only has ONE drawer+shelf content option
+  // (3 drawers), not a distinct 4-drawer variant - the real app's catalog
+  // has one, but it isn't part of this project's loaded data. "4 Drawer +
+  // Shelves" is wired with a real, honestly-skewed desire vector, but the
+  // closest-fit matcher can only ever resolve it to the SAME 3-drawer
+  // option "3 Drawer + Shelves" uses, so the two currently look identical
+  // in the 3D view. Fixing this for real needs the 4-drawer option added to
+  // that JSON (out of scope here - not something to fake).
+  var CLOSET_LAYOUT_3D={
+    shelvesStack:{multiClosetShelfPart:6},
+    longHung:{multiClosetLongHangerPart:5},
+    doubleHung:{multiClosetShortHangerPart:5},
+    oneBottomHangerWithShelves:{multiClosetShelfPart:3,multiClosetShortHangerPart:1},
+    threeDrawerShelves:{multiClosetShelfPart:3,multiClosetDrawerPart:3},
+    fourDrawerShelves:{multiClosetShelfPart:2,multiClosetDrawerPart:4}
+  };
+  function apply3DClosetLayout(){
+    if(!st||!st.equippedLayout)return;
+    var desired=CLOSET_LAYOUT_3D[st.equippedLayout];
+    if(!desired)return;
+    try{
+      var frame=getActive3DFrame();
+      var win=frame&&frame.contentWindow;
+      if(win&&typeof win.applyClosetLayout==='function'){
+        win.applyClosetLayout(desired);
+      }
+    }catch(e){ /* iframe not ready / cross-origin in some preview context - fine */ }
+  }
+  ['closet3dFrameDash','closet3dFrame'].forEach(function(id){
+    var f=document.getElementById(id);
+    if(f)f.addEventListener('load',function(){ apply3DClosetLayout(); });
   });
   // Two top-level pills (mirrors the real panel's Finishes/Hardware toggle)
   // grouping the 5 SHOP_GROUPS - Finishes is the only side with an
@@ -1444,7 +1520,7 @@
   var CUST_CHECK_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
   function swatchCardHtml(it){
     var owned=st.owned[it.id],afford=st.tokens>=it.price;
-    var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:false;
+    var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:it.category==='layout'?st.equippedLayout===it.layoutId:false;
     var included=it.price===0;
     // Photos are a CSS background-image, never an <img> - a background-image
     // that fails to load just shows nothing (the flat hex/fallback color
@@ -1667,6 +1743,7 @@
       else { st.owned[it.id]=true; }
       if(it.category==='wall'){ st.equippedWall=it.hex; }
       if(it.category==='floor'){ st.equippedFloor=it.hex; }
+      if(it.category==='layout'){ st.equippedLayout=it.layoutId; }
       refreshAll();
       toast('Purchased '+it.n+'!'+(it.id==='levelup'?' Closet leveled up.':''));
     }catch(e){ console.error(e); toast('Purchase failed - check your connection.'); }

@@ -1,4 +1,4 @@
-import { CoreDesigner, CoreMode, GeneralViewMode, CreateNodeFromCatalogCommand, generateId, SetMaterialsClosetSetValueCommand, SetValueCommand, SetNodeSignalCommand } from '@moon/designer-core';
+import { CoreDesigner, CoreMode, GeneralViewMode, CreateNodeFromCatalogCommand, generateId, SetMaterialsClosetSetValueCommand, SetValueCommand, SetNodeSignalCommand, applyMultiClosetSections, MultiClosetComponentType } from '@moon/designer-core';
 import { AreaDesigner3D } from '@moon/designer3d';
 
 import sectionOptions from '../data/multiClosetSectionOptions.json';
@@ -140,6 +140,39 @@ try {
       return true;
     } catch (err) {
       console.error('applyClosetMaterial failed', err);
+      return false;
+    }
+  };
+
+  // Live "Layout" wiring for the training hub's Customize panel (the
+  // Layouts sub-tab under Hardware: Shelves, Long Hang, Double Hang,
+  // Bottom Hang + Shelves, 3 Drawer + Shelves, 4 Drawer + Shelves).
+  //
+  // Unlike materials (applyClosetMaterial above), this is a real structural
+  // change - it reconfigures the placed multiCloset's section layout via
+  // applyMultiClosetSections, the same first-class, undoable helper the
+  // real app uses to redo an already-placed closet's sections at runtime.
+  // `desired` is a partial MultiClosetStackNumbers bag (0-5 desire scale per
+  // category - see MultiClosetComponentType) - missing categories default
+  // to 0, so the parent page only needs to name the categories it actually
+  // wants emphasized. `sectionOptions` (loaded above from the real
+  // multiClosetSectionOptions.json) is reused as-is - it is the same
+  // self-describing option list the initial fillMultiClosets() call above
+  // already planned against, so no separate catalog lookup is needed here.
+  window.applyClosetLayout = function applyClosetLayout(desired) {
+    try {
+      const full = {
+        [MultiClosetComponentType.multiClosetShelfPart]: 0,
+        [MultiClosetComponentType.multiClosetShortHangerPart]: 0,
+        [MultiClosetComponentType.multiClosetLongHangerPart]: 0,
+        [MultiClosetComponentType.multiClosetDrawerPart]: 0,
+        ...desired
+      };
+      const plan = applyMultiClosetSections(core, closetId, full, sectionOptions);
+      view.requestRender();
+      return !!(plan && plan.sections && plan.sections.length);
+    } catch (err) {
+      console.error('applyClosetLayout failed', err);
       return false;
     }
   };

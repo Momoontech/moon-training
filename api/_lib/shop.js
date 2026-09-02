@@ -35,11 +35,14 @@ MOON_CATALOG.accessoryCatalog.forEach(function (a) {
 });
 // Real closet layouts from the app's own catalog (appCatalog.closetContent)
 // - prices mirror the curated subset/pricing chosen in index.html.
+// `category:'layout'` (like wall/floor's `category`) makes these
+// equippable - state.js's equippedSkins() reads it to compute
+// `equippedLayout` the same way it already does equippedWall/equippedFloor.
 [
   ['shelvesStack', 25], ['longHung', 30], ['doubleHung', 35],
   ['oneBottomHangerWithShelves', 40], ['threeDrawerShelves', 50], ['fourDrawerShelves', 65],
 ].forEach(function (pair) {
-  SHOP_ITEMS['layout_' + pair[0]] = { price: pair[1] };
+  SHOP_ITEMS['layout_' + pair[0]] = { price: pair[1], category: 'layout', layoutId: pair[0] };
 });
 
 module.exports = { SHOP_ITEMS };

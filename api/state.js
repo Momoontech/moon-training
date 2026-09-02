@@ -2,19 +2,21 @@ const { requireUser, isAdminEmail, AuthError } = require('./_lib/auth');
 const { db, getOrCreateUser } = require('./_lib/db');
 const { SHOP_ITEMS } = require('./_lib/shop');
 
-// The "equipped" wall/floor is just whichever cosmetic in that category was
-// bought most recently - no separate equip action, buying one just switches
-// to it immediately (see the Shop's wall/floor color items).
+// The "equipped" wall/floor/layout is just whichever cosmetic in that
+// category was bought most recently - no separate equip action, buying one
+// just switches to it immediately (see the Shop's wall/floor color items,
+// and the Layouts items - Shelves/Long Hang/Double Hang/etc).
 function equippedSkins(purchases) {
   var sorted = (purchases || []).slice().sort(function (a, b) {
     return new Date(b.purchased_at) - new Date(a.purchased_at);
   });
-  var result = { equippedWall: null, equippedFloor: null };
+  var result = { equippedWall: null, equippedFloor: null, equippedLayout: null };
   for (var i = 0; i < sorted.length; i++) {
     var item = SHOP_ITEMS[sorted[i].item_id];
     if (!item || !item.category) continue;
     if (item.category === 'wall' && !result.equippedWall) result.equippedWall = item.hex;
     if (item.category === 'floor' && !result.equippedFloor) result.equippedFloor = item.hex;
+    if (item.category === 'layout' && !result.equippedLayout) result.equippedLayout = item.layoutId;
   }
   return result;
 }
