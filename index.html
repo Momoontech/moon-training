@@ -1563,10 +1563,11 @@
   });
 
   /* ── sub-step toolbar (Figma node 23719:18898) ──
-     One shared markup builder rendered into both places the 3D view lives
-     (Dashboard hero card + My Closet tab) instead of hand-duplicating the
-     toolbar's HTML/CSS in two places. Only the hanger button on the far
-     right is real (opens Customize, matching its likely real-app role);
+     My Closet tab only - the Dashboard's closet card is a compact preview
+     tile, too narrow for this toolbar to sit in comfortably (its icons
+     were clipping/scrolling), and it's a secondary surface anyway. Only
+     the hanger button on the far right is real (opens Customize, matching
+     its likely real-app role);
      "3D" is a static label now that this app is 3D-only (no toggle); the
      rest (All Systems, undo, redo, comment, ruler) are honest dead ends -
      none of that exists in this training app, so each shows a small toast
@@ -1592,7 +1593,6 @@
       '<button class="ctb-icon ctb-hanger" data-tb="hanger" type="button" title="Customize"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.242 16.1768C20.2421 15.9538 20.1822 15.7351 20.0691 15.543C19.9561 15.3508 19.7934 15.1923 19.5984 15.084L11.992 10.8574L4.38555 15.084C4.19059 15.1923 4.02794 15.3508 3.91485 15.543C3.80184 15.7351 3.74195 15.9538 3.742 16.1768V17C3.742 17.3315 3.87379 17.6494 4.10821 17.8838C4.34263 18.1182 4.66048 18.25 4.992 18.25H18.992C19.3235 18.25 19.6414 18.1182 19.8758 17.8838C20.1102 17.6494 20.242 17.3315 20.242 17V16.1768ZM13.2498 6C13.2498 5.66848 13.118 5.35063 12.8836 5.11621C12.6492 4.88185 12.3313 4.75 11.9998 4.75C11.6684 4.75005 11.3504 4.88183 11.116 5.11621C10.8817 5.35062 10.7498 5.66852 10.7498 6C10.7498 7.42423 11.304 8.532 12.4373 9.38965L20.327 13.7725C20.7559 14.0107 21.1133 14.3594 21.3621 14.7822C21.6108 15.2049 21.7421 15.6863 21.742 16.1768V17C21.742 17.7293 21.4521 18.4286 20.9363 18.9443C20.4206 19.4601 19.7213 19.75 18.992 19.75H4.992C4.26265 19.75 3.56339 19.4601 3.04766 18.9443C2.53194 18.4286 2.242 17.7293 2.242 17V16.1768C2.24195 15.6863 2.37322 15.2049 2.62188 14.7822C2.87067 14.3594 3.22812 14.0107 3.65704 13.7725L10.7156 9.85059C9.74718 8.80993 9.24981 7.51639 9.24981 6C9.24981 5.2707 9.53981 4.57138 10.0555 4.05566C10.5712 3.53998 11.2705 3.25005 11.9998 3.25C12.7291 3.25 13.4284 3.54 13.9441 4.05566C14.4599 4.57139 14.7498 5.27065 14.7498 6C14.7498 6.41421 14.414 6.75 13.9998 6.75C13.5857 6.7499 13.2498 6.41415 13.2498 6Z"/></svg></button>'+
     '</div>';
   }
-  document.getElementById('dashClosetWrap').insertAdjacentHTML('beforeend',toolbarHtml());
   document.getElementById('closetView').insertAdjacentHTML('beforeend',toolbarHtml());
   document.addEventListener('click',function(e){
     var btn=e.target.closest('.ctb-pill[data-tb],.ctb-icon[data-tb]');
