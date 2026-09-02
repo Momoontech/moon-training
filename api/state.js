@@ -46,6 +46,12 @@ module.exports = async (req, res) => {
       owned: Object.fromEntries((purchases || []).map(p => [p.item_id, true])),
       isAdmin: isAdminEmail(user.email),
       ...equippedSkins(purchases),
+      // Per-section Layout drag-and-drop state (see api/shop-buy.js) - a
+      // plain {sectionIndex: layoutId} map, the section-scoped sibling of
+      // equippedLayout above. `closet_state.layout_by_section` may not
+      // exist yet on a row created before that column was added, hence the
+      // `|| {}` fallback (matches the client's own defensive default).
+      equippedLayoutBySection: (closet && closet.layout_by_section) || {},
     });
   } catch (e) {
     if (e instanceof AuthError) return res.status(401).json({ error: e.message });

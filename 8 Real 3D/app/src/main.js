@@ -1,4 +1,4 @@
-import { CoreDesigner, CoreMode, GeneralViewMode, CreateNodeFromCatalogCommand, generateId, SetMaterialsClosetSetValueCommand, SetValueCommand, SetNodeSignalCommand, applyMultiClosetSections, MultiClosetComponentType } from '@moon/designer-core';
+import { CoreDesigner, CoreMode, GeneralViewMode, CreateNodeFromCatalogCommand, generateId, SetMaterialsClosetSetValueCommand, SetValueCommand, SetNodeSignalCommand, applyMultiClosetSections, MultiClosetComponentType, replaceSectionContent, canReplaceSectionContent, scoreOptionAgainstTarget, SetSelectedNodeIdCommand } from '@moon/designer-core';
 import { AreaDesigner3D } from '@moon/designer3d';
 
 import sectionOptions from '../data/multiClosetSectionOptions.json';
@@ -174,6 +174,200 @@ try {
     } catch (err) {
       console.error('applyClosetLayout failed', err);
       return false;
+    }
+  };
+
+  // ── Live "drag one Layout card onto one section" wiring ──
+  //
+  // The Layouts click flow above (applyClosetLayout) always re-plans the
+  // WHOLE closet from a desire vector via applyMultiClosetSections. Mo asked
+  // for something narrower: drag a Layout card and drop it onto ONE section
+  // of the 3D view, changing just that section. The real engine already has
+  // the building block for this - replaceSectionContent (helpers/replace/
+  // replaceNode.d.ts), whose own doc comment says it "mirrors Phase B of
+  // applyMultiClosetSections (and dragOnPart)" - dragOnPart being the real
+  // app's own in-scene drag-a-catalog-item-onto-a-part handler (found by
+  // grepping the vendored designer3d bundle for that name, per this
+  // session's investigation). That handler confirmed two things empirically
+  // (live core/node inspection, not assumed from the .d.ts):
+  //   1. A "section" is a Part node with partType 'multiClosetSection' - it
+  //      has its own `.content` array (the shelf/hanger/drawer pieces
+  //      actually rendered). replaceSectionContent's `nodeId` is THIS
+  //      node's id, not the content piece under it.
+  //   2. A raycast from the camera never lands on the section's own Part
+  //      directly (it isn't rendered) - it lands on one of its CONTENT
+  //      meshes (a shelf board, a hanging garment Model, an Edgebanding
+  //      strip, a Panel...). Resolving "which section is under this pixel"
+  //      means raycasting via the engine's own view.handlers.doRaycast
+  //      (confirmed to be real and exposed on the live AreaDesigner3D
+  //      instance - no need to build a separate Three.js Raycaster/camera
+  //      lookup), then walking the HIT NODE's `.parent` chain up through
+  //      the core node graph until a multiClosetSection Part is found.
+  //
+  // Section ids are NOT stable across a boot - confirmed empirically by
+  // booting this app twice and diffing core.nodes: fillMultiClosets() calls
+  // applyMultiClosetSections(), whose Phase A creates each section via
+  // CreateNodeFromCatalogCommand(..., generateId(), ...) - a fresh id every
+  // time, since this is a brand-new CoreDesigner instance on every page
+  // load. So per-section state can't key off the section's own id; it keys
+  // off its LEFT-TO-RIGHT INDEX in the closet's own `sections` array
+  // instead, which is deterministic for the same fill inputs (same system,
+  // same available width, same options).
+  const sectionIndexOf = (sectionId) => core.nodes.get(closetId).sections.get().indexOf(sectionId);
+  const sectionIdAt = (index) => core.nodes.get(closetId).sections.get()[index];
+
+  // Walk the RENDER graph (Three.js Object3D ancestors) from a raycast hit
+  // back to the core node id it represents. Mirrors designer3d's own
+  // `getNodeGroup`/hit-resolution logic exactly (instanced meshes resolve
+  // via the view's instanceManagers, everything else via the nearest
+  // ancestor flagged `isNodeGroup`, whose `.uuid` is the node id) - found by
+  // reading designer3d/index.js's dragCatalogNode/dragExistingNode, not
+  // reinvented.
+  function resolveNodeIdFromObject(object, instanceId) {
+    if (object && object.isInstancedMesh) {
+      const manager = view.instanceManagers && view.instanceManagers.getManager(object);
+      const nodeView = manager && manager.getNodeView(instanceId || 0);
+      return (nodeView && nodeView.id) || null;
+    }
+    let cur = object;
+    while (cur) {
+      if (cur.isNodeGroup) return cur.uuid;
+      cur = cur.parent;
+    }
+    return null;
+  }
+
+  // Walk the CORE node graph (parent chain, not the render graph) from
+  // whatever got hit (a shelf board, a hanging Model, an Edgebanding strip,
+  // ...) up to its owning multiClosetSection Part. Bounded so a stray hit
+  // outside the closet (a wall, the floor) can never loop or throw.
+  function resolveSectionIdFromNodeId(nodeId, maxHops = 40) {
+    let cur = nodeId;
+    for (let i = 0; i < maxHops && cur; i += 1) {
+      const node = core.nodes.get(cur);
+      if (!node) return null;
+      if (node.type === 'Part' && node.partType && node.partType.get() === 'multiClosetSection') return cur;
+      if (cur === closetId) return null;
+      const parentId = node.parent && node.parent.get ? node.parent.get() : null;
+      if (!parentId || parentId === cur) return null;
+      cur = parentId;
+    }
+    return null;
+  }
+
+  // clientX/clientY are CSS pixels in THIS iframe's own viewport (the
+  // parent page is responsible for translating its pointer event's
+  // clientX/clientY into this frame's coordinate space by subtracting the
+  // iframe element's own getBoundingClientRect() offset - same-origin, so a
+  // plain function call carries these across with no postMessage needed,
+  // same pattern as applyClosetMaterial/applyClosetLayout above).
+  function sectionAtPoint(clientX, clientY) {
+    const rect = view.canvas.getBoundingClientRect();
+    const ndcX = ((clientX - rect.left) / rect.width) * 2 - 1;
+    const ndcY = -((clientY - rect.top) / rect.height) * 2 + 1;
+    const intersects = view.handlers.doRaycast({ x: ndcX, y: ndcY });
+    if (!intersects || !intersects.length) return null;
+    const hit = intersects[0];
+    if (!hit.object || !hit.object.isMesh) return null;
+    const nodeId = resolveNodeIdFromObject(hit.object, hit.instanceId);
+    if (!nodeId) return null;
+    const sectionId = resolveSectionIdFromNodeId(nodeId);
+    if (!sectionId) return null;
+    const sectionIndex = sectionIndexOf(sectionId);
+    if (sectionIndex < 0) return null;
+    return { sectionId, sectionIndex };
+  }
+  window.getClosetSectionAtPoint = function getClosetSectionAtPoint(clientX, clientY) {
+    return sectionAtPoint(clientX, clientY);
+  };
+
+  // Hover feedback while dragging (nice-to-have, cheap given the above):
+  // reuse the engine's OWN real selection outline - the same one a normal
+  // click already renders - rather than hand-rolling a highlight mesh.
+  // `addToHistory: false` keeps this out of undo, matching how the real
+  // dragOnPart/dragOnItem handlers select their drop target live.
+  let preDragSelection;
+  window.previewClosetSectionAtPoint = function previewClosetSectionAtPoint(clientX, clientY) {
+    if (preDragSelection === undefined) preDragSelection = core.selectedNodeId.get();
+    const hit = clientX == null ? null : sectionAtPoint(clientX, clientY);
+    core.runCommandsAsTransaction(new SetSelectedNodeIdCommand(hit ? hit.sectionId : null), '', false);
+    view.requestRender();
+    return hit ? hit.sectionIndex : -1;
+  };
+  window.endClosetSectionPreview = function endClosetSectionPreview() {
+    if (preDragSelection !== undefined) {
+      core.runCommandsAsTransaction(new SetSelectedNodeIdCommand(preDragSelection), '', false);
+      preDragSelection = undefined;
+      view.requestRender();
+    }
+  };
+
+  // Same 0-5 desire-vector shape as applyClosetLayout's `desired` above,
+  // reused as-is rather than inventing a second per-item vector table. Only
+  // difference: instead of feeding the whole-closet planner
+  // (applyMultiClosetSections), this picks the SINGLE real content option
+  // from `sectionOptions` whose own category profile is the closest match -
+  // via scoreOptionAgainstTarget, the exact same L2-normalized distance
+  // metric the real closest-fit planner uses internally (exported by
+  // @moon/designer-core, not reimplemented here) - and applies it to one
+  // section via replaceSectionContent, never touching the planner.
+  function bestFitContentPath(desired) {
+    const full = {
+      [MultiClosetComponentType.multiClosetShelfPart]: 0,
+      [MultiClosetComponentType.multiClosetShortHangerPart]: 0,
+      [MultiClosetComponentType.multiClosetLongHangerPart]: 0,
+      [MultiClosetComponentType.multiClosetDrawerPart]: 0,
+      ...desired
+    };
+    let best = null;
+    let bestScore = Infinity;
+    for (const option of sectionOptions) {
+      const score = scoreOptionAgainstTarget(option, full);
+      if (score < bestScore) {
+        bestScore = score;
+        best = option;
+      }
+    }
+    return best ? best.path : null;
+  }
+
+  // THE call for "apply this Layout to section N" - by stable index, not by
+  // (unstable) node id. Used both for a live drop (dropLayoutOnSection
+  // below, once it has resolved a screen point to an index) and for
+  // re-asserting a previously-dropped section's content after something
+  // else re-renders the closet (see index.html's apply3DClosetSectionOverrides).
+  window.applyClosetSectionLayout = function applyClosetSectionLayout(sectionIndex, desired) {
+    try {
+      const sectionId = sectionIdAt(sectionIndex);
+      if (!sectionId || !canReplaceSectionContent(core, sectionId)) return false;
+      const path = bestFitContentPath(desired);
+      if (!path) return false;
+      const commands = replaceSectionContent(core, sectionId, path);
+      if (!commands) return false;
+      core.runCommandsAsTransaction(commands, 'apply-closet-section-layout', true);
+      view.requestRender();
+      return true;
+    } catch (err) {
+      console.error('applyClosetSectionLayout failed', err);
+      return false;
+    }
+  };
+
+  // THE drop call - clientX/clientY are this iframe's own viewport
+  // coordinates (see sectionAtPoint above). Returns which section (if any)
+  // was actually changed so the parent page can persist/charge for exactly
+  // that section, never the whole closet.
+  window.dropLayoutOnSection = function dropLayoutOnSection(clientX, clientY, desired) {
+    try {
+      const hit = sectionAtPoint(clientX, clientY);
+      if (!hit) return { ok: false, reason: 'no-section' };
+      const applied = window.applyClosetSectionLayout(hit.sectionIndex, desired);
+      return applied
+        ? { ok: true, sectionIndex: hit.sectionIndex }
+        : { ok: false, reason: 'blocked', sectionIndex: hit.sectionIndex };
+    } catch (err) {
+      console.error('dropLayoutOnSection failed', err);
+      return { ok: false, reason: 'error' };
     }
   };
 

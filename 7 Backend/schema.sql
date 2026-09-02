@@ -41,7 +41,15 @@ create table closet_state (
   streak integer not null default 1,
   visits integer not null default 1,
   last_visit date not null default current_date,
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  -- Per-section Layout drag-and-drop state (the "8 Real 3D" closet's
+  -- Customize panel): a plain {sectionIndex: layoutId} JSON map, e.g.
+  -- {"0": "longHung", "1": "shelvesStack"} - the section-scoped sibling of
+  -- the whole-closet equippedLayout, which is derived from shop_purchases
+  -- timestamps instead (see api/state.js's equippedSkins()) and has no way
+  -- to represent "section 0 got X, section 1 got Y" from a purchase log
+  -- alone. Written by api/shop-buy.js when a buy includes a sectionIndex.
+  layout_by_section jsonb not null default '{}'
 );
 
 create table shop_purchases (
@@ -127,3 +135,11 @@ create table raffle_winners (
   user_id uuid not null references users(id),
   drawn_at timestamptz not null default now()
 );
+
+-- ── Migration: per-section Layout drag-and-drop (run this against the
+-- ALREADY-PROVISIONED pilot database - the `create table closet_state`
+-- above only takes effect on a brand new project, per this file's own
+-- "run once" setup note in SETUP.md). Additive and safe to run twice
+-- (`if not exists` guards it) - existing rows just get the column with its
+-- default `{}`, no data loss.
+alter table closet_state add column if not exists layout_by_section jsonb not null default '{}';

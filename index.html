@@ -448,6 +448,15 @@
   .cust-card-text .price.included{color:#006b39;}
   .cust-card-text .price.equipped{color:var(--primary);font-weight:700;}
   .cust-card-text .price img.mr{width:9px;height:9px;}
+  /* Drag ghost for the per-section Layout drag-and-drop (see the pointerdown
+     listener near swatchCardHtml) - follows the pointer via left/top,
+     recentered on the pointer with the translate below. Not shown until a
+     real drag starts (a plain click/tap never creates one). */
+  .cust-drag-ghost-wrap{position:fixed;top:0;left:0;z-index:999;pointer-events:none;transform:translate(-50%,-50%);}
+  .cust-drag-ghost{width:72px;padding:8px;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(26,21,35,.28);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.95;background-size:cover;background-position:center;}
+  .cust-drag-ghost b{font-size:9px;font-weight:600;color:#1a181b;text-align:center;background:rgba(255,255,255,.85);border-radius:4px;padding:1px 3px;}
+  .cust-drag-ghost-wrap.over-target .cust-drag-ghost{box-shadow:0 0 0 2px var(--purple-6),0 8px 24px rgba(26,21,35,.28);}
+  body.closet-dragging{-webkit-user-select:none;user-select:none;cursor:grabbing;}
 
   /* Sticky balance bar - the real panel's price summary, adapted to what
      this app actually tracks (moon rocks, not a dollar estimate). */
@@ -984,9 +993,14 @@
     // iframe now (the old stage-driven 2D SVG preview is gone entirely) -
     // keep whichever one is currently active in sync with the equipped
     // finish and layout. See apply3DClosetFinish()/apply3DClosetLayout()
-    // near the Customize wiring.
+    // near the Customize wiring. apply3DClosetSectionOverrides() MUST run
+    // after apply3DClosetLayout() - the whole-closet replan runs first, then
+    // any per-section drag-drop choices are re-asserted on top of it, so a
+    // one-section customization survives a render triggered by something
+    // else entirely (buying an accessory, equipping a material, ...).
     apply3DClosetFinish();
     apply3DClosetLayout();
+    apply3DClosetSectionOverrides();
   }
 
   // ── real cross-user leaderboard (/api/leaderboard) ── ranked server-side
@@ -1502,7 +1516,199 @@
   }
   ['closet3dFrameDash','closet3dFrame'].forEach(function(id){
     var f=document.getElementById(id);
-    if(f)f.addEventListener('load',function(){ apply3DClosetLayout(); });
+    if(f)f.addEventListener('load',function(){ apply3DClosetLayout(); apply3DClosetSectionOverrides(); });
+  });
+  // ── Customize → live 3D wiring: per-section Layout drag-and-drop ──
+  // Mo tried the click-a-Layout-card flow above and asked for something
+  // narrower: "drag and drop into the scene, not just click and it changes
+  // one section [that he didn't pick]" - clarified as dragging a Layout card
+  // onto ONE specific section of the 3D closet, changing just that section,
+  // not the whole-closet replan apply3DClosetLayout does. Built on
+  // window.dropLayoutOnSection/applyClosetSectionLayout (8 Real 3D/app/src/
+  // main.js), which apply the exact same real replaceSectionContent engine
+  // helper `dragOnPart` itself mirrors - see that file's own comments for
+  // the investigation (section ids are NOT stable across a boot, so this
+  // keys off left-to-right section INDEX; a raycast never lands on a
+  // section's own node, so main.js walks the hit node's parent chain up to
+  // its owning section).
+  //
+  // Per-section equips persist as st.equippedLayoutBySection - a plain
+  // {sectionIndex: layoutId} map, the section-scoped sibling of
+  // st.equippedLayout - kept in sync with the server the same way
+  // equippedWall/equippedFloor/equippedLayout already are (see
+  // api/_lib/shop.js + api/state.js), and reasserted here after every
+  // render so a per-section change survives an unrelated re-render (buying
+  // an accessory, equipping a material, ...) even though
+  // apply3DClosetLayout above always re-plans the whole closet from
+  // st.equippedLayout first. Order matters: this call MUST run after
+  // apply3DClosetLayout() in every place both are called, so the per-section
+  // choice wins over the whole-closet baseline, not the other way round.
+  function apply3DClosetSectionOverrides(){
+    if(!st||!st.equippedLayoutBySection)return;
+    try{
+      var frame=getActive3DFrame();
+      var win=frame&&frame.contentWindow;
+      if(!win||typeof win.applyClosetSectionLayout!=='function')return;
+      Object.keys(st.equippedLayoutBySection).forEach(function(idx){
+        var layoutId=st.equippedLayoutBySection[idx];
+        var desired=CLOSET_LAYOUT_3D[layoutId];
+        if(desired)win.applyClosetSectionLayout(Number(idx),desired);
+      });
+    }catch(e){ /* iframe not ready / cross-origin in some preview context - fine */ }
+  }
+  // Real per-section drag-and-drop: a custom POINTER-based drag (pointerdown/
+  // pointermove/pointerup), not native HTML5 drag-and-drop
+  // (draggable="true"/dragstart/dragover/drop). Two real reasons, not just a
+  // preference:
+  //  1. This app targets iPad (see "8 Real 3D/README.md") and native HTML5
+  //     DnD's dragstart never fires from a touch gesture on iOS/iPadOS
+  //     Safari - it's mouse-only by spec. Shipping the feature on native DnD
+  //     would make it silently not work at all for this app's actual users.
+  //  2. The drop target lives inside a same-origin <iframe>; a direct
+  //     synchronous contentWindow function call (window.dropLayoutOnSection)
+  //     already works cleanly for every other parent->3D-view call in this
+  //     file (apply3DMaterial, apply3DClosetLayout) with zero postMessage
+  //     plumbing - a manual pointer-tracked drag reaches the exact same call
+  //     at drop time, where native DnD would instead need a real dragover/
+  //     drop listener wired INSIDE the iframe's own document plus a
+  //     cross-frame handshake for no real benefit.
+  var closetDrag=null; // {itemId, ghostEl} while a Layout card is being dragged, else null
+  function closetDragGhostHtml(it){
+    var preview=(it.image?'background-image:url(\''+it.image+'\');background-size:cover;background-position:center;':'')+
+      (it.hex?'background-color:#'+it.hex+';':'');
+    return '<div class="cust-drag-ghost" style="'+preview+'"><b>'+it.n+'</b></div>';
+  }
+  function startClosetLayoutDrag(it,x,y){
+    var ghost=document.createElement('div');
+    ghost.className='cust-drag-ghost-wrap';
+    ghost.innerHTML=closetDragGhostHtml(it);
+    ghost.style.left=x+'px'; ghost.style.top=y+'px';
+    document.body.appendChild(ghost);
+    // Suppresses the browser's own native text/element selection highlight,
+    // which otherwise starts from the same mousedown this drag does (see the
+    // "deliberately NOT preventDefault()'d" comment above - that choice
+    // keeps plain clicks working, but lets the browser's default drag-select
+    // start too unless this is set) - confirmed as a real, visible artifact
+    // in this session's own Playwright screenshot before this was added.
+    document.body.classList.add('closet-dragging');
+    closetDrag={it:it,ghost:ghost};
+    moveClosetLayoutDrag(x,y);
+  }
+  // Returns the live 3D iframe's own bounding rect, or null if it isn't the
+  // active/visible one right now (dragging over the Dashboard tab's 3D
+  // preview while My Closet's copy is asleep on about:blank, or vice versa).
+  function active3DFrameRect(){
+    var frame=getActive3DFrame();
+    if(!frame||frame.src==='about:blank')return null;
+    var rect=frame.getBoundingClientRect();
+    if(rect.width===0||rect.height===0)return null;
+    return {frame:frame,rect:rect};
+  }
+  function moveClosetLayoutDrag(x,y){
+    if(!closetDrag)return;
+    closetDrag.ghost.style.left=x+'px'; closetDrag.ghost.style.top=y+'px';
+    var hit=active3DFrameRect();
+    var overFrame=!!(hit&&x>=hit.rect.left&&x<=hit.rect.right&&y>=hit.rect.top&&y<=hit.rect.bottom);
+    closetDrag.ghost.classList.toggle('over-target',overFrame);
+    // Hover feedback (nice-to-have): ask the 3D view to preview-select
+    // whichever section is under the cursor, using the engine's own real
+    // selection outline - see previewClosetSectionAtPoint in main.js.
+    try{
+      var win=hit&&hit.frame.contentWindow;
+      if(win&&typeof win.previewClosetSectionAtPoint==='function'){
+        if(overFrame)win.previewClosetSectionAtPoint(x-hit.rect.left,y-hit.rect.top);
+        else if(typeof win.endClosetSectionPreview==='function')win.endClosetSectionPreview();
+      }
+    }catch(e){ /* fine */ }
+  }
+  async function endClosetLayoutDrag(x,y){
+    if(!closetDrag)return;
+    var it=closetDrag.it,ghost=closetDrag.ghost;
+    var hit=active3DFrameRect();
+    var win=hit&&hit.frame.contentWindow;
+    try{ if(win&&typeof win.endClosetSectionPreview==='function')win.endClosetSectionPreview(); }catch(e){}
+    ghost.remove();
+    document.body.classList.remove('closet-dragging');
+    closetDrag=null;
+    var overFrame=!!(hit&&x>=hit.rect.left&&x<=hit.rect.right&&y>=hit.rect.top&&y<=hit.rect.bottom);
+    if(!overFrame)return; // dropped outside the 3D view entirely - no-op, like missing a drop target anywhere else
+    // Same economy gate buy() uses: owned items are always free to
+    // re-apply, otherwise it must be affordable. Checked BEFORE touching the
+    // 3D scene so an unaffordable drag never mutates anything.
+    var owned=!!st.owned[it.id],afford=st.tokens>=it.price;
+    if(!owned&&!afford){ toast('Not enough moon rocks for '+it.n+' - you have '+st.tokens+', need '+(it.price-st.tokens)+' more.'); return; }
+    if(!win||typeof win.dropLayoutOnSection!=='function')return;
+    var desired=CLOSET_LAYOUT_3D[it.layoutId];
+    if(!desired)return;
+    var result;
+    try{ result=win.dropLayoutOnSection(x-hit.rect.left,y-hit.rect.top,desired); }catch(e){ result=null; }
+    if(!result||!result.ok){ toast('Drop it on a section of the closet.'); return; }
+    // The 3D scene already changed at this point (dropLayoutOnSection
+    // applied it directly) - now persist the economy + per-section state
+    // exactly like buy() does for a whole-closet equip.
+    try{
+      await apiFetch('/api/shop-buy',{method:'POST',body:JSON.stringify({itemId:it.id,sectionIndex:result.sectionIndex})});
+      if(!owned){ st.tokens-=it.price; st.owned[it.id]=true; }
+      st.equippedLayoutBySection[String(result.sectionIndex)]=it.layoutId;
+      refreshAll();
+      toast('Applied '+it.n+' to that section!');
+    }catch(e){ console.error(e); toast('Could not save that change - check your connection.'); }
+  }
+  document.addEventListener('pointerdown',function(e){
+    var card=e.target.closest('.cust-card-group[data-layout-drag]');
+    if(!card||e.button!==0)return;
+    var it=ALL_SHOP_ITEMS.filter(function(x){return x.id===card.dataset.layoutDrag;})[0];
+    if(!it)return;
+    // Deliberately NOT preventDefault()'d here - a plain click (no movement)
+    // must still reach the normal native 'click' event and the existing
+    // [data-buy] listener (buy()) below, so tap-to-equip-the-whole-closet
+    // keeps working exactly as before. Only once real movement crosses the
+    // threshold below does this become a drag, and only then do we
+    // preventDefault (to stop touch-scroll/text-selection while dragging).
+    var startX=e.clientX,startY=e.clientY,dragging=false;
+    var captureEl=document.documentElement;
+    function onMove(ev){
+      if(!dragging){
+        // A small movement threshold so a plain tap/click still reaches the
+        // normal buy() flow below instead of always starting a drag.
+        if(Math.abs(ev.clientX-startX)<4&&Math.abs(ev.clientY-startY)<4)return;
+        dragging=true;
+        ev.preventDefault();
+        // Pointer capture on the ROOT element, not the card itself: without
+        // it, once the cursor crosses from the parent document INTO the 3D
+        // <iframe>, the browser starts routing pointermove/pointerup to the
+        // iframe's own document instead of this one (each frame dispatches
+        // to whatever's under the cursor by default) - the parent's
+        // listeners here would simply stop firing the moment the drag
+        // reaches the drop target, which is exactly the one place this
+        // feature needs them most. Capturing redirects every subsequent
+        // event for this pointerId back to the capturing element regardless
+        // of what's physically under the cursor, which is what makes "drag
+        // across a frame boundary" work at all here (confirmed necessary
+        // and sufficient by this session's own Playwright drag test).
+        //
+        // Deliberately set HERE (once dragging is confirmed), not
+        // unconditionally at pointerdown above: a second Playwright test
+        // (a minimal setPointerCapture repro, isolated from this app)
+        // showed setPointerCapture on pointerdown SUPPRESSES the native
+        // 'click' event Chromium would otherwise synthesize on pointerup at
+        // the same spot - silently breaking the "plain click still equips
+        // the whole closet" requirement. Capturing only once real drag
+        // movement is confirmed keeps a plain click's native 'click' event
+        // completely untouched.
+        try{ captureEl.setPointerCapture(e.pointerId); }catch(err){}
+        startClosetLayoutDrag(it,ev.clientX,ev.clientY);
+      }
+      moveClosetLayoutDrag(ev.clientX,ev.clientY);
+    }
+    function onUp(ev){
+      document.removeEventListener('pointermove',onMove);
+      document.removeEventListener('pointerup',onUp);
+      try{ captureEl.releasePointerCapture(e.pointerId); }catch(err){}
+      if(dragging)endClosetLayoutDrag(ev.clientX,ev.clientY);
+    }
+    document.addEventListener('pointermove',onMove);
+    document.addEventListener('pointerup',onUp);
   });
   // Two top-level pills (mirrors the real panel's Finishes/Hardware toggle)
   // grouping the 5 SHOP_GROUPS - Finishes is the only side with an
@@ -1546,7 +1752,11 @@
     else if(it.category&&owned)priceLine='<span class="price">Tap to equip</span>';
     else if(it.type==='cosmetic'&&owned&&!it.category)priceLine='<span class="price">Owned</span>';
     else priceLine='<span class="price">'+MR+' '+it.price+'</span>';
-    return '<div class="cust-card-group"'+(canClick?' data-buy="'+it.id+'"':'')+'>'+
+    // `data-layout-drag` (Layout cards only) is what the pointer-based drag
+    // listener below looks for - a plain click still runs through
+    // `data-buy` above unchanged (whole-closet equip); dragging this card
+    // onto one section of the 3D view is the new, narrower action.
+    return '<div class="cust-card-group"'+(canClick?' data-buy="'+it.id+'"':'')+(it.category==='layout'?' data-layout-drag="'+it.id+'"':'')+'>'+
       '<div class="'+cardCls+'"><div class="cust-card-inner" style="'+preview+'" title="'+(it.d||it.n)+'">'+art+badges+'</div></div>'+
       '<div class="cust-card-text"><b>'+it.n+'</b>'+priceLine+'</div></div>';
   }
@@ -1735,15 +1945,24 @@
     if(!st.owned[it.id]&&st.tokens<it.price){ toast('Not enough moon rocks for '+it.n+' - you have '+st.tokens+', need '+(it.price-st.tokens)+' more.'); return; }
     if(it.type==='cosmetic'&&st.owned[it.id]&&!it.category)return;
     try{
-      if(!st.owned[it.id]){
-        await apiFetch('/api/shop-buy',{method:'POST',body:JSON.stringify({itemId:id})});
-        st.tokens-=it.price;
+      // A whole-closet Layout click (this path) is a full re-plan
+      // (apply3DClosetLayout) - it must win outright over any earlier
+      // per-section drag-drop tweak (equippedLayoutBySection), never get
+      // silently re-overridden by apply3DClosetSectionOverrides at the next
+      // unrelated render. So a plain layout equip always resets that map,
+      // server-side too (via the SAME shop-buy call, resetSections) - even
+      // when tapping an already-owned layout charges nothing, since that
+      // tap is the only event this has to piggyback on to reach the server.
+      var resetSections=it.category==='layout';
+      if(!st.owned[it.id]||resetSections){
+        await apiFetch('/api/shop-buy',{method:'POST',body:JSON.stringify(resetSections?{itemId:id,resetSections:true}:{itemId:id})});
+        if(!st.owned[it.id])st.tokens-=it.price;
       }
       if(it.type==='action'&&it.id==='levelup'){ st.visits=(st.visits||1)+1; }
       else { st.owned[it.id]=true; }
       if(it.category==='wall'){ st.equippedWall=it.hex; }
       if(it.category==='floor'){ st.equippedFloor=it.hex; }
-      if(it.category==='layout'){ st.equippedLayout=it.layoutId; }
+      if(it.category==='layout'){ st.equippedLayout=it.layoutId; st.equippedLayoutBySection={}; }
       refreshAll();
       toast('Purchased '+it.n+'!'+(it.id==='levelup'?' Closet leveled up.':''));
     }catch(e){ console.error(e); toast('Purchase failed - check your connection.'); }
@@ -1886,7 +2105,7 @@
         adminBtn.disabled=true;
         try{
           await apiFetch('/api/admin/actions',{method:'POST',body:JSON.stringify({action:'add-rocks',amount:1000})});
-          st=await apiFetch('/api/state'); st.claimed=st.claimed||{}; st.owned=st.owned||{};
+          st=await apiFetch('/api/state'); st.claimed=st.claimed||{}; st.owned=st.owned||{}; st.equippedLayoutBySection=st.equippedLayoutBySection||{};
           refreshAll();
           toast('+1000 moon rocks added.');
         }catch(e){ toast(e.message||'Could not add rocks.'); }
@@ -1926,7 +2145,7 @@
       // Fetch state BEFORE revealing the dashboard - if this account isn't on
       // the allowlist, apiFetch throws here and we never show the app shell.
       st=await apiFetch('/api/state');
-      st.claimed=st.claimed||{}; st.owned=st.owned||{};
+      st.claimed=st.claimed||{}; st.owned=st.owned||{}; st.equippedLayoutBySection=st.equippedLayoutBySection||{};
 
       document.getElementById('loginScreen').style.display='none';
       document.querySelector('.navbar').style.display='';
