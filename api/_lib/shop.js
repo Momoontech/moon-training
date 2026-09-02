@@ -45,4 +45,15 @@ MOON_CATALOG.accessoryCatalog.forEach(function (a) {
   SHOP_ITEMS['layout_' + pair[0]] = { price: pair[1], category: 'layout', layoutId: pair[0] };
 });
 
+// Real Collection tiers (construction-level upgrades - see catalog-data.js's
+// `tiers` comment) and real backing-panel options (see `backing`'s comment
+// for the invented-price disclosure) - both single-equipped like
+// wall/floor/layout above, mirrors index.html's CLOSET_ITEMS.
+MOON_CATALOG.tiers.forEach(function (t) {
+  SHOP_ITEMS['tier_' + t.id] = { price: t.rocks, category: 'collection', tierId: t.id };
+});
+MOON_CATALOG.backing.forEach(function (b) {
+  SHOP_ITEMS['backing_' + b.id] = { price: b.rocks, category: 'backing', backingId: b.id };
+});
+
 module.exports = { SHOP_ITEMS };

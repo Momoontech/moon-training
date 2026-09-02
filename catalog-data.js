@@ -220,8 +220,26 @@ var MOON_CATALOG = {
   molding: ['Base Molding', 'Deco Base Molding', 'Crown (small/medium/large)', 'Deco Top Molding', 'Valance', 'Deco Valance', 'Shoe Molding', 'Scribe Molding', 'Toe Kick', 'Platform', 'Cleats', 'Fascia'],
   moldingRule: 'Molding packages add 11-25% to the job: 11% for top-or-bottom molding alone, up to 25% for top-to-the-ceiling plus a bottom package.',
 
-  // section: 'Hardware' (backing is installed alongside countertops/shelving, no exact real-app chip)
-  backing: ['Touch of Cedar strip', 'Cedar (1/4" veneer)', 'Solid Cedar Tongue & Groove', 'Standard Backing', 'Signia Backing', 'Plywood Backing (Red Oak/Mahogany/Birch/Cherry/Maple/White Oak/Walnut)', 'Peg Board'],
+  // section: 'Hardware' (backing is installed alongside countertops/shelving,
+  // no exact real-app chip). Real backing-panel option NAMES - the source
+  // price sheet carries no per-item price for this section (same situation
+  // as accessoryCatalog above), so `rocks` here is this training app's own
+  // invented relative price, same convention as accessoryCatalog's `rocks`:
+  // "Standard Backing" reads as the real baseline/default (0 rocks, shown
+  // as "Included" in the Customize panel), the cedar and hardwood-plywood-
+  // veneer options cost more, roughly proportional to how premium they
+  // sound (solid cedar tongue-and-groove and the hardwood plywood veneers
+  // are the most premium; peg board and standard backing are the
+  // cheapest). These are NOT real prices - do not present them as such.
+  backing: [
+    { id: 'standard', name: 'Standard Backing', rocks: 0 },
+    { id: 'pegBoard', name: 'Peg Board', rocks: 8 },
+    { id: 'cedarStrip', name: 'Touch of Cedar strip', rocks: 15 },
+    { id: 'signia', name: 'Signia Backing', rocks: 18 },
+    { id: 'cedarVeneer', name: 'Cedar (1/4" veneer)', rocks: 25 },
+    { id: 'plywood', name: 'Plywood Backing (Red Oak/Mahogany/Birch/Cherry/Maple/White Oak/Walnut)', rocks: 40 },
+    { id: 'cedarTongueGroove', name: 'Solid Cedar Tongue & Groove', rocks: 45 }
+  ],
 
   // section: 'Hardware'
   lighting: {

@@ -443,6 +443,19 @@
      to the card's real buy/equip action instead of being a dead click. */
   .cust-info-badge{position:absolute;right:-6px;bottom:-10px;width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(26,21,35,.18);}
   .cust-info-badge svg{width:15px;height:15px;}
+  /* Collection tab: 2-column tier cards (bigger squares than the 3-column
+     swatch grid, matching Figma node 23719:20055's 160x160 photos) plus an
+     inline Deluxe toggle row per card - see collectionCardHtml(). */
+  .cust-grid-2col{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .cust-tier-card{display:flex;flex-direction:column;gap:8px;min-width:0;}
+  .cust-tier-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .cust-toggle{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none;flex:0 0 auto;}
+  .cust-toggle input{position:absolute;opacity:0;width:0;height:0;}
+  .cust-toggle .track{position:relative;width:34px;height:20px;border-radius:999px;background:#d4d1d6;transition:.15s;flex:0 0 auto;}
+  .cust-toggle .thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.15s;}
+  .cust-toggle input:checked+.track{background:var(--primary);}
+  .cust-toggle input:checked+.track .thumb{transform:translateX(14px);}
+  .cust-toggle .tglabel{font-size:12.5px;color:var(--ink);white-space:nowrap;}
   .cust-card-text b{font-size:9.5px;font-weight:600;display:block;color:#1a181b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .cust-card-text .price{font-size:9px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:2px;}
   .cust-card-text .price.included{color:#006b39;}
@@ -1247,6 +1260,10 @@
     basket:'<rect x="4" y="9" width="16" height="10" rx="1"/><path d="M4 13h16M8 9V6h8v3"/>',
     box:'<path d="M4 8l8-4 8 4-8 4-8-4z"/><path d="M4 8v9l8 4 8-4V8"/><path d="M12 12v9"/>',
     drawer:'<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M4 12h16"/><path d="M10 15.5h4"/>',
+    // Generic backing-panel glyph (a paneled board) - Backing has no
+    // per-item photo in the real source either (same situation as Rods),
+    // so every backing tile shares this one shape.
+    panel:'<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9.5h16M4 14.5h16"/>',
     default:'<path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8z"/>'
   };
   // Rods have no real per-item photo (see catalog-data.js) and every rod is
@@ -1310,6 +1327,22 @@
     (typeof MOON_CATALOG!=='undefined'?['shelvesStack','longHung','doubleHung','oneBottomHangerWithShelves','threeDrawerShelves','fourDrawerShelves']:[]).map(function(id){
       var c=MOON_CATALOG.appCatalog.closetContent.filter(function(x){return x.id===id;})[0];
       return {id:'layout_'+c.id,layoutId:c.id,image:c.image,n:c.name,d:'Real closet layout from the app catalog.',price:c.rocks,type:'cosmetic',category:'layout',group:'Layouts'};
+    }),
+    // Real Collection tiers (construction-level upgrades - panel thickness,
+    // edge style, door style - see MOON_CATALOG.tiers) - all 4 real tiers,
+    // including 'deluxe' itself (needed so buy()/equip logic can reach it),
+    // even though the Collection tab only ever renders the 3 base tiers as
+    // their own tile - see the Deluxe judgment-call comment near CUST_TOPS
+    // below for why. `category:'collection'` makes these single-equipped
+    // like wall/floor/layout; `tierId` mirrors the real tier id.
+    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.tiers:[]).map(function(t){
+      return {id:'tier_'+t.id,tierId:t.id,n:t.name,d:t.desc,price:t.rocks,type:'cosmetic',category:'collection',group:'Collection'};
+    }),
+    // Real backing-panel options (see catalog-data.js's `backing` comment
+    // for the invented-price disclosure). `category:'backing'` makes these
+    // single-equipped like wall/floor/layout/collection.
+    (typeof MOON_CATALOG!=='undefined'?MOON_CATALOG.backing:[]).map(function(b){
+      return {id:'backing_'+b.id,backingId:b.id,i:SHOPICN+ACC_ICONS.panel+'</svg>',n:b.name,d:'Real Closet World backing-panel option.',price:b.rocks,type:'cosmetic',category:'backing',group:'Backing'};
     })
   );
   // Real-world perks (coffee/lunch/tee/giftcard/mini) were retired along
@@ -1710,12 +1743,20 @@
     document.addEventListener('pointermove',onMove);
     document.addEventListener('pointerup',onUp);
   });
-  // Two top-level pills (mirrors the real panel's Finishes/Hardware toggle)
-  // grouping the 5 SHOP_GROUPS - Finishes is the only side with an
-  // "equipped" concept (a single wall/floor color slot), Hardware is
-  // one-time-owned stuff, which is why Clear only ever touches Finishes.
-  var CUST_TOPS={Finishes:['Closet Finish','Room'],Hardware:['Accessories','Layouts','Boosts']};
-  var custTop='Finishes';
+  // Real 4-pill top-level structure (Figma node 23719:20055, "Collection /
+  // Main Finish / Backing / Hardware") - replaces the earlier 2-pill
+  // Finishes/Hardware guess (built off node 23719:18899, before Mo pointed
+  // at this second real screen showing 4 pills instead of 2). "Room" (floor
+  // color) has no obvious home in this structure - the real Main Finish
+  // pill is singular (cabinet color only) - so it's folded in as a second
+  // sub-tab under "Main Finish" alongside "Closet Finish" rather than given
+  // its own top-level pill; the existing Closet Finish/Room sub-tab
+  // mechanism (cust-subtabs, Clear Tab/Clear All) is unchanged, just
+  // regrouped under the renamed top pill. Collection and Backing each get a
+  // single sub-tab (their tab body IS the whole category, no further
+  // split) - same single-equipped-slot concept as wall/floor/layout.
+  var CUST_TOPS={Collection:['Collection'],'Main Finish':['Closet Finish','Room'],Backing:['Backing'],Hardware:['Accessories','Layouts','Boosts']};
+  var custTop='Collection';
   var shopCat=CUST_TOPS[custTop][0];
   var custClosedSections={}; // group name -> array of section names currently collapsed
   var SECTION_ORDER=['Solids','Woodgrains','Signia','Rods','Hardware','Other'];
@@ -1724,9 +1765,68 @@
   // which would show a broken-image glyph on any load failure).
   var CUST_INFO_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="#76717a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8.2" r=".9" fill="#76717a" stroke="none"/></svg>';
   var CUST_CHECK_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+  // ── Deluxe judgment call ──
+  // The real Figma (node 23719:20055) shows "Deluxe" as an independent
+  // toggle switch next to EACH of the 3 base Collection cards (Essential/
+  // Signature/Legacy), which reads like you could combine any base tier
+  // with a Deluxe upgrade (e.g. "Legacy + Deluxe" as its own thing). But
+  // MOON_CATALOG.tiers only has ONE flat "deluxe" entry (55 rocks, its own
+  // fixed real spec) - there's no real combo pricing for a base+Deluxe
+  // pair. Resolved by treating Deluxe as a SINGLE shared boolean, not 3
+  // independent per-card toggles: flipping ANY card's Deluxe switch ON
+  // equips the real `deluxe` tier outright (replacing whatever base tier
+  // was selected) and visually shows all 3 toggles in the "on" position
+  // (there's only one real Deluxe destination to point at); flipping it
+  // back OFF re-equips whichever base card (Essential/Signature/Legacy) was
+  // otherwise selected - tracked client-side in st.collectionBaseTier since
+  // the server only knows "most recently purchased", not "last selected
+  // while Deluxe was on" (see buy() below and boot()'s default for it).
+  var DELUXE_TIER_ID='deluxe';
+  // No real per-tier photo exists in this project's data (unlike Closet
+  // Finish, which has real sampled product photos) - every Collection tile
+  // shares one stylized wardrobe-door glyph, the same no-real-photo
+  // treatment already used for Rods/Accessories/Backing above.
+  var TIER_ICON='<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="#734e94" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="7" height="18" rx="1"/><rect x="13" y="3" width="7" height="18" rx="1"/><circle cx="9.4" cy="12" r=".9" fill="#734e94" stroke="none"/><circle cx="17.4" cy="12" r=".9" fill="#734e94" stroke="none"/></svg>';
+  function collectionCardHtml(baseItem){
+    var owned=st.owned[baseItem.id],afford=st.tokens>=baseItem.price;
+    var deluxeOn=st.equippedCollection===DELUXE_TIER_ID;
+    var equipped=!deluxeOn&&st.equippedCollection===baseItem.tierId;
+    var included=baseItem.price===0;
+    var badges=(included?'<div class="cust-badge included"><span>Included</span></div>':'')+
+      (equipped?'<span class="cust-check-badge">'+CUST_CHECK_ICON+'</span>':'')+
+      // Real per-item detail (the tier's actual construction spec) exists
+      // here, unlike the plain decorative info badge on other tabs - so
+      // this one gets a real click handler (wired in renderShop()) instead
+      // of staying purely decorative.
+      '<span class="cust-info-badge" data-tier-info="'+baseItem.tierId+'">'+CUST_INFO_ICON+'</span>';
+    var cardCls='cust-card'+(equipped?' equipped':'')+((!owned&&!afford&&!included)?' unaffordable':'');
+    var priceLine;
+    if(equipped)priceLine='<span class="price equipped">Equipped</span>';
+    else if(included)priceLine='<span class="price included">Included</span>';
+    else priceLine='<span class="price">'+MR+' '+baseItem.price+'</span>';
+    return '<div class="cust-tier-card">'+
+      '<div class="cust-card-group" data-buy="'+baseItem.id+'">'+
+        '<div class="'+cardCls+'"><div class="cust-card-inner" style="background:var(--primary-soft);" title="'+baseItem.d+'">'+TIER_ICON+badges+'</div></div>'+
+      '</div>'+
+      '<div class="cust-tier-row">'+
+        '<div class="cust-card-text"><b>'+baseItem.n+'</b>'+priceLine+'</div>'+
+        '<label class="cust-toggle" title="Deluxe upgrade">'+
+          '<input type="checkbox" data-deluxe-toggle="'+baseItem.tierId+'"'+(deluxeOn?' checked':'')+'>'+
+          '<span class="track"><span class="thumb"></span></span>'+
+          '<span class="tglabel">Deluxe</span>'+
+        '</label>'+
+      '</div>'+
+    '</div>';
+  }
+  function collectionGridHtml(items){
+    // Only the 3 base tiers get their own tile - `deluxe` is reached only
+    // via the Deluxe toggle above, never shown as its own 4th card.
+    var baseItems=items.filter(function(it){return it.tierId!==DELUXE_TIER_ID;});
+    return '<div class="cust-grid cust-grid-2col">'+baseItems.map(collectionCardHtml).join('')+'</div>';
+  }
   function swatchCardHtml(it){
     var owned=st.owned[it.id],afford=st.tokens>=it.price;
-    var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:it.category==='layout'?st.equippedLayout===it.layoutId:false;
+    var equipped=it.category==='wall'?st.equippedWall===it.hex:it.category==='floor'?st.equippedFloor===it.hex:it.category==='layout'?st.equippedLayout===it.layoutId:it.category==='backing'?st.equippedBacking===it.backingId:false;
     var included=it.price===0;
     // Photos are a CSS background-image, never an <img> - a background-image
     // that fails to load just shows nothing (the flat hex/fallback color
@@ -1795,11 +1895,21 @@
     document.getElementById('custPillRow').innerHTML=Object.keys(CUST_TOPS).map(function(t){
       return '<button class="'+(t===custTop?'on':'')+'" data-top="'+t+'">'+t+'</button>';
     }).join('');
-    document.getElementById('shopTabs').innerHTML=CUST_TOPS[custTop].map(function(g){
+    // Collection/Backing each have exactly one sub-tab (their tab body IS
+    // the whole category) - a single button offering no real choice would
+    // just look broken, so the sub-tab row hides itself whenever there's
+    // nothing to switch between (Main Finish's 2 and Hardware's 3 still
+    // show normally).
+    var subCats=CUST_TOPS[custTop],shopTabsEl=document.getElementById('shopTabs');
+    shopTabsEl.style.display=subCats.length>1?'':'none';
+    shopTabsEl.innerHTML=subCats.map(function(g){
       return '<button class="'+(g===shopCat?'on':'')+'" data-cat="'+g+'">'+g+'</button>';
     }).join('');
     var groupItems=CLOSET_ITEMS.filter(function(it){return it.group===shopCat;});
-    document.getElementById('shopGroups').innerHTML=sectionGridHtml(shopCat,groupItems);
+    // Collection gets its own bespoke 2-column card+toggle layout (see the
+    // Deluxe judgment-call comment above collectionCardHtml) - every other
+    // tab still uses the generic swatch grid.
+    document.getElementById('shopGroups').innerHTML=shopCat==='Collection'?collectionGridHtml(groupItems):sectionGridHtml(shopCat,groupItems);
     var canClear=shopCat==='Closet Finish'||shopCat==='Room';
     var clearTab=document.getElementById('custClearTab'),clearAll=document.getElementById('custClearAll');
     document.getElementById('custClearTabLabel').textContent=shopCat;
@@ -1827,6 +1937,28 @@
       });
     });
     [].slice.call(document.querySelectorAll('[data-buy]')).forEach(function(b){ b.addEventListener('click',function(){buy(b.dataset.buy);}); });
+    // Deluxe toggle: ON buys/equips the real 'deluxe' tier outright; OFF
+    // returns to whichever base tier collectionBaseTier is tracking (see the
+    // Deluxe judgment-call comment above collectionCardHtml). Reuses buy()'s
+    // existing economy/ownership/toast logic rather than a parallel path -
+    // re-equipping an already-owned tier still charges nothing, matching
+    // every other equip in this panel.
+    [].slice.call(document.querySelectorAll('[data-deluxe-toggle]')).forEach(function(b){
+      b.addEventListener('change',function(){
+        buy(b.checked?('tier_'+DELUXE_TIER_ID):('tier_'+(st.collectionBaseTier||'essentials')));
+      });
+    });
+    // Tier info badge: unlike the purely decorative info icon on other tabs,
+    // Collection has a real per-item detail (the tier's actual construction
+    // spec) worth surfacing - stopPropagation so tapping it doesn't also
+    // trigger the card's own [data-buy] purchase.
+    [].slice.call(document.querySelectorAll('[data-tier-info]')).forEach(function(b){
+      b.addEventListener('click',function(e){
+        e.stopPropagation();
+        var tier=ALL_SHOP_ITEMS.filter(function(x){return x.category==='collection'&&x.tierId===b.dataset.tierInfo;})[0];
+        if(tier)toast(tier.d);
+      });
+    });
   }
   // Opening/closing the Customize panel is its own named pair now (not just
   // an inline click handler) so the toolbar's hanger button - reachable
@@ -1963,6 +2095,12 @@
       if(it.category==='wall'){ st.equippedWall=it.hex; }
       if(it.category==='floor'){ st.equippedFloor=it.hex; }
       if(it.category==='layout'){ st.equippedLayout=it.layoutId; st.equippedLayoutBySection={}; }
+      // Deluxe is reached by buying tier_deluxe directly (see the Deluxe
+      // toggle change handler) - keep collectionBaseTier pointing at
+      // whichever real BASE tier is equipped so toggling Deluxe back off
+      // knows what to return to, without ever pointing it at 'deluxe' itself.
+      if(it.category==='collection'){ st.equippedCollection=it.tierId; if(it.tierId!==DELUXE_TIER_ID)st.collectionBaseTier=it.tierId; }
+      if(it.category==='backing'){ st.equippedBacking=it.backingId; }
       refreshAll();
       toast('Purchased '+it.n+'!'+(it.id==='levelup'?' Closet leveled up.':''));
     }catch(e){ console.error(e); toast('Purchase failed - check your connection.'); }
@@ -2105,7 +2243,7 @@
         adminBtn.disabled=true;
         try{
           await apiFetch('/api/admin/actions',{method:'POST',body:JSON.stringify({action:'add-rocks',amount:1000})});
-          st=await apiFetch('/api/state'); st.claimed=st.claimed||{}; st.owned=st.owned||{}; st.equippedLayoutBySection=st.equippedLayoutBySection||{};
+          st=await apiFetch('/api/state'); st.claimed=st.claimed||{}; st.owned=st.owned||{}; st.equippedLayoutBySection=st.equippedLayoutBySection||{}; st.collectionBaseTier=st.collectionBaseTier||(st.equippedCollection&&st.equippedCollection!==DELUXE_TIER_ID?st.equippedCollection:'essentials');
           refreshAll();
           toast('+1000 moon rocks added.');
         }catch(e){ toast(e.message||'Could not add rocks.'); }
@@ -2145,7 +2283,7 @@
       // Fetch state BEFORE revealing the dashboard - if this account isn't on
       // the allowlist, apiFetch throws here and we never show the app shell.
       st=await apiFetch('/api/state');
-      st.claimed=st.claimed||{}; st.owned=st.owned||{}; st.equippedLayoutBySection=st.equippedLayoutBySection||{};
+      st.claimed=st.claimed||{}; st.owned=st.owned||{}; st.equippedLayoutBySection=st.equippedLayoutBySection||{}; st.collectionBaseTier=st.collectionBaseTier||(st.equippedCollection&&st.equippedCollection!==DELUXE_TIER_ID?st.equippedCollection:'essentials');
 
       document.getElementById('loginScreen').style.display='none';
       document.querySelector('.navbar').style.display='';
