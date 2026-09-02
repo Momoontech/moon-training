@@ -230,6 +230,12 @@
   .msheet .x{border:none;background:#f1f1f6;border-radius:8px;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--muted);}
   .msheet .prog2{font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:10px;}
   .msheet .q{font-size:17px;font-weight:700;margin-bottom:14px;line-height:1.35;}
+  /* Help launcher: a floating window anchored to the (?) button, not a
+     full-screen dimmed modal like Raffle/Trivia/Reward - it expands in
+     place from the icon instead of taking over the screen. */
+  .help-anchor{position:fixed;right:22px;bottom:86px;z-index:61;opacity:0;transform:scale(.96) translateY(8px);transform-origin:bottom right;pointer-events:none;transition:opacity .15s ease,transform .15s ease;}
+  .help-anchor.open{opacity:1;transform:scale(1) translateY(0);pointer-events:auto;}
+  .help-anchor .msheet{max-height:min(560px,calc(100vh - 120px));overflow-y:auto;}
   .opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 15px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:9px;transition:.1s;}
   .opt:hover{border-color:var(--primary);}
   .opt.ok{background:#e6f8f2;border-color:#12B886;color:#0b6b52;font-weight:700;}
@@ -320,9 +326,6 @@
   .supportFab{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:var(--primary);color:#fff;border:none;box-shadow:0 8px 20px rgba(114,57,234,.35);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:60;}
   .supportFab svg{width:24px;height:24px;}
   .supportFab:hover{background:var(--color-button-primary);}
-  .support-form{padding:16px 18px 0;}
-  .support-form textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-family:inherit;font-size:13px;resize:vertical;outline:none;margin-top:10px;box-sizing:border-box;}
-  .support-form textarea:focus{border-color:var(--primary);}
   .how-step span{font-size:13px;color:var(--ink);line-height:1.45;}
 
   /* ─── My Closet customize panel ─── */
@@ -749,8 +752,8 @@
 </div>
 
 <button class="supportFab" id="supportFab" title="Help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9a2.8 2.8 0 0 1 5.4.9c0 1.9-2.4 2.2-2.4 4"/><circle cx="12" cy="17.2" r=".4" fill="currentColor"/></svg></button>
-<div class="modal" id="helpModal">
-  <div class="msheet" style="max-width:420px;padding:0;overflow:hidden;">
+<div class="help-anchor" id="helpModal">
+  <div class="msheet" style="max-width:380px;padding:0;overflow:hidden;">
     <div class="mh" style="padding:18px 18px 0;"><span class="k">Help</span><button class="x" id="helpX">✕</button></div>
     <div class="help-tabs">
       <button class="help-tab on" data-view="chat">Chat</button>
@@ -772,10 +775,6 @@
         <div class="srch" style="width:100%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="faqSearchInput" placeholder="Search FAQs"></div>
       </div>
       <div class="faq-browse-list" id="faqBrowseList"></div>
-    </div>
-    <div class="help-view" id="helpViewSupport" style="display:none;">
-      <div class="support-form"><textarea id="supportText" placeholder="Describe the issue…"></textarea></div>
-      <button class="mnext" id="supportSend" style="margin:14px 18px 18px;width:calc(100% - 36px);">Submit ticket</button>
     </div>
   </div>
 </div>
@@ -1065,13 +1064,18 @@
     {q:'I found a bug or have feedback - what do I do?',kw:['bug','feedback','issue','problem','broken','support'],a:'Tap the Support button (bottom-right of the screen) to send it in.'}
   ];
   var faqMessages=document.getElementById('faqMessages');
+  var chatHistory=[]; // {role,content} pairs sent to /api/chat so it has conversational context
   function faqBubble(text,who){
     var b=elc('<div class="faq-bubble '+who+'"></div>');
     b.textContent=text;
     faqMessages.appendChild(b);
     faqMessages.scrollTop=faqMessages.scrollHeight;
+    return b;
   }
   function elc(html){ var t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+  /* Local keyword match - kept only as a fallback for when /api/chat is
+     unreachable (no ANTHROPIC_API_KEY configured yet, network hiccup, etc.),
+     so the widget still answers something instead of breaking. */
   function faqBestMatch(text){
     var lower=text.toLowerCase();
     var best=null,bestScore=0;
@@ -1084,10 +1088,23 @@
   function faqAsk(text){
     if(!text)return;
     faqBubble(text,'user');
-    var match=faqBestMatch(text);
-    setTimeout(function(){
+    var typing=faqBubble('…','bot');
+    fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:text,history:chatHistory.slice(-12)})
+    }).then(function(r){
+      if(!r.ok)throw new Error('chat request failed');
+      return r.json();
+    }).then(function(data){
+      typing.remove();
+      faqBubble(data.reply,'bot');
+      chatHistory.push({role:'user',content:text},{role:'assistant',content:data.reply});
+    }).catch(function(){
+      typing.remove();
+      var match=faqBestMatch(text);
       faqBubble(match?match.a:'I don\'t have an answer for that yet - try one of the suggestions below, or tap Support to ask the team directly.','bot');
-    },350);
+    });
   }
   function renderFaqSuggestions(){
     document.getElementById('faqSuggestions').innerHTML=FAQ_DATA.map(function(f,i){
@@ -1114,12 +1131,27 @@
   function closeHelp(){ helpModal.classList.remove('open'); }
   document.getElementById('supportFab').addEventListener('click',openHelp);
   document.getElementById('helpX').addEventListener('click',closeHelp);
-  helpModal.addEventListener('click',function(e){ if(e.target===helpModal)closeHelp(); });
+  /* No full-screen backdrop to catch the close click anymore (it's a small
+     floating window now, not a centered modal) - close on any click outside
+     the panel and its own toggle button instead. */
+  document.addEventListener('click',function(e){
+    if(!helpModal.classList.contains('open'))return;
+    if(helpModal.contains(e.target)||e.target.closest('#supportFab'))return;
+    closeHelp();
+  });
   [].slice.call(document.querySelectorAll('.help-tab')).forEach(function(tab){
     tab.addEventListener('click',function(){
+      /* Support leaves the floating window entirely and opens the same
+         full-page overlay used for training decks/guides, per the Help
+         system spec - Chat/FAQ stay inline, Support navigates away. */
+      if(tab.dataset.view==='support'){
+        closeHelp();
+        openOverlay('support-form.html','Support');
+        return;
+      }
       document.querySelectorAll('.help-tab').forEach(function(t){t.classList.remove('on');});
       tab.classList.add('on');
-      ['chat','faq','support'].forEach(function(v){
+      ['chat','faq'].forEach(function(v){
         document.getElementById('helpView'+v.charAt(0).toUpperCase()+v.slice(1)).style.display=(v===tab.dataset.view)?'':'none';
       });
     });
@@ -1136,15 +1168,9 @@
   renderFaqBrowse('');
   document.getElementById('faqSearchInput').addEventListener('input',function(){ renderFaqBrowse(this.value); });
 
-  /* ── support ticket: mock confirmation only, no real backend yet ── */
-  document.getElementById('supportSend').addEventListener('click',function(){
-    var text=document.getElementById('supportText').value.trim();
-    if(!text){ toast('Add a quick description first.'); return; }
-    document.getElementById('helpViewSupport').innerHTML=
-      '<div style="text-align:center;padding:30px 18px;"><div style="font-size:36px;">✅</div>'+
-      '<div style="font-size:15px;font-weight:700;margin-top:8px;">Ticket submitted</div>'+
-      '<p style="color:var(--muted);font-size:12.5px;margin-top:6px;">Our team will get back to you. (This is a preview - tickets aren\'t sent anywhere yet.)</p></div>';
-  });
+  /* Support ticket submission now lives in support-form.html, opened as its
+     own full-page overlay (see the help-tab handler above) instead of an
+     inline view here. */
 
   /* ── toast ── */
   var toastEl=document.getElementById('toast'),toastT;
