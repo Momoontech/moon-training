@@ -59,6 +59,11 @@
   .nl:hover{color:var(--ink);background:#f5f4f9;}
   .nl.on{background:#f3f1f8;color:var(--ink);font-weight:700;}
   .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--color-button-primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;letter-spacing:.04em;}
+  /* Admin-only utility - only ever shown when /api/state's real,
+     server-computed isAdmin flag is true (see initApp()). Not a general
+     dev tool (those were deliberately removed before wider release). */
+  .nav-admin{border:1px dashed var(--line);background:#fff;color:var(--muted);font-family:inherit;font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;cursor:pointer;flex:0 0 auto;}
+  .nav-admin:hover{color:var(--primary);border-color:var(--primary);}
   .nav-right{display:flex;align-items:center;gap:14px;}
   /* Was an icon-only circle with no visible text (just a title= tooltip) -
      Heather's review flagged that the pulse draws more attention than the
@@ -535,6 +540,7 @@
   <div class="nav-right">
     <button class="raffleGlow" id="raffleGlowBtn" title="Monthly Raffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a1.5 1.5 0 0 0 0 3V14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a1.5 1.5 0 0 0 0-3V8z"/><path d="M9 6.5v11" stroke-dasharray="2.2 3"/></svg><span>Raffle</span></button>
     <div class="nav-rocks"><span class="mricn"></span><b id="navTokBig">1</b></div>
+    <button class="nav-admin" id="adminAddRocksBtn" style="display:none;" type="button" title="Admin only">+1000</button>
     <div class="nav-avatar">JD</div>
   </div>
 </nav>
@@ -1792,6 +1798,24 @@
     var avatar=document.querySelector('.nav-avatar');
     avatar.textContent=(st.name||st.email||'?').slice(0,2).toUpperCase();
     avatar.addEventListener('click',function(){ auth0Client.logout({logoutParams:{returnTo:window.location.origin}}); });
+
+    // Real admin-only utility, gated on the server-computed isAdmin flag
+    // from /api/state - reuses the existing add-rocks admin action instead
+    // of needing direct DB/console access for a routine balance bump.
+    if(st.isAdmin){
+      var adminBtn=document.getElementById('adminAddRocksBtn');
+      adminBtn.style.display='';
+      adminBtn.addEventListener('click',async function(){
+        adminBtn.disabled=true;
+        try{
+          await apiFetch('/api/admin/actions',{method:'POST',body:JSON.stringify({action:'add-rocks',amount:1000})});
+          st=await apiFetch('/api/state'); st.claimed=st.claimed||{}; st.owned=st.owned||{};
+          refreshAll();
+          toast('+1000 moon rocks added.');
+        }catch(e){ toast(e.message||'Could not add rocks.'); }
+        adminBtn.disabled=false;
+      });
+    }
 
     refreshAll();
     // Dashboard is the default section shown (see class="show" in markup) -
