@@ -1,5 +1,6 @@
 import { CoreDesigner, CoreMode, GeneralViewMode, CreateNodeFromCatalogCommand, generateId, SetMaterialsClosetSetValueCommand, SetValueCommand, SetNodeSignalCommand, applyMultiClosetSections, MultiClosetComponentType, replaceSectionContent, canReplaceSectionContent, scoreOptionAgainstTarget, SetSelectedNodeIdCommand } from '@moon/designer-core';
 import { AreaDesigner3D } from '@moon/designer3d';
+import * as THREE from 'three';
 
 import sectionOptions from '../data/multiClosetSectionOptions.json';
 import appData from '../data/appdata.json';
@@ -369,6 +370,134 @@ try {
       console.error('dropLayoutOnSection failed', err);
       return { ok: false, reason: 'error' };
     }
+  };
+
+  // ── Mock 3D Accessories (real request: "mock up the 3d accessories, do 5
+  // of them, make them 3d assets and let's try it") ──
+  //
+  // These 5 items have NO real 3D model anywhere in this project's vendored
+  // catalog data (confirmed by direct inspection - see this repo's git
+  // history for the earlier accessories investigation), so this does NOT go
+  // through the real catalog/CreateNodeFromCatalogCommand system at all -
+  // there is no real catalog path to place. Instead these are genuine,
+  // simple Three.js primitives (the app's own real "three" dependency,
+  // already declared in app/package.json for exactly this kind of use - not
+  // a second/mismatched copy), added directly into the live scene graph and
+  // parented to the closet's own real NodeView group (`view.nodes.get(id)
+  // .group`, a real Object3D - confirmed live) so they inherit its correct
+  // world position/rotation for free instead of guessing world coordinates.
+  // Deliberately simple, obviously-generic shapes (a bar with pegs, a rod,
+  // an open tray, a bracket, hooks on a board) - this is a rough visual
+  // prototype to see if the idea is worth pursuing further, explicitly not
+  // a claim that this is what the real product looks like.
+  const mockAccessoryMeshes = {};
+  // view.nodes (the real node-id -> Object3D map) only gets an entry for the
+  // closet AFTER its first real render pass runs (view.requestRender()
+  // schedules that, it doesn't run it synchronously) - calling this at
+  // top-level script scope, before the browser has painted a frame, found
+  // view.nodes.get(closetId) reliably undefined every time (confirmed live:
+  // the group existed with the wrong child count moments later on the exact
+  // same page load). Retrying across a few animation frames is cheap and
+  // removes the race outright, instead of guessing a fixed delay.
+  function setupMockAccessories(attemptsLeft) {
+    try {
+      const closetGroup = view.nodes.get(closetId)?.group;
+      if (!closetGroup) {
+        if (attemptsLeft > 0) requestAnimationFrame(() => setupMockAccessories(attemptsLeft - 1));
+        else console.warn('mock accessory setup: closet NodeView never became available');
+        return;
+      }
+      const metal = (hex) => new THREE.MeshStandardMaterial({ color: hex, metalness: 0.6, roughness: 0.35 });
+      const wood = (hex) => new THREE.MeshStandardMaterial({ color: hex, metalness: 0.05, roughness: 0.75 });
+
+      function tieRack() {
+        const g = new THREE.Group();
+        const mat = metal(0xcfcfcf);
+        g.add(new THREE.Mesh(new THREE.BoxGeometry(14, 0.6, 1), mat));
+        for (let i = -3; i <= 3; i++) {
+          const peg = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 2, 12), mat);
+          peg.rotation.x = Math.PI / 2;
+          peg.position.set(i * 1.8, -1, 0.5);
+          g.add(peg);
+        }
+        g.position.set(2, 45, 9);
+        return g;
+      }
+      function valetRod() {
+        const g = new THREE.Group();
+        const mat = metal(0xd8d8d8);
+        const bracket = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 3), mat);
+        bracket.position.set(0, 0, -1.5);
+        g.add(bracket);
+        const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 12, 12), mat);
+        rod.rotation.z = Math.PI / 2;
+        rod.position.set(6, 0, 0);
+        g.add(rod);
+        g.position.set(11, 40, 9);
+        return g;
+      }
+      function wireBasket() {
+        const g = new THREE.Group();
+        const mat = metal(0xb0b0b0);
+        g.add(new THREE.Mesh(new THREE.BoxGeometry(14, 0.3, 10), mat));
+        const side = (w, h, d, x, y, z) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); g.add(m); };
+        side(14, 3, 0.3, 0, 1.5, 5);
+        side(14, 3, 0.3, 0, 1.5, -5);
+        side(0.3, 3, 10, -7, 1.5, 0);
+        side(0.3, 3, 10, 7, 1.5, 0);
+        g.position.set(7, 26, 10);
+        return g;
+      }
+      function lBracket() {
+        const g = new THREE.Group();
+        const mat = metal(0xe8e8e8);
+        const v = new THREE.Mesh(new THREE.BoxGeometry(0.3, 4, 0.3), mat); v.position.set(0, -2, 0); g.add(v);
+        const h = new THREE.Mesh(new THREE.BoxGeometry(4, 0.3, 0.3), mat); h.position.set(2, -4, 0); g.add(h);
+        g.position.set(2, 32, 15);
+        return g;
+      }
+      function hookRack() {
+        const g = new THREE.Group();
+        g.add(new THREE.Mesh(new THREE.BoxGeometry(16, 3, 0.7), wood(0x8a6a4a)));
+        const hookMat = metal(0xc9c9c9);
+        for (let i = -1; i <= 1; i++) {
+          const hook = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.15, 8, 16, Math.PI * 1.3), hookMat);
+          hook.position.set(i * 5, -1, 0.6);
+          hook.rotation.z = Math.PI;
+          g.add(hook);
+        }
+        g.position.set(7, 58, 3);
+        return g;
+      }
+
+      const builders = {
+        cwTieRack: tieRack,
+        cwValetRod: valetRod,
+        designerBasket: wireBasket,
+        lBracket: lBracket,
+        coatHookRack: hookRack,
+      };
+      Object.keys(builders).forEach((id) => {
+        const mesh = builders[id]();
+        mesh.visible = false;
+        closetGroup.add(mesh);
+        mockAccessoryMeshes[id] = mesh;
+      });
+    } catch (err) {
+      console.error('mock accessory setup failed', err);
+    }
+  }
+  setupMockAccessories(30); // ~0.5s of retries at 60fps - generous margin, cheap if it succeeds on frame 1
+  // Shows/hides one mock accessory - called once per owned item on every
+  // render (see index.html's apply3DMockAccessories()), not just on
+  // purchase, so it's re-asserted correctly after a reload the same way
+  // every other equip/owned state in this app already is.
+  window.applyMockAccessory = function applyMockAccessory(id, on) {
+    const mesh = mockAccessoryMeshes[id];
+    if (!mesh) return false;
+    mesh.visible = !!on;
+    view.requestRender();
+    return true;
   };
 
   setStatus('');

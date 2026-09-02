@@ -1024,6 +1024,7 @@
     apply3DClosetFinish();
     apply3DClosetLayout();
     apply3DClosetSectionOverrides();
+    apply3DMockAccessories();
   }
 
   // ── real cross-user leaderboard (/api/leaderboard) ── ranked server-side
@@ -1462,6 +1463,37 @@
       }
     }catch(e){ /* iframe not ready / cross-origin in some preview context - fine */ }
   }
+  // ── Mock 3D Accessories ──
+  // Real request: "mock up the 3d accessories, do 5 of them... let's try
+  // it". These 5 real Hardware catalog items have NO real 3D model anywhere
+  // in this project's data (confirmed by direct inspection - see this
+  // repo's earlier accessories investigation), so unlike every other
+  // Customize category, this isn't wiring an existing real asset - it's a
+  // genuinely generic Three.js mockup (a bar with pegs, a rod, a tray, a
+  // bracket, hooks on a board) built directly in "8 Real 3D/app/src/
+  // main.js", parented to the closet's own real group so it inherits the
+  // right world position. Deliberately rough placement (hand-tuned against
+  // live screenshots, not real mount-point data, since none exists) - a
+  // prototype to see if the idea is worth pursuing for real, not a claim
+  // that this is what the real product looks like.
+  var MOCK_ACCESSORY_IDS=['cwTieRack','cwValetRod','designerBasket','lBracket','coatHookRack'];
+  function apply3DMockAccessories(){
+    if(!st)return;
+    try{
+      var frame=getActive3DFrame();
+      var win=frame&&frame.contentWindow;
+      if(!win||typeof win.applyMockAccessory!=='function')return;
+      // Accessory catalog ids are stored in st.owned with an 'acc_' prefix
+      // (see accessoryFor()/swatchCardHtml's real id:'acc_'+a.id) - the mock
+      // meshes in main.js are keyed by the plain catalog id instead, since
+      // that's what MOON_CATALOG.accessoryCatalog itself uses.
+      MOCK_ACCESSORY_IDS.forEach(function(id){ win.applyMockAccessory(id,!!st.owned['acc_'+id]); });
+    }catch(e){ /* iframe not ready / cross-origin in some preview context - fine */ }
+  }
+  ['closet3dFrameDash','closet3dFrame'].forEach(function(id){
+    var f=document.getElementById(id);
+    if(f)f.addEventListener('load',function(){ apply3DMockAccessories(); });
+  });
   // The 3D scene's own out-of-the-box closet finish (its "Classic White
   // Set" body/door material, confirmed by inspecting a live core instance)
   // - applied when nothing is equipped, so Clear/Clear All visibly resets
